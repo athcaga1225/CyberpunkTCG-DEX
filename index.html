@@ -1078,7 +1078,9 @@
         #draw-dialog .pack-card.revealed[data-rarity="Common"],#draw-dialog .pack-card.revealed[data-rarity="Uncommon"]{filter:none}
         @media(max-width:480px){#draw-dialog .pack-controls{gap:10px}#draw-dialog .pack-controls button{width:calc(50% - 5px);max-width:142px}}
   
-        .pack-emerging{position:absolute;inset:30px 19px auto;height:212px;border-radius:7px;background:center/cover no-repeat url('https://beyondtcg.co.uk/cdn/shop/files/B098_back.webp?width=900');opacity:0;transform:translateY(20px);z-index:0}
+        .pack-emerging{position:absolute;inset:30px 19px auto;height:212px;border-radius:7px;background:#fcee09 center/132% auto no-repeat url('https://beyondtcg.co.uk/cdn/shop/files/B098_back.webp?width=900');opacity:0;transform:translateY(20px);z-index:0}
+        #draw-dialog .pack-card .hero-back{overflow:hidden;background:#fcee09}
+        #draw-dialog .pack-card .hero-back img{transform:scale(1.32)}
         .pack-body{z-index:1}.torn .pack-emerging{animation:packRise .85s .12s both}
         @keyframes packRise{0%{opacity:0;transform:translateY(20px)}40%{opacity:1}100%{opacity:1;transform:translateY(-25px)}}
         #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"]{filter:drop-shadow(0 0 6px #ffd900) drop-shadow(0 0 12px #ec5cff) drop-shadow(0 0 18px #43dcff)}
