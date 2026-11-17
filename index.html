@@ -1118,6 +1118,33 @@
         #draw-dialog .pack-controls{position:static;background:transparent;margin:24px auto 0}
         #draw-dialog .pack-stats{margin:26px auto 12px}
         @media(max-width:600px){html.pack-view #draw-dialog{width:calc(100% - 32px);padding:18px 0 22px}#draw-dialog .draw-head{gap:10px;margin-bottom:16px}#draw-dialog #pack-stage{min-height:390px}#draw-dialog #pack-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}#draw-dialog .draw-head h2{font-size:26px}}
+
+        /* Pack page: use the same graphic language and scale as the home hero. */
+        html.pack-view #draw-dialog{width:min(1440px,calc(100% - 64px));padding:24px 0 32px}
+        #draw-dialog .draw-head{flex-direction:row;align-items:center;gap:26px;margin:0 0 24px}
+        #draw-dialog .draw-head h2{font:800 clamp(26px,3vw,42px) system-ui,sans-serif;letter-spacing:-.045em}
+        #draw-dialog .draw-head h2 span{color:#b3b7ba;font-size:.48em;letter-spacing:0;font-weight:500}
+        #draw-dialog #draw-close{flex:0 0 auto}
+        #draw-dialog #pack-stage{display:grid;grid-template-columns:minmax(280px,37%) minmax(0,1fr);align-items:stretch;min-height:clamp(460px,63vh,660px);padding:0;text-align:left;background:#101214}
+        .pack-copy{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:clamp(24px,4vw,56px);min-width:0}
+        .pack-kicker{display:flex;align-items:center;gap:10px;font:700 12px ui-monospace,monospace;letter-spacing:.08em;color:#fcee09;margin:0 0 18px}
+        .pack-copy h3{font-size:clamp(36px,4.4vw,68px);font-weight:900;letter-spacing:-.045em;line-height:1.12;color:#fcee09;margin:0 0 28px}
+        #draw-dialog .pack-editions{width:min(272px,100%);max-width:none;margin:0 0 18px;gap:8px}
+        #draw-dialog .pack-editions .edition-btn{min-width:0;padding:10px 12px;font-size:12px;min-height:40px}
+        #draw-dialog .pack-test-control{margin:0 0 16px;justify-content:flex-start}
+        #draw-dialog .pack-config{font-size:11px;margin:8px 0;color:#aeb4b6}
+        #draw-dialog #pack-instruction{font-size:15px;margin:12px 0 0;text-align:left}
+        .pack-art{position:relative;isolation:isolate;display:grid;place-items:center;overflow:hidden;background:#fcee09;clip-path:polygon(50px 0,100% 0,100% 100%,0 100%,0 50px);min-height:100%}
+        .pack-city{position:absolute;inset:0;z-index:-1;background:url("https://images.wallpapersden.com/image/download/cyberpunk-2077-yellow-background_bGpqbmqUmZqaraWkpJRqZmdlrWdrbWU.jpg") 8% 80%/165% auto no-repeat;mix-blend-mode:multiply;opacity:.72}
+        .pack-art-label{position:absolute;top:22px;left:68px;color:#161616;font:700 12px ui-monospace,monospace;letter-spacing:.11em}
+        #draw-dialog #pack-wrapper{width:clamp(220px,24vw,320px);height:auto;aspect-ratio:190/290;margin:38px auto 20px}
+        #draw-dialog .pack-emerging{inset:10.34% 10% auto;height:auto;aspect-ratio:480/672}
+        #draw-dialog #pack-grid{max-width:1280px;width:100%;gap:18px;grid-template-columns:repeat(6,minmax(0,1fr))}
+        #draw-dialog #pack-results{margin:16px 0 0}
+        #draw-dialog #pack-progress{font-size:15px}
+        #draw-dialog .pack-card-label{font-size:11px}
+        @media(max-width:760px){html.pack-view #draw-dialog{width:calc(100% - 32px);padding:16px 0 24px}#draw-dialog .draw-head{gap:14px;flex-wrap:wrap;margin-bottom:16px}#draw-dialog .draw-head h2{font-size:25px}#draw-dialog #pack-stage{grid-template-columns:1fr;min-height:0}.pack-art{grid-row:1;min-height:390px;clip-path:polygon(24px 0,100% 0,100% 100%,0 100%,0 24px)}.pack-art-label{top:15px;left:34px;font-size:10px}.pack-copy{grid-row:2;padding:28px 20px 30px}.pack-copy h3{font-size:36px;margin-bottom:20px}.pack-kicker{font-size:10px;margin-bottom:12px}#draw-dialog #pack-wrapper{width:210px;margin:38px auto 16px}#draw-dialog #pack-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}#draw-dialog .pack-card-label{font-size:10px}}
+        @media(max-width:360px){.pack-art{min-height:345px}#draw-dialog #pack-wrapper{width:185px}.pack-copy{padding:22px 15px}}
     </style>
 </head>
 
@@ -1558,8 +1585,8 @@
 (()=>{const root=document.querySelector('.hero-art');if(!root)return;const slides=[...root.querySelectorAll('[data-hero-slide]')],dots=[...root.querySelectorAll('[data-hero-dot]')],labels=["BETA COLLECTION","ICONIC SECRET","NIGHT CITY LEGENDS"];let active=0;function show(i){active=(i+slides.length)%slides.length;slides.forEach((s,j)=>s.hidden=j!==active);dots.forEach((d,j)=>d.setAttribute('aria-current',String(j===active)));root.querySelector('.hero-art-label span').textContent=' / '+labels[active];root.querySelector('[data-hero-count]').textContent=String(active+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');}root.querySelector('[data-hero-prev]').addEventListener('click',()=>show(active-1));root.querySelector('[data-hero-next]').addEventListener('click',()=>show(active+1));dots.forEach((d,i)=>d.addEventListener('click',()=>show(i)));let x=0;root.addEventListener('touchstart',e=>{x=e.changedTouches[0].clientX},{passive:true});root.addEventListener('touchend',e=>{let dx=e.changedTouches[0].clientX-x;if(Math.abs(dx)>50)show(active+(dx<0?1:-1))},{passive:true});})();
 </script>
 <section id="draw-dialog" aria-labelledby="draw-title">
-<div class="draw-head"><a href="./" id="draw-close" aria-label="返回首頁">← 返回首頁</a><h2 id="draw-title">開啟卡包 / PACK OPENING</h2></div>
-<div id="pack-stage"><div class="pack-editions"><button type="button" class="edition-btn active" data-pack-edition="beta" aria-pressed="true">BETA <span>●</span></button><button type="button" class="edition-btn" data-pack-edition="retail" aria-pressed="false">RETAIL <span>●</span></button></div><label class="pack-test-control">DEV TEST <select id="pack-test-mode"><option value="">正常抽卡</option><option value="Epic">Epic</option><option value="Secret">Secret</option><option value="Iconic">Iconic</option><option value="Iconic Secret">Iconic Secret</option></select></label><button id="pack-wrapper" type="button" aria-label="撕開卡包"><span class="pack-emerging" aria-hidden="true"><img src="https://beyondtcg.co.uk/cdn/shop/files/B098_back.webp?width=900" alt="" draggable="false"></span><span class="pack-top"><img alt="" draggable="false"></span><span class="pack-body"><img alt="" draggable="false"></span></button><p id="pack-instruction">點擊卡包，撕開包裝</p><p class="pack-config">7 COMMON / 3 UNCOMMON / 2 RARE+</p></div>
+<div class="draw-head"><a href="./" id="draw-close" aria-label="返回首頁">← 返回首頁</a><h2 id="draw-title">PACK OPENING <span> / 開啟卡包</span></h2></div>
+<div id="pack-stage"><div class="pack-copy"><p class="pack-kicker"><span class="hero-mark" aria-hidden="true"></span> WELCOME TO NIGHT CITY</p><h3>開啟卡包</h3><div class="pack-editions"><button type="button" class="edition-btn active" data-pack-edition="beta" aria-pressed="true">BETA <span>●</span></button><button type="button" class="edition-btn" data-pack-edition="retail" aria-pressed="false">RETAIL <span>●</span></button></div><label class="pack-test-control">DEV TEST <select id="pack-test-mode"><option value="">正常抽卡</option><option value="Epic">Epic</option><option value="Secret">Secret</option><option value="Iconic">Iconic</option><option value="Iconic Secret">Iconic Secret</option></select></label><p class="pack-config">7 COMMON / 3 UNCOMMON / 2 RARE+</p><p id="pack-instruction">點擊卡包，撕開包裝</p></div><div class="pack-art"><div class="pack-city" aria-hidden="true"></div><span class="pack-art-label">BOOSTER PACK / 12 CARDS</span><button id="pack-wrapper" type="button" aria-label="撕開卡包"><span class="pack-emerging" aria-hidden="true"><img src="https://beyondtcg.co.uk/cdn/shop/files/B098_back.webp?width=900" alt="" draggable="false"></span><span class="pack-top"><img alt="" draggable="false"></span><span class="pack-body"><img alt="" draggable="false"></span></button></div></div>
 <div id="pack-results" hidden><p id="pack-progress" aria-live="polite">0 / 12 已揭曉</p><div id="pack-grid"></div><div id="pack-summary" hidden aria-live="polite"></div><div class="pack-controls"><button type="button" id="pack-reveal-all">全部翻開 ↗</button><button type="button" id="draw-again">再開一包 ↗</button></div></div>
 <div id="pack-stats" class="pack-stats" aria-live="polite"></div><p class="draw-note">免費娛樂模擬。依公布的補充包配置與近似稀有度機率，個別卡牌機率及市場總價僅供參考。<a href="https://ripperdeck.gg/rarities" target="_blank" rel="noopener">機率資料</a></p></section>
 <script>
