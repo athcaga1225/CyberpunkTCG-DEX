@@ -1549,11 +1549,15 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
   #draw-dialog #pack-wrapper.v3-approach.torn .pack-top{transform-origin:94% 18%;animation:v3SealTear .76s cubic-bezier(.2,.7,.25,1) forwards}
   #draw-dialog #pack-wrapper.v3-approach.torn .v3-unpeeled{display:block;animation:v3Unpeeled .67s linear both}
   #draw-dialog #pack-wrapper.v3-approach.torn .pack-body{animation:v3ShellDrop .65s .55s cubic-bezier(.38,0,.75,1) both}
+  #draw-dialog #pack-wrapper.v3-mesh.torn .pack-top,#draw-dialog #pack-wrapper.v3-mesh.torn .v3-unpeeled{display:none}
+  #draw-dialog #pack-wrapper.v3-mesh.torn .pack-body{clip-path:polygon(0 18%,5% 18.2%,10% 17.7%,15% 18.3%,20% 17.8%,25% 18.2%,30% 17.7%,35% 18.2%,40% 17.8%,45% 18.3%,50% 17.7%,55% 18.2%,60% 17.8%,65% 18.3%,70% 17.7%,75% 18.2%,80% 17.8%,85% 18.3%,90% 17.7%,95% 18.2%,100% 18%,100% 100%,0 100%)}
+  #draw-dialog #pack-wrapper.v3-mesh.torn .v3-foil-canvas{display:block}
   #draw-dialog #pack-wrapper.v3-approach.torn .pack-emerging{animation:v3CardLift .8s .48s cubic-bezier(.18,.72,.25,1) both}
   #draw-dialog #pack-wrapper.v3-approach.torn::after{display:none}
   #draw-dialog .v3-skip:not([hidden]){display:block;position:fixed;bottom:max(18px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:10;background:#191b1e;color:#fff;border:1px solid #ffffff65;border-radius:20px;padding:8px 18px;font:600 12px var(--dex-font);touch-action:manipulation}
 }
 .v3-unpeeled{display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:3;pointer-events:none}
+.v3-foil-canvas{display:none;position:absolute;left:-50%;top:-45%;width:200%;height:90%;z-index:4;pointer-events:none}
 @keyframes v3PackApproach{0%{transform:none}100%{transform:translateY(var(--v3-drop,25vh))}}
 @keyframes v3Unpeeled{0%{clip-path:polygon(100% 0,0% 0,0% 18%,12% 17%,25% 19%,40% 17%,54% 19%,68% 17%,84% 19%,100% 18%)}25%{clip-path:polygon(100% 0,24% 0,24% 18%,33% 17%,43% 19%,54% 17%,65% 19%,76% 17%,88% 19%,100% 18%)}55%{clip-path:polygon(100% 0,58% 0,58% 18%,63% 17%,68% 19%,75% 17%,81% 19%,87% 17%,94% 19%,100% 18%)}100%{clip-path:polygon(100% 0,100% 0,100% 18%,100% 17%,100% 19%,100% 17%,100% 19%,100% 17%,100% 19%,100% 18%)}}
 @keyframes v3SealTear{0%{clip-path:polygon(1% 0,0% 0,0% 18%,0% 18%,1% 18%,1% 17%,1% 19%,1% 18%,1% 18%);transform:none}25%{clip-path:polygon(24% 0,0% 0,0% 18%,6% 17%,10% 19%,14% 17%,18% 19%,22% 17%,24% 18%);transform:translate(3px,-4px) rotate(5deg) skewY(3deg)}55%{clip-path:polygon(58% 0,0% 0,0% 18%,12% 17%,25% 19%,40% 17%,47% 19%,54% 17%,58% 18%);transform:translate(8px,-12px) rotate(13deg) skewY(6deg)}85%{clip-path:polygon(100% 0,0% 0,0% 18%,16% 17%,32% 19%,48% 17%,66% 19%,83% 17%,100% 18%);transform:translate(48px,-35px) rotate(23deg);opacity:1}100%{clip-path:polygon(100% 0,0% 0,0% 18%,16% 17%,32% 19%,48% 17%,66% 19%,83% 17%,100% 18%);transform:translate(160px,-90px) rotate(32deg);opacity:0}}
@@ -2049,10 +2053,42 @@ const hint=wrapper.querySelector('.pack-gesture-hint');hint.replaceChildren(docu
 picker.querySelector('.slider-pack-hint').replaceChildren();picker.querySelector('.slider-pack-hint').setAttribute('aria-hidden','true');tilt.setAttribute('aria-label','選擇卡包');
 wrapper.addEventListener('animationend',e=>{if(e.animationName==='packSealPull')wrapper.style.removeProperty('--tear-start')});
 const v3Unpeeled=document.createElement('img');v3Unpeeled.className='v3-unpeeled';v3Unpeeled.alt='';v3Unpeeled.setAttribute('aria-hidden','true');wrapper.append(v3Unpeeled);
+const v3Foil=document.createElement('canvas');v3Foil.className='v3-foil-canvas';v3Foil.setAttribute('aria-hidden','true');wrapper.append(v3Foil);
+let v3FoilFrame=0;
+function stopFoil(){cancelAnimationFrame(v3FoilFrame);v3FoilFrame=0;wrapper.classList.remove('v3-mesh')}
+function startFoil(){
+  const image=wrapper.querySelector('.pack-intact'),w=wrapper.clientWidth,h=wrapper.clientHeight,ctx=v3Foil.getContext('2d');
+  if(!ctx||!image.complete||!image.naturalWidth||!w||!h)return;
+  const dpr=Math.min(devicePixelRatio||1,2),cw=w*2,ch=h*.9,ox=w*.5,oy=h*.45;
+  v3Foil.width=Math.round(cw*dpr);v3Foil.height=Math.round(ch*dpr);
+  const fit=Math.min(w/image.naturalWidth,h/image.naturalHeight),iw=image.naturalWidth*fit,ih=image.naturalHeight*fit,ix=(w-iw)/2,iy=(h-ih)/2;
+  const seam=[18,18.2,17.7,18.3,17.8,18.2,17.7,18.2,17.8,18.3,17.7,18.2,17.8,18.3,17.7,18.2,17.8,18.3,17.7,18.2,18];
+  const edge=x=>{const u=Math.max(0,Math.min(20,x/w*20)),i=Math.min(19,Math.floor(u));return h*(seam[i]+(seam[i+1]-seam[i])*(u-i))/100};
+  const radius=w*.13,slices=48,start=performance.now();
+  wrapper.classList.add('v3-mesh');
+  function draw(now){
+    const elapsed=Math.max(0,now-start),p=Math.min(1,elapsed/620),front=w*(p*p*(3-2*p)),release=Math.max(0,Math.min(1,(elapsed-620)/210));
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cw,ch);ctx.translate(ox,oy);ctx.globalAlpha=1-release;
+    // The still-attached section never moves. Only the already-torn foil bends around the moving fold.
+    ctx.save();ctx.beginPath();ctx.moveTo(front,0);ctx.lineTo(w,0);ctx.lineTo(w,edge(w));for(let i=20;i>=0;i--){const x=w*i/20;if(x>front)ctx.lineTo(x,edge(x))}ctx.lineTo(front,edge(front));ctx.closePath();ctx.clip();ctx.drawImage(image,ix,iy,iw,ih);ctx.restore();
+    const bend=x=>{const distance=Math.max(0,front-x),angle=Math.min(2.45,distance/radius),tail=Math.max(0,distance-radius*2.45);return {x:front-radius*Math.sin(angle)+tail*.42+release*w*.65,y:-radius*(1-Math.cos(angle))-tail*.46-release*h*.16,angle}};
+    // Draw the curled strip back-to-front; each narrow mesh cell follows the curved foil surface.
+    for(let i=0;i<slices;i++){
+      const a=front*i/slices,b=front*(i+1)/slices;if(b-a<.01)continue;const A=bend(a),B=bend(b),dx=(B.x-A.x)/(b-a),dy=(B.y-A.y)/(b-a);
+      if(Math.abs(dx)<.015)continue;
+      ctx.save();ctx.transform(dx,dy,0,1,A.x-dx*a,A.y-dy*a);ctx.beginPath();ctx.moveTo(a,0);ctx.lineTo(b+.12,0);ctx.lineTo(b+.12,edge(b));ctx.lineTo(a,edge(a));ctx.closePath();ctx.clip();ctx.drawImage(image,ix,iy,iw,ih);
+      const angle=(A.angle+B.angle)/2,shine=Math.exp(-Math.pow((angle-1.35)/.42,2));
+      ctx.globalCompositeOperation='source-atop';ctx.fillStyle=angle>Math.PI/2?'rgba(222,225,230,'+(.35+.32*shine)+')':'rgba(255,255,255,'+(.08+.32*shine)+')';ctx.fillRect(Math.max(a,ix),Math.max(0,iy),Math.max(0,Math.min(b+.12,ix+iw)-Math.max(a,ix)),Math.max(edge(a),edge(b)));ctx.restore();
+    }
+    ctx.globalAlpha=1;
+    if(elapsed<830)v3FoilFrame=requestAnimationFrame(draw);else{ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,v3Foil.width,v3Foil.height);v3FoilFrame=0}
+  }
+  draw(start);
+}
 const v3Skip=document.createElement('button');v3Skip.type='button';v3Skip.className='v3-skip';v3Skip.textContent='跳過動畫 →';v3Skip.hidden=true;dialog.append(v3Skip);
-function finishOpening(){clearTimeout(timer);v3Skip.hidden=true;wrapper.classList.remove('v3-approach','v3-ready');hint.firstChild.textContent='向右滑動或點擊卡包開啟';backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');display()}
+function finishOpening(){clearTimeout(timer);stopFoil();v3Skip.hidden=true;wrapper.classList.remove('v3-approach','v3-ready');hint.firstChild.textContent='向右滑動或點擊卡包開啟';backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');display()}
 v3Skip.onclick=()=>{if(!v3Skip.hidden)finishOpening()};
-function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,mobile=matchMedia('(max-width:760px)').matches&&!reduced;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(mobile){const r=wrapper.getBoundingClientRect(),s=stage.getBoundingClientRect(),drop=Math.max(0,s.bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];wrapper.classList.add('v3-approach');v3Skip.hidden=false;timer=setTimeout(()=>{wrapper.classList.add('torn');timer=setTimeout(finishOpening,1320)},520)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,reduced?0:1180)}}
+function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,mobile=matchMedia('(max-width:760px)').matches&&!reduced;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(mobile){const r=wrapper.getBoundingClientRect(),s=stage.getBoundingClientRect(),drop=Math.max(0,s.bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];wrapper.classList.add('v3-approach');v3Skip.hidden=false;timer=setTimeout(()=>{startFoil();wrapper.classList.add('torn');timer=setTimeout(finishOpening,1320)},520)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,reduced?0:1180)}}
 wrapper.onclick=openBooster;
 stage.querySelectorAll('[data-pack-edition]').forEach(b=>b.onclick=()=>{if(!wrapper.disabled)selectEdition(b.dataset.packEdition)});if(document.documentElement.classList.contains('pack-view')){document.title='CYBERDEX — 開啟卡包';reset();selectEdition(activeEdition)};
 document.getElementById('draw-again').onclick=()=>{const previousTest=testRarity;let next;try{next=makePack()}catch(e){return}reset();testRarity=previousTest;pack=next;wrapper.disabled=true;testSelect.disabled=true;display()};
