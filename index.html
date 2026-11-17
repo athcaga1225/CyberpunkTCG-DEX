@@ -1557,18 +1557,18 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
   #draw-dialog #pack-wrapper.v3-approach.torn .v3-shell{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;filter:drop-shadow(0 0 9px #ffffff45) drop-shadow(0 0 20px #ffffff13) drop-shadow(0 7px 10px #0006)}
   html.pack-opening #draw-dialog.v3-opening-active #pack-stage.pack-selected{overflow:visible}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper{transform:none;transform-origin:center;transition:none}
-  html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach.torn{animation:v3PackApproach .52s .83s cubic-bezier(.35,.02,.19,1) both}
+  html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach.torn{animation:v3PackApproach .52s .54s cubic-bezier(.35,.02,.19,1) both}
   #draw-dialog #pack-wrapper.v3-approach:not(.torn) .pack-gesture-hint{opacity:0}
   #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-intact{display:block}
   #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-top,#draw-dialog #pack-wrapper.dragging:not(.torn) .pack-body{display:none}
-  #draw-dialog #pack-wrapper.v3-approach.torn .pack-top{transform-origin:94% 18%;animation:v3SealTear .76s cubic-bezier(.2,.7,.25,1) forwards}
-  #draw-dialog #pack-wrapper.v3-approach.torn .v3-unpeeled{display:block;animation:v3Unpeeled .67s linear both}
-  #draw-dialog #pack-wrapper.v3-approach.torn .pack-body{animation:v3ShellDrop .65s 1.05s cubic-bezier(.38,0,.75,1) both}
+  #draw-dialog #pack-wrapper.v3-approach.torn .pack-top{transform-origin:94% 18%;animation:v3SealTear .64s cubic-bezier(.2,.7,.25,1) forwards}
+  #draw-dialog #pack-wrapper.v3-approach.torn .v3-unpeeled{display:block;animation:v3Unpeeled .52s linear both}
+  #draw-dialog #pack-wrapper.v3-approach.torn .pack-body{animation:v3ShellDrop .65s .76s cubic-bezier(.38,0,.75,1) both}
   #draw-dialog #pack-wrapper.v3-mesh.torn .pack-top,#draw-dialog #pack-wrapper.v3-mesh.torn .v3-unpeeled{display:none}
   #draw-dialog #pack-wrapper.v3-mesh.torn .pack-body{clip-path:polygon(0 18%,5% 18.2%,10% 17.7%,15% 18.3%,20% 17.8%,25% 18.2%,30% 17.7%,35% 18.2%,40% 17.8%,45% 18.3%,50% 17.7%,55% 18.2%,60% 17.8%,65% 18.3%,70% 17.7%,75% 18.2%,80% 17.8%,85% 18.3%,90% 17.7%,95% 18.2%,100% 18%,100% 100%,0 100%)}
   #draw-dialog #pack-wrapper.v3-mesh.torn .v3-foil-canvas{display:block}
   #draw-dialog #pack-wrapper.v3-approach.torn .pack-emerging{display:none}
-  #draw-dialog #pack-wrapper.v3-approach.torn .v3-stack{display:block;position:absolute;inset:10.34% 10% auto;aspect-ratio:480/672;z-index:0;pointer-events:none;animation:v3CardLift .7s .95s cubic-bezier(.18,.72,.25,1) both}
+  #draw-dialog #pack-wrapper.v3-approach.torn .v3-stack{display:block;position:absolute;inset:10.34% 10% auto;aspect-ratio:480/672;z-index:0;pointer-events:none;animation:v3CardLift .7s .66s cubic-bezier(.18,.72,.25,1) both}
   .v3-stack>span{position:absolute;inset:0;border-radius:8px;overflow:hidden;background:#fcee09;box-shadow:0 3px 8px #0008}
   .v3-stack>span>img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.42)}
   #draw-dialog #pack-wrapper.v3-approach.torn::after{display:none}
@@ -2117,7 +2117,7 @@ function startFoil(){
   const radius=w*.13,slices=64,start=performance.now();
   wrapper.classList.add('v3-mesh');
   function draw(now){
-    const elapsed=Math.max(0,now-start),p=Math.min(1,elapsed/620),front=w*(p*p*(3-2*p)),release=Math.max(0,Math.min(1,(elapsed-620)/210));
+    const elapsed=Math.max(0,now-start),p=Math.min(1,elapsed/500),front=w*(p*p*(3-2*p)),release=Math.max(0,Math.min(1,(elapsed-500)/140));
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cw,ch);ctx.translate(ox,oy);ctx.globalAlpha=1-release;
     // The still-attached section never moves. Only the already-torn foil bends around the moving fold.
     ctx.save();ctx.beginPath();ctx.moveTo(front,0);ctx.lineTo(w,0);ctx.lineTo(w,edge(w));for(let i=20;i>=0;i--){const x=w*i/20;if(x>front)ctx.lineTo(x,edge(x))}ctx.lineTo(front,edge(front));ctx.closePath();ctx.clip();ctx.drawImage(image,ix,iy,iw,ih);ctx.restore();
@@ -2130,12 +2130,12 @@ function startFoil(){
       ctx.save();ctx.transform(dx,dy,0,1,A.x-dx*a,A.y-dy*a);ctx.beginPath();ctx.moveTo(l,0);ctx.lineTo(r,0);ctx.lineTo(r,edge(r));ctx.lineTo(l,edge(l));ctx.closePath();ctx.clip();ctx.drawImage(image,ix,iy,iw,ih);ctx.restore();
     }
     ctx.globalAlpha=1;
-    if(elapsed<830)v3FoilFrame=requestAnimationFrame(draw);else{ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,v3Foil.width,v3Foil.height);v3FoilFrame=0}
+    if(elapsed<640)v3FoilFrame=requestAnimationFrame(draw);else{ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,v3Foil.width,v3Foil.height);v3FoilFrame=0}
   }
   draw(start);
 }
 function finishOpening(){clearTimeout(timer);stopFoil();dialog.classList.remove('v3-opening-active');wrapper.classList.remove('v3-approach','v3-ready');backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');display()}
-function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(!reduced){const r=wrapper.getBoundingClientRect(),bottom=document.body.getBoundingClientRect().bottom,drop=Math.max(0,bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];dialog.classList.add('v3-opening-active');wrapper.classList.add('v3-approach');startFoil();wrapper.classList.add('torn');timer=setTimeout(finishOpening,1750)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,0)}}
+function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(!reduced){const r=wrapper.getBoundingClientRect(),bottom=document.body.getBoundingClientRect().bottom,drop=Math.max(0,bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];dialog.classList.add('v3-opening-active');wrapper.classList.add('v3-approach');startFoil();wrapper.classList.add('torn');timer=setTimeout(finishOpening,1460)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,0)}}
 wrapper.onclick=openBooster;
 stage.querySelectorAll('[data-pack-edition]').forEach(b=>b.onclick=()=>{if(!wrapper.disabled)selectEdition(b.dataset.packEdition)});if(document.documentElement.classList.contains('pack-view')){document.title='CYBERDEX — 開啟卡包';reset();selectEdition(activeEdition)};
 document.getElementById('draw-again').onclick=()=>{const previousTest=testRarity;let next;try{next=makePack()}catch(e){return}reset();testRarity=previousTest;pack=next;wrapper.disabled=true;testSelect.disabled=true;display()};
