@@ -9,7 +9,7 @@
     <link rel="icon" href="/favicon.ico?v=4" sizes="any">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4">
-    <title>CYBERDEX — 卡牌價格追蹤</title>
+    <title>CyberDEX — 卡牌價格追蹤</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800;900&amp;display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -833,7 +833,7 @@
         .card-match-chevron{color:#f8504a;font-size:18px;display:flex;align-items:center;justify-content:center;align-self:center;flex:0 0 20px;line-height:1}
         @media(max-width:430px){.card-match-item{gap:9px;padding:10px}.card-match-meta{width:46px;flex-basis:46px}.card-match-name{font-size:12px}}
     
-        /* CYBERDEX yellow launch identity — app behavior unchanged. */
+        /* CyberDEX yellow launch identity — app behavior unchanged. */
         :root{--dex-yellow:#fcee09;--dex-black:#181a1e;--dex-border:#3a3d40;background:var(--dex-black);color:#e8e9e8}
         html{background:var(--dex-black);background-image:none}
         body::before,body::after{display:none}
@@ -1469,7 +1469,7 @@ html.pack-view{overflow-x:clip}
 #draw-dialog .pack-card.revealed{transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .28s ease-out;transform-origin:center}
 #draw-dialog .pack-card.revealed.is-tilting{transition:transform .14s ease-out}
 @media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed,#draw-dialog .pack-card.revealed.is-tilting{transform:none;transition:none}}
-/* Shared CYBERDEX typography and clear action hierarchy. Display logo remains custom. */
+/* Shared CyberDEX typography and clear action hierarchy. Display logo remains custom. */
 :root{--dex-font:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;--dex-text:#f4f4f4;--dex-copy:#c2c4c5;--dex-muted:#aeb4b6;--dex-size-caption:12px;--dex-size-body:14px;--dex-size-section:16px}
 body,button,input,select{font-family:var(--dex-font)}
 .hero-copy .intro,#draw-dialog .slider-description{font-family:var(--dex-font);font-size:var(--dex-size-body);font-weight:400;line-height:1.8;color:var(--dex-copy)}
@@ -1603,14 +1603,14 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 
 <body>
     <header>
-        <a class="brand" href="./" aria-label="CYBERDEX 首頁">CYBER<em>DEX.</em></a>
+        <a class="brand" href="./" aria-label="CyberDEX 首頁">Cyber<em>DEX.</em></a>
         <div class="label">Cyberpunk TCG / MARKET TRACKER</div>
     </header>
-    <section class="dex-hero" aria-label="CYBERDEX 卡牌價格追蹤">
+    <section class="dex-hero" aria-label="CyberDEX 卡牌價格追蹤">
         <div class="hero-inner">
             <div class="hero-copy">
                 <div class="hero-kicker"><span class="hero-mark" aria-hidden="true"></span> NIGHT CITY / MARKET TRACKER</div>
-                <h1>CYBER<span>DEX</span><span class="hero-period">.</span></h1>
+                <h1>Cyber<span>DEX</span><span class="hero-period">.</span></h1>
                 <p class="hero-subtitle">卡牌價格追蹤</p>
                 <p class="intro">掌握夜城卡牌市場行情，查詢 Beta 與 Retail 版本的市場參考價及價格走勢。</p>
                 
@@ -1698,7 +1698,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
             <div class="links"><a id="tcg" target="_blank" rel="noopener noreferrer">TCGplayer 查價</a><a id="cataloglink"
                     target="_blank" rel="noopener noreferrer">查看 Beta 卡片圖鑑</a></div>
         </section>
-        <footer>CYBERDEX 是非官方收藏工具。與 Cyberpunk TCG、TCGplayer 無關；卡圖版權歸原權利人所有。價格不能作為保證成交報價。</footer>
+        <footer>CyberDEX 是非官方收藏工具。與 Cyberpunk TCG、TCGplayer 無關；卡圖版權歸原權利人所有。價格不能作為保證成交報價。</footer>
     </main>
     <script>
         'use strict';
@@ -2139,7 +2139,7 @@ function startFoil(){
 function finishOpening(){clearTimeout(timer);stopFoil();dialog.classList.remove('v3-opening-active');wrapper.classList.remove('v3-approach','v3-ready');backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');display()}
 function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(!reduced){const r=wrapper.getBoundingClientRect(),bottom=document.body.getBoundingClientRect().bottom,drop=Math.max(0,bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];dialog.classList.add('v3-opening-active');wrapper.classList.add('v3-approach');startFoil();wrapper.classList.add('torn');timer=setTimeout(finishOpening,1460)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,0)}}
 wrapper.onclick=openBooster;
-stage.querySelectorAll('[data-pack-edition]').forEach(b=>b.onclick=()=>{if(!wrapper.disabled)selectEdition(b.dataset.packEdition)});if(document.documentElement.classList.contains('pack-view')){document.title='CYBERDEX — 開啟卡包';reset();selectEdition(activeEdition)};
+stage.querySelectorAll('[data-pack-edition]').forEach(b=>b.onclick=()=>{if(!wrapper.disabled)selectEdition(b.dataset.packEdition)});if(document.documentElement.classList.contains('pack-view')){document.title='CyberDEX — 開啟卡包';reset();selectEdition(activeEdition)};
 document.getElementById('draw-again').onclick=()=>{const previousTest=testRarity;let next;try{next=makePack()}catch(e){return}reset();testRarity=previousTest;pack=next;wrapper.disabled=true;testSelect.disabled=true;display()};
 const revealAllButton=document.getElementById('pack-reveal-all');let lastRevealTouch=-Infinity,revealTouch=null;
 function revealAll(){const cards=[...grid.querySelectorAll('.pack-card')];if(cards.length!==12)return;const pending=cards.filter(b=>!b.classList.contains('revealed'));if(!pending.length){reset();backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');window.scrollTo({top:0,behavior:'instant'});return}const finishNow=revealingAll||matchMedia('(prefers-reduced-motion: reduce)').matches;cancelReveal();if(finishNow){pending.forEach(b=>reveal(b));return}revealingAll=true;revealAllButton.textContent='翻開中…';const run=revealRun;reveal(pending[0]);if(run!==revealRun)return;pending.slice(1).forEach((b,i)=>{revealTimers.push(setTimeout(()=>{if(run===revealRun&&b.isConnected)reveal(b)},(i+1)*100))})}
