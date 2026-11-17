@@ -1406,6 +1406,21 @@ header a.brand:focus-visible{outline:2px solid #101010;outline-offset:4px}
 #draw-dialog .pack-controls button::before{content:"";position:absolute;inset:0;background:#fcee09;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%);z-index:-1;pointer-events:none}
 @media(max-width:760px){#draw-dialog .slider-pack-hit{width:clamp(220px,65vw,285px)}#draw-dialog .slider-art{min-height:calc(clamp(220px,65vw,285px)*1.53 + 36px)}#draw-dialog #pack-stage.pack-selected #pack-wrapper{width:clamp(245px,72vw,310px)}#draw-dialog #pack-results{padding-bottom:calc(80px + env(safe-area-inset-bottom,0px))}#draw-dialog .pack-controls{margin-top:26px;min-height:52px}html.pack-view #draw-dialog{padding-bottom:calc(36px + env(safe-area-inset-bottom,0px))}}
 @media(prefers-reduced-motion:reduce){#draw-dialog .slider-pack-hit .slider-pack-hint,#draw-dialog .slider-pack-hit .slider-pack-hint::after{animation:none}#draw-dialog .pack-card .hero-face{transition:none}}
+/* Continuous 3D card turn with a slight lift and settle; captions follow the face. */
+#draw-dialog .pack-card .hero-flip{transform:rotateY(180deg);-webkit-transform:rotateY(180deg);transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition:none}
+#draw-dialog .pack-card.revealed .hero-flip{transform:rotateY(0);-webkit-transform:rotateY(0);animation:packCardTurn .8s cubic-bezier(.35,.02,.3,1) both;transform-style:preserve-3d;-webkit-transform-style:preserve-3d}
+#draw-dialog .pack-card .hero-face{transition:none;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+#draw-dialog .pack-card .hero-front,#draw-dialog .pack-card.revealed .hero-front{transform:rotateY(0);-webkit-transform:rotateY(0)}
+#draw-dialog .pack-card .hero-back,#draw-dialog .pack-card.revealed .hero-back{transform:rotateY(180deg);-webkit-transform:rotateY(180deg);visibility:visible}
+@keyframes packCardTurn{0%{transform:translateY(0) rotateY(180deg) scale(1)}35%{transform:translateY(-9px) rotateY(108deg) scale(1.035)}72%{transform:translateY(-3px) rotateY(-7deg) scale(1.025)}100%{transform:translateY(0) rotateY(0) scale(1)}}
+#draw-dialog .pack-card.revealed+.pack-card-label{animation:packLabelIn .26s .42s ease-out both}
+@keyframes packLabelIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+#draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"]):not([data-rarity="Epic"])::after{animation-delay:.42s}
+#draw-dialog .slider-pack-hit .slider-pack-hint{background:transparent;box-shadow:none}
+#draw-dialog #pack-stage.pack-selected{min-height:calc(100svh - 150px);box-sizing:border-box;justify-content:center;padding:44px 0;gap:0}
+#draw-dialog #pack-stage.pack-selected #pack-wrapper{margin:0 auto}
+#draw-dialog #pack-stage.pack-selected .pack-copy:has(.pack-test-control[hidden]):has(#pack-instruction:empty){display:none}
+@media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed .hero-flip,#draw-dialog .pack-card.revealed+.pack-card-label{animation:none!important}}
 </style>
 </head>
 
