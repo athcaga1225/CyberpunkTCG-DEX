@@ -1161,6 +1161,9 @@
         #draw-dialog #pack-results{width:100%;box-sizing:border-box;min-height:clamp(460px,63vh,660px);margin:0;padding:28px clamp(20px,3vw,44px);background:#101214}
         #draw-dialog #pack-grid{max-width:none;width:100%;margin:0 auto}
         @media(max-width:760px){#draw-dialog #pack-results{min-height:0;padding:20px 14px}}
+        /* Keep the Iconic Secret aura after the one-shot reveal sweep. */
+        #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"]{filter:none}
+        #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"] .hero-front{box-shadow:0 0 10px 2px #fff0a8bf,-5px -3px 18px 3px #ed64d99c,5px 4px 22px 4px #55dfff9c}
     </style>
 </head>
 
