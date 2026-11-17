@@ -1217,6 +1217,10 @@
 #draw-dialog .pack-art{width:100%;justify-self:stretch;min-height:0;overflow:visible}
 #draw-dialog #pack-wrapper{width:clamp(220px,21vw,280px);margin:24px 0 12px}
 }
+/* Angular brand stripe behind the booster, not a separate panel. */
+#draw-dialog .pack-art::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:#fcee09;clip-path:polygon(0 76%,100% 9%,100% 34%,73% 52%,69% 52%,0 100%);}
+@media(min-width:761px){#draw-dialog .pack-art{min-height:clamp(420px,53vh,530px)}#draw-dialog .pack-art::before{inset:0 -8%;clip-path:polygon(0 77%,100% 8%,100% 32%,74% 50%,70% 50%,0 98%)}}
+@media(max-width:760px){#draw-dialog .pack-art::before{inset:8px 0 0;clip-path:polygon(0 75%,100% 7%,100% 33%,74% 51%,70% 51%,0 99%)}}
 </style>
 </head>
 
