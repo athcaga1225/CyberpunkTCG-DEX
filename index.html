@@ -1265,6 +1265,8 @@
 @keyframes pickerIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
 @media(max-width:760px){#draw-dialog .pack-picker{padding:20px 0}#draw-dialog .picker-grid{gap:14px}#draw-dialog .picker-option{padding-top:16px}#draw-dialog .picker-option img{width:88%}#draw-dialog #pack-stage.pack-selected #pack-wrapper{width:210px}#draw-dialog #pack-stage{min-height:0}#draw-dialog #pack-stage.pack-selected{min-height:390px}}
 @media(prefers-reduced-motion:reduce){#draw-dialog .pack-picker,#draw-dialog #pack-stage.pack-selected .pack-art{animation:none}#draw-dialog .picker-option img{transition:none}}
+/* Desktop reveal grid breathing room */
+@media(min-width:761px){#draw-dialog #pack-grid{max-width:min(1060px,86%);gap:20px}}
 </style>
 </head>
 
