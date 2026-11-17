@@ -1471,6 +1471,10 @@ body,button,input,select{font-family:var(--dex-font)}
 @media(max-width:900px){.hero-copy h1,#draw-dialog .slider-info h3{font-size:clamp(46px,7vw,65px)}}
 @media(max-width:680px){.hero-copy h1,#draw-dialog .slider-info h3{font-size:clamp(56px,13vw,82px)}}
 @media(max-width:380px){.hero-copy h1,#draw-dialog .slider-info h3{font-size:53px}}
+/* Reuse the home hero city artwork, softly blended into the yellow panel. */
+:root{--dex-city-art:url("https://images.wallpapersden.com/image/download/cyberpunk-2077-yellow-background_bGpqbmqUmZqaraWkpJRqZmdlrWdrbWU.jpg")}
+@media(min-width:761px){html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected))::before{background-color:var(--dex-yellow);background-image:linear-gradient(#fcee09d1,#fcee09d1),var(--dex-city-art);background-size:100% 100%,max(60vw,820px) auto;background-position:center,right bottom;background-repeat:no-repeat;background-blend-mode:normal,multiply}}
+@media(max-width:760px){#draw-dialog .slider-visual::before{background-color:var(--dex-yellow);background-image:linear-gradient(#fcee09d1,#fcee09d1),var(--dex-city-art);background-size:100% 100%,cover;background-position:center,bottom;background-repeat:no-repeat;background-blend-mode:normal,multiply}}
 #draw-dialog .slider-edition{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700}
 .collection-heading,#result .section-heading,#history-panel .history-head h2{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700;color:var(--dex-yellow)}
 .hero-action,.collection-search .search button.primary,#draw-dialog .pack-controls button,#draw-dialog .draw-head .picker-back{font-family:var(--dex-font);font-size:var(--dex-size-body);font-weight:700}
