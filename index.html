@@ -1535,6 +1535,10 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 @media(min-width:761px){#draw-dialog .slider-nav{padding-left:calc(2 * clamp(24px,3vw,48px))}}
 @media(max-width:760px){#draw-dialog .slider-art{padding-top:24px;min-height:calc(clamp(220px,65vw,285px)*1.53 + 60px)}#draw-dialog .slider-art-index{display:block;top:3px;left:0;right:auto;color:#131313;font:700 9px ui-monospace,monospace;letter-spacing:.12em;z-index:4;pointer-events:none}}
 @media(max-width:680px){.hero-card{width:clamp(88px,28vw,160px)}}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+  .hero-deck .hero-card .hero-flip{translate:0 0;transition:translate .28s cubic-bezier(.2,.72,.25,1);pointer-events:none}
+  .hero-deck .hero-card:hover .hero-flip{translate:0 -14px}
+}
 /* Fade the existing picker before changing layout; never recreate its yellow background. */
 html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;animation:packBackgroundOut .3s ease-out both}
 @media(min-width:761px){html.pack-view #draw-dialog.picker-leaving:has(#pack-stage:not([hidden]):not(.pack-selected))::before{animation:packBackgroundOut .3s ease-out both}}
