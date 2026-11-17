@@ -1418,7 +1418,7 @@ header a.brand:focus-visible{outline:2px solid #101010;outline-offset:4px}
 #draw-dialog .pack-card.revealed+.pack-card-label{animation:packLabelIn .26s .13s ease-out both}
 @keyframes packLabelIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 #draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"]):not([data-rarity="Epic"])::after{animation-delay:.13s}
-#draw-dialog .slider-pack-hit .slider-pack-hint{top:0;left:50%;width:auto;height:auto;display:block;transform:translate(-50%,calc(-100% - 28px));padding:0;border:0;border-radius:0;background:transparent;color:#101214;box-shadow:none;animation:none;opacity:1;font:700 13px var(--dex-font);letter-spacing:.04em;white-space:nowrap}
+#draw-dialog .slider-pack-hit .slider-pack-hint{top:50%;left:50%;width:auto;height:auto;display:block;transform:translate(-50%,-50%);padding:0;border:0;border-radius:0;background:transparent;color:#fff;box-shadow:none;text-shadow:0 1px 5px #000,0 0 12px #000b;animation:none;opacity:1;font:700 13px var(--dex-font);letter-spacing:.04em;white-space:nowrap}
 #draw-dialog .slider-pack-hit .slider-pack-hint::before,#draw-dialog .slider-pack-hit .slider-pack-hint::after{display:none;content:none}
 #draw-dialog #pack-stage.pack-selected{min-height:calc(100svh - 150px);box-sizing:border-box;justify-content:center;padding:44px 0;gap:0}
 #draw-dialog #pack-stage.pack-selected #pack-wrapper{margin:0 auto}
@@ -1533,7 +1533,7 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 @media(hover:hover) and (pointer:fine){.hero-slider-controls button:hover,#draw-dialog .slider-nav button:hover{opacity:.55}}
 .hero-slider-controls button:active,#draw-dialog .slider-nav button:active{opacity:.55}
 @media(min-width:761px){#draw-dialog .slider-nav{padding-left:calc(2 * clamp(24px,3vw,48px))}}
-@media(max-width:760px){#draw-dialog .slider-art{padding-top:45px;min-height:calc(clamp(220px,65vw,285px)*1.53 + 81px)}#draw-dialog .slider-art-index{display:block;top:3px;left:0;right:auto;color:#131313;font:700 9px ui-monospace,monospace;letter-spacing:.12em;z-index:4;pointer-events:none}}
+@media(max-width:760px){#draw-dialog .slider-art{padding-top:24px;min-height:calc(clamp(220px,65vw,285px)*1.53 + 60px)}#draw-dialog .slider-art-index{display:block;top:3px;left:0;right:auto;color:#131313;font:700 9px ui-monospace,monospace;letter-spacing:.12em;z-index:4;pointer-events:none}}
 @media(max-width:680px){.hero-card{width:clamp(88px,28vw,160px)}}
 @media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
   .hero-deck .hero-card .hero-flip{translate:0 0;transition:translate .28s cubic-bezier(.2,.72,.25,1);pointer-events:none}
