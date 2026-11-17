@@ -1096,7 +1096,7 @@
         #draw-dialog .pack-card.revealed[data-rarity="Secret"]{--hit:#f6a1ff;--hit-opacity:.92;--hit-duration:1.15s}
         #draw-dialog .pack-card.revealed[data-rarity^="Iconic"]{--hit:#ffe65c;--hit-opacity:.48;--hit-duration:.85s}
         #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"]{--hit:#fff;--hit-opacity:.85;--hit-duration:1.35s}
-        #draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"]):not([data-rarity="Epic"])::after{content:"";position:absolute;inset:0;border-radius:8px;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 18%,var(--hit,#fcee09) 49%,transparent 80%);background-size:250% 100%;mix-blend-mode:screen;animation:packRaritySweep var(--hit-duration,.6s) .26s ease-out both}
+        #draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"]):not([data-rarity="Epic"])::after{content:"";position:absolute;inset:0;border-radius:2.5% / 1.8%;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 18%,var(--hit,#fcee09) 49%,transparent 80%);background-size:250% 100%;mix-blend-mode:screen;animation:packRaritySweep var(--hit-duration,.6s) .26s ease-out both}
         #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"]::after{background-image:linear-gradient(115deg,transparent 12%,#ff4ad5 35%,#fff7a6 48%,#5deaff 58%,transparent 83%)}
         @keyframes packRaritySweep{0%{opacity:0;background-position:100% 0}25%{opacity:var(--hit-opacity,.4)}100%{opacity:0;background-position:0 0}}
         @media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed::after{animation:none!important;opacity:0}}
@@ -1549,7 +1549,8 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;animation:packBackgroundOut .3s ease-out both}
 @media(min-width:761px){html.pack-view #draw-dialog.picker-leaving:has(#pack-stage:not([hidden]):not(.pack-selected))::before{animation:packBackgroundOut .3s ease-out both}}
 @keyframes packBackgroundOut{from{opacity:1}to{opacity:0}}
-#pack-zoom-image{border-radius:4.2% / 3%;clip-path:inset(0 round 4.2% / 3%)}
+#pack-zoom-image{border-radius:2.5% / 1.8%;clip-path:inset(0 round 2.5% / 1.8%)}
+#draw-dialog .pack-card .hero-face,#draw-dialog .pack-card.revealed::after{border-radius:2.5% / 1.8%}
 @media(max-width:760px){#draw-dialog #pack-grid{row-gap:4px}#draw-dialog .pack-card-label{box-sizing:content-box;height:19.2px;min-height:19.2px;padding:2px 0;white-space:nowrap;overflow-wrap:normal;line-height:19.2px}#draw-dialog .pack-card[data-rarity^="Iconic"]+.pack-card-label{font-size:clamp(8px,2.5vw,10px)}}
 /* V3 shared cinematic opening: physical tear, then drop. */
 #draw-dialog .v3-stack{display:none}
