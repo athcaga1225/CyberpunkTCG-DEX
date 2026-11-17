@@ -1542,7 +1542,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 @media(max-width:760px) and (prefers-reduced-motion:no-preference){
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper{transform:none;transform-origin:center;transition:none}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach{animation:v3PackApproach .52s cubic-bezier(.35,.02,.19,1) both}
-  html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach.torn{transform:translateY(14vh) scale(1.42);animation:none}
+  html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach.torn{transform:translateY(4vh) scale(1.42);animation:none}
   #draw-dialog #pack-wrapper.v3-approach:not(.torn) .pack-gesture-hint{opacity:0}
   #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-intact{display:block}
   #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-top,#draw-dialog #pack-wrapper.dragging:not(.torn) .pack-body{display:none}
@@ -1554,10 +1554,10 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
   #draw-dialog .v3-skip:not([hidden]){display:block;position:fixed;bottom:max(18px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:10;background:#191b1e;color:#fff;border:1px solid #ffffff65;border-radius:20px;padding:8px 18px;font:600 12px var(--dex-font);touch-action:manipulation}
 }
 .v3-unpeeled{display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:3;pointer-events:none}
-@keyframes v3PackApproach{0%{transform:none}25%{transform:translateY(-2vh) scale(1.02)}100%{transform:translateY(14vh) scale(1.42)}}
+@keyframes v3PackApproach{0%{transform:none}25%{transform:translateY(-2vh) scale(1.02)}100%{transform:translateY(4vh) scale(1.42)}}
 @keyframes v3Unpeeled{0%{clip-path:polygon(0 0,100% 0,100% 18%,88% 17%,75% 19%,60% 17%,46% 19%,32% 17%,16% 19%,0 18%)}25%{clip-path:polygon(0 0,76% 0,76% 18%,67% 17%,57% 19%,46% 17%,35% 19%,24% 17%,12% 19%,0 18%)}55%{clip-path:polygon(0 0,42% 0,42% 18%,37% 17%,32% 19%,25% 17%,19% 19%,13% 17%,6% 19%,0 18%)}100%{clip-path:polygon(0 0,0 0,0 18%,0 17%,0 19%,0 17%,0 19%,0 17%,0 19%,0 18%)}}
 @keyframes v3SealTear{0%{clip-path:polygon(99% 0,100% 0,100% 18%,100% 18%,99% 18%,99% 17%,99% 19%,99% 18%,99% 18%);transform:none}25%{clip-path:polygon(76% 0,100% 0,100% 18%,94% 17%,90% 19%,86% 17%,82% 19%,78% 17%,76% 18%);transform:translate(3px,-4px) rotate(-5deg) skewY(-3deg)}55%{clip-path:polygon(42% 0,100% 0,100% 18%,88% 17%,75% 19%,60% 17%,53% 19%,46% 17%,42% 18%);transform:translate(8px,-12px) rotate(-13deg) skewY(-6deg)}85%{clip-path:polygon(0 0,100% 0,100% 18%,84% 17%,68% 19%,52% 17%,34% 19%,17% 17%,0 18%);transform:translate(48px,-35px) rotate(-23deg);opacity:1}100%{clip-path:polygon(0 0,100% 0,100% 18%,84% 17%,68% 19%,52% 17%,34% 19%,17% 17%,0 18%);transform:translate(160px,-90px) rotate(-32deg);opacity:0}}
-@keyframes v3ShellDrop{0%,15%{transform:translateY(0);opacity:1}100%{transform:translateY(155px) rotate(-5deg);opacity:0}}
+@keyframes v3ShellDrop{0%,15%{transform:translateY(0) scale(1);opacity:1}60%{transform:translateY(95px) scale(.62);opacity:1}100%{transform:translateY(175px) scale(.18) rotate(-5deg);opacity:0}}
 @keyframes v3CardLift{0%{opacity:0;transform:translateY(12%) scale(.94)}15%{opacity:1}100%{opacity:1;transform:translateY(-44%) scale(.78)}}
 </style>
 </head>
