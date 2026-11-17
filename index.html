@@ -1066,6 +1066,17 @@
         @media(max-width:600px){#pack-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.pack-card-label{font-size:10px}.pack-controls{position:sticky;bottom:0;background:#14171a;padding:10px 0}}
         @media(prefers-reduced-motion:reduce){.pack-card.revealed{animation:none!important}}
     .pack-missing{display:grid;height:100%;place-content:center;padding:8px;box-sizing:border-box;text-align:center;background:#23282b;color:#fcee09;font-size:11px;overflow-wrap:anywhere}
+    
+        /* Pack results: equal action sizes, clean card art, rarity-only glow. */
+        #draw-dialog .pack-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin:20px 0 0}
+        #draw-dialog .pack-controls button{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;gap:8px;width:142px;height:46px;min-height:46px;margin:0;padding:0 16px;box-sizing:border-box;line-height:1.2;font-family:inherit;font-size:13px;font-weight:700;white-space:nowrap}
+        #draw-dialog .pack-card{border:0;background:transparent;box-shadow:none;border-radius:0}
+        #draw-dialog .pack-card .hero-face{border:0;box-shadow:none;background:transparent}
+        #draw-dialog .pack-card:focus:not(:focus-visible){outline:none}
+        #draw-dialog .pack-card:focus-visible{outline:2px solid #fcee09;outline-offset:3px}
+        #draw-dialog .pack-card.revealed[data-rarity="Rare"]{filter:drop-shadow(0 0 5px #fcee0975)}
+        #draw-dialog .pack-card.revealed[data-rarity="Common"],#draw-dialog .pack-card.revealed[data-rarity="Uncommon"]{filter:none}
+        @media(max-width:480px){#draw-dialog .pack-controls{gap:10px}#draw-dialog .pack-controls button{width:calc(50% - 5px);max-width:142px}}
     </style>
 </head>
 
