@@ -1408,14 +1408,14 @@ header a.brand:focus-visible{outline:2px solid #101010;outline-offset:4px}
 @media(prefers-reduced-motion:reduce){#draw-dialog .slider-pack-hit .slider-pack-hint,#draw-dialog .slider-pack-hit .slider-pack-hint::after{animation:none}#draw-dialog .pack-card .hero-face{transition:none}}
 /* Continuous 3D card turn; captions follow the face. */
 #draw-dialog .pack-card .hero-flip{transform:rotateY(180deg);-webkit-transform:rotateY(180deg);transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition:none}
-#draw-dialog .pack-card.revealed .hero-flip{transform:rotateY(0);-webkit-transform:rotateY(0);animation:packCardTurn .8s linear both;transform-style:preserve-3d;-webkit-transform-style:preserve-3d}
+#draw-dialog .pack-card.revealed .hero-flip{transform:rotateY(0);-webkit-transform:rotateY(0);animation:packCardTurn .4s linear both;transform-style:preserve-3d;-webkit-transform-style:preserve-3d}
 #draw-dialog .pack-card .hero-face{transition:none;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 #draw-dialog .pack-card .hero-front,#draw-dialog .pack-card.revealed .hero-front{transform:rotateY(0);-webkit-transform:rotateY(0)}
 #draw-dialog .pack-card .hero-back,#draw-dialog .pack-card.revealed .hero-back{transform:rotateY(180deg);-webkit-transform:rotateY(180deg);visibility:visible}
 @keyframes packCardTurn{from{transform:rotateY(180deg)}to{transform:rotateY(0)}}
-#draw-dialog .pack-card.revealed+.pack-card-label{animation:packLabelIn .26s .42s ease-out both}
+#draw-dialog .pack-card.revealed+.pack-card-label{animation:packLabelIn .26s .21s ease-out both}
 @keyframes packLabelIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-#draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"]):not([data-rarity="Epic"])::after{animation-delay:.42s}
+#draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"]):not([data-rarity="Epic"])::after{animation-delay:.21s}
 #draw-dialog .slider-pack-hit .slider-pack-hint{background:#fff;border:0;box-shadow:none}
 #draw-dialog .slider-pack-hit .slider-pack-hint::after{display:none}
 #draw-dialog #pack-stage.pack-selected{min-height:calc(100svh - 150px);box-sizing:border-box;justify-content:center;padding:44px 0;gap:0}
