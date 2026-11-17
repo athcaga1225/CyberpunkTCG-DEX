@@ -1010,6 +1010,37 @@
         #draw-again{display:block;margin:14px auto 0;background:#fcee09;color:#101010;border:0;padding:12px 24px;font-size:13px;font-weight:700;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%);cursor:pointer}
         .draw-note{color:#a7a9aa;font-size:11px;text-align:center}
         @media(prefers-reduced-motion:reduce){#draw-card .hero-flip{transition:none}}
+    
+        .dex-hero{clip-path:none}
+        .hero-art::before{clip-path:none}
+        .hero-art-grid{clip-path:none;background-position:8% 80%}
+        @media(max-width:680px){.hero-art-grid{background-position:8% 80%}}
+        #draw-dialog{width:min(780px,calc(100% - 28px));padding:24px;max-height:90dvh}
+        #pack-stage{text-align:center;padding:24px 0 8px}
+        #pack-wrapper{position:relative;display:block;width:174px;height:256px;margin:4px auto 18px;padding:0;border:0;background:transparent;color:#101010;cursor:pointer;perspective:600px}
+        .pack-top,.pack-body{position:absolute;left:0;right:0;background:linear-gradient(112deg,#cabd00,#fcee09 23%,#fff34a 48%,#fcee09 64%,#c6b900);border:1px solid #a49700}
+        .pack-top{top:0;height:40px;display:grid;place-items:center;font:700 10px ui-monospace,monospace;letter-spacing:.1em;background:repeating-linear-gradient(0deg,#e2d400 0 2px,#fcee09 2px 5px);z-index:2;transform-origin:left center}
+        .pack-body{top:39px;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;overflow:hidden}
+        .pack-body:before,.pack-body:after{content:"";position:absolute;background:#101010;transform:skewY(-25deg);width:100%;height:17px;left:0;top:18px}
+        .pack-body:after{top:auto;bottom:18px}
+        .pack-body strong{font:900 22px Impact,system-ui,sans-serif;letter-spacing:-.05em;position:relative;z-index:1}
+        .pack-body small,.pack-code,.pack-count{font:700 9px ui-monospace,monospace;letter-spacing:.04em}
+        .pack-wrapper.torn,.torn .pack-top{animation:packTear .65s ease-in forwards}
+        .torn .pack-body{animation:packFall .65s .08s ease-in forwards}
+        @keyframes packTear{35%{transform:translate(20px,-12px) rotate(9deg)}100%{transform:translate(110px,-100px) rotate(28deg);opacity:0}}
+        @keyframes packFall{100%{transform:translateY(45px) rotate(-6deg);opacity:0}}
+        #pack-instruction,#pack-progress{text-align:center;color:#c6c8ca;font-size:13px}
+        #pack-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+        .pack-card{position:relative;aspect-ratio:480/672;padding:0;background:none;border:0;cursor:pointer;perspective:850px;animation:packDeal .35s var(--delay) both}
+        .pack-card .hero-flip{display:block;animation:none;transform:rotateY(180deg);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+        .pack-card.revealed .hero-flip{transform:rotateY(0)}
+        .pack-card img{width:100%;height:100%;object-fit:cover;display:block}
+        @keyframes packDeal{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+        .pack-controls{display:flex;justify-content:center;gap:12px;margin-top:20px}
+        .pack-controls button{display:block;margin:0;background:#fcee09;color:#101010;border:0;padding:12px 16px;font-size:13px;font-weight:700;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%);cursor:pointer}
+        #draw-dialog [hidden]{display:none!important}
+        @media(max-width:480px){#draw-dialog{padding:15px}#pack-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}}
+        @media(prefers-reduced-motion:reduce){.torn .pack-top,.torn .pack-body,.pack-card{animation:none}.pack-card .hero-flip{transition:none}}
     </style>
 </head>
 
@@ -1026,7 +1057,7 @@
                 <p class="hero-subtitle">卡牌價格追蹤</p>
                 <p class="intro">掌握夜城卡牌市場行情，查詢 Beta 與 Retail 版本的市場參考價及價格走勢。</p>
                 
-                <button type="button" class="hero-action" id="open-draw">抽卡 <span class="dex-arrow dex-arrow-up" aria-hidden="true">↗</span></button>
+                <button type="button" class="hero-action" id="open-draw">開卡包 <span class="dex-arrow dex-arrow-up" aria-hidden="true">↗</span></button>
                 <div class="hero-index">WELCOME TO NIGHT CITY</div>
             </div>
             <div class="hero-art">
@@ -1449,9 +1480,13 @@
 <script>
 (()=>{const root=document.querySelector('.hero-art');if(!root)return;const slides=[...root.querySelectorAll('[data-hero-slide]')],dots=[...root.querySelectorAll('[data-hero-dot]')],labels=["BETA COLLECTION","ICONIC SECRET","NIGHT CITY LEGENDS"];let active=0;function show(i){active=(i+slides.length)%slides.length;slides.forEach((s,j)=>s.hidden=j!==active);dots.forEach((d,j)=>d.setAttribute('aria-current',String(j===active)));root.querySelector('.hero-art-label span').textContent=' / '+labels[active];root.querySelector('[data-hero-count]').textContent=String(active+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');}root.querySelector('[data-hero-prev]').addEventListener('click',()=>show(active-1));root.querySelector('[data-hero-next]').addEventListener('click',()=>show(active+1));dots.forEach((d,i)=>d.addEventListener('click',()=>show(i)));let x=0;root.addEventListener('touchstart',e=>{x=e.changedTouches[0].clientX},{passive:true});root.addEventListener('touchend',e=>{let dx=e.changedTouches[0].clientX-x;if(Math.abs(dx)>50)show(active+(dx<0?1:-1))},{passive:true});})();
 </script>
-<dialog id="draw-dialog" aria-labelledby="draw-title"><div class="draw-head"><h2 id="draw-title">抽卡 / CARD DRAW</h2><button id="draw-close" type="button" aria-label="關閉">×</button></div><button id="draw-card" type="button" aria-label="點擊翻牌"><div class="hero-flip"><div class="hero-face hero-front"><img id="draw-front" alt="抽到的卡牌"></div><div class="hero-face hero-back"><img src="https://beyondtcg.co.uk/cdn/shop/files/B098_back.webp?width=900" alt=""></div></div></button><div id="draw-result" aria-live="polite">點擊卡背揭曉</div><button id="draw-again" type="button">再抽一張 ↗</button><p class="draw-note">Beta 主系列單卡隨機抽取；各卡等機率，非實際補充包掉落率。</p></dialog>
+<dialog id="draw-dialog" aria-labelledby="draw-title">
+<div class="draw-head"><h2 id="draw-title">開卡包 / PACK OPENING</h2><button id="draw-close" type="button" aria-label="關閉">×</button></div>
+<div id="pack-stage"><button id="pack-wrapper" type="button" aria-label="撕開卡包"><span class="pack-top"><span>TEAR HERE ▸</span></span><span class="pack-body"><span class="pack-code">WELCOME TO NIGHT CITY</span><strong>CYBER<span>PUNK</span></strong><small>TRADING CARD GAME</small><span class="pack-count">BETA / 10 CARDS</span></span></button><p id="pack-instruction">點擊卡包，撕開包裝</p></div>
+<div id="pack-results" hidden><p id="pack-progress" aria-live="polite">0 / 10 已揭曉</p><div id="pack-grid"></div><div class="pack-controls"><button type="button" id="pack-reveal-all">全部翻開 ↗</button><button type="button" id="draw-again">再開一包 ↗</button></div></div>
+<p class="draw-note">Beta 主系列娛樂模擬：每包 10 張，各卡等機率，非官方補充包配置。</p></dialog>
 <script>
-(()=>{const dialog=document.getElementById('draw-dialog'),card=document.getElementById('draw-card'),front=document.getElementById('draw-front'),result=document.getElementById('draw-result');let chosen=null;function reset(){const pool=Object.entries(cardImages).filter(([code,img])=>/^B\d{3}$/.test(code)&&img.url&&catalog[code]);if(!pool.length){result.textContent='卡牌資料尚未載入，請稍後再試。';return}chosen=pool[Math.floor(Math.random()*pool.length)];card.classList.remove('revealed');front.src=chosen[1].url;result.textContent='點擊卡背揭曉'}document.getElementById('open-draw').onclick=()=>{dialog.showModal();reset()};document.getElementById('draw-close').onclick=()=>dialog.close();document.getElementById('draw-again').onclick=reset;card.onclick=()=>{if(!chosen||card.classList.contains('revealed'))return;card.classList.add('revealed');const [code,img]=chosen;result.textContent=code+' · '+(catalog[code]?.name||img.title)+(catalog[code]?.rarity?' / '+catalog[code].rarity:'')};})();
+(()=>{const dialog=document.getElementById('draw-dialog'),stage=document.getElementById('pack-stage'),wrapper=document.getElementById('pack-wrapper'),results=document.getElementById('pack-results'),grid=document.getElementById('pack-grid'),progress=document.getElementById('pack-progress'),instruction=document.getElementById('pack-instruction');let pack=[],timer=null;const back='https://beyondtcg.co.uk/cdn/shop/files/B098_back.webp?width=900';function reset(){clearTimeout(timer);wrapper.classList.remove('torn');wrapper.disabled=false;stage.hidden=false;results.hidden=true;grid.replaceChildren();instruction.textContent='點擊卡包，撕開包裝';pack=[]}function update(){progress.textContent=grid.querySelectorAll('.revealed').length+' / 10 已揭曉'}function reveal(b){if(b.classList.contains('revealed'))return;b.classList.add('revealed');b.setAttribute('aria-pressed','true');update()}function display(){stage.hidden=true;results.hidden=false;pack.forEach(([code,img],i)=>{const b=document.createElement('button');b.type='button';b.className='pack-card';b.style.setProperty('--delay',i*45+'ms');b.setAttribute('aria-label','揭曉第 '+(i+1)+' 張卡');b.setAttribute('aria-pressed','false');const flip=document.createElement('span');flip.className='hero-flip';for(const side of ['front','back']){const face=document.createElement('span');face.className='hero-face hero-'+side;const image=document.createElement('img');image.src=side==='front'?img.url:back;image.alt=side==='front'?(catalog[code]?.name||img.title):'';face.append(image);flip.append(face)}b.append(flip);b.onclick=()=>reveal(b);grid.append(b)});update()}wrapper.onclick=()=>{if(wrapper.disabled)return;const pool=Object.entries(cardImages).filter(([code,img])=>/^B\d{3}$/.test(code)&&img.url&&catalog[code]);if(pool.length<10){instruction.textContent='卡牌資料尚未載入，請稍後再試。';return}for(let i=0;i<10;i++){const j=Math.floor(Math.random()*pool.length);pack.push(pool.splice(j,1)[0])}wrapper.disabled=true;wrapper.classList.add('torn');instruction.textContent='正在開包…';timer=setTimeout(display,matchMedia('(prefers-reduced-motion: reduce)').matches?0:780)};document.getElementById('open-draw').onclick=()=>{reset();dialog.showModal()};document.getElementById('draw-close').onclick=()=>dialog.close();dialog.addEventListener('close',reset);document.getElementById('draw-again').onclick=reset;document.getElementById('pack-reveal-all').onclick=()=>grid.querySelectorAll('.pack-card').forEach(reveal)})();
 </script>
 </body>
 
