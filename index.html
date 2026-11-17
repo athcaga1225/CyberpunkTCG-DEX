@@ -1519,6 +1519,12 @@ body,button,input,select{font-family:var(--dex-font)}
 .hero-slider-controls button:active,#draw-dialog .slider-nav button:active{opacity:.55}
 @media(min-width:761px){#draw-dialog .slider-nav{padding-left:calc(2 * clamp(24px,3vw,48px))}}
 @media(max-width:680px){.hero-card{width:clamp(88px,28vw,160px)}}
+/* Fade the yellow picker background into the existing dark opening screen. */
+html.pack-view.pack-opening #draw-dialog{isolation:isolate}
+html.pack-view.pack-opening #draw-dialog::before{content:"";position:absolute;inset:0 auto 0 50%;width:100vw;transform:translateX(-50%);z-index:-1;pointer-events:none;background:var(--dex-yellow,#fcee09);clip-path:polygon(63% 0,100% 0,100% 100%,42% 100%);animation:packBackgroundOut .3s ease-out both}
+@media(max-width:760px){html.pack-view.pack-opening #draw-dialog::before{clip-path:none}}
+@keyframes packBackgroundOut{from{opacity:1}to{opacity:0}}
+@media(prefers-reduced-motion:reduce){html.pack-view.pack-opening #draw-dialog::before{animation:none;opacity:0}}
 </style>
 </head>
 
