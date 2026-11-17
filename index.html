@@ -1505,6 +1505,21 @@ body,button,input,select{font-family:var(--dex-font)}
 .hero-actions #open-draw{background:transparent;color:var(--dex-yellow);clip-path:none;min-width:0;padding:12px 0;gap:10px}
 .hero-actions #open-draw:hover,.hero-actions #open-draw:focus-visible{background:transparent;color:var(--dex-text)}
 @media(max-width:680px){.hero-actions{margin-top:17px;gap:8px 18px}.hero-actions #open-draw{padding:12px 0}}
+/* Consistent, centered carousel navigation: chevron / page count / chevron. */
+.hero-slider-controls,#draw-dialog .slider-nav{display:flex;justify-content:center;align-items:center;gap:16px;color:#101214;font-family:var(--dex-font);font-size:14px;font-weight:700;line-height:1.4}
+.hero-slider-controls{left:0;right:0}
+.hero-slider-controls .hero-slider-dots{display:none}
+.hero-slider-controls [data-hero-prev],#draw-dialog .slider-nav .slider-prev{order:-1}
+.hero-slider-controls [data-hero-count],#draw-dialog .slider-nav>span{order:0;margin:0;font-family:inherit;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;color:inherit;text-align:center;min-width:62px}
+.hero-slider-controls [data-hero-next],#draw-dialog .slider-nav .slider-next{order:1}
+.hero-slider-controls button[data-hero-prev],.hero-slider-controls button[data-hero-next],#draw-dialog .slider-nav button,#draw-dialog .slider-nav .slider-prev:hover,#draw-dialog .slider-nav .slider-next,#draw-dialog .slider-nav button:hover{display:grid;place-items:center;width:44px;height:44px;min-width:44px;padding:0;border:0;background:transparent;color:#101214;position:relative;touch-action:manipulation}
+.hero-slider-controls button .dex-arrow,#draw-dialog .slider-nav button svg{display:none}
+.hero-slider-controls button[data-hero-prev]::before,.hero-slider-controls button[data-hero-next]::before,#draw-dialog .slider-nav button::before{content:"";width:10px;height:10px;border-top:2px solid currentColor;border-right:2px solid currentColor;transform:rotate(45deg)}
+.hero-slider-controls button[data-hero-prev]::before,#draw-dialog .slider-nav .slider-prev::before{transform:rotate(-135deg)}
+.hero-slider-controls button:focus-visible,#draw-dialog .slider-nav button:focus-visible{outline:2px solid #101214;outline-offset:2px;background:transparent;color:#101214}
+@media(hover:hover) and (pointer:fine){.hero-slider-controls button:hover,#draw-dialog .slider-nav button:hover{opacity:.55}}
+.hero-slider-controls button:active,#draw-dialog .slider-nav button:active{opacity:.55}
+@media(min-width:761px){#draw-dialog .slider-nav{padding-left:calc(2 * clamp(24px,3vw,48px))}}
 </style>
 </head>
 
