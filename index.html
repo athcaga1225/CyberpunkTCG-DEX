@@ -1422,7 +1422,7 @@ header a.brand:focus-visible{outline:2px solid #101010;outline-offset:4px}
 #draw-dialog .slider-art>.slider-pack-hint::before,#draw-dialog .slider-art>.slider-pack-hint::after{display:none;content:none}
 #draw-dialog .slider-art>.slider-pack-hint{animation:packHintEnter .36s 1.08s ease-out both,packHintSoftPulse 3.6s 1.44s ease-in-out infinite}
 @keyframes packHintEnter{from{opacity:0}to{opacity:1}}
-@keyframes packHintSoftPulse{0%,100%{scale:1}50%{scale:1.08}}
+@keyframes packHintSoftPulse{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.08)}}
 @media(prefers-reduced-motion:reduce){#draw-dialog .slider-art>.slider-pack-hint{animation:none;opacity:1}}
 @media(min-width:761px){#draw-dialog .slider-art>.slider-pack-hint{left:calc(50% + clamp(24px,3vw,48px))}}
 @media(max-width:760px){#draw-dialog .slider-art>.slider-pack-hint{top:calc(50% + 12px)}}
@@ -1551,26 +1551,25 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 @keyframes packBackgroundOut{from{opacity:1}to{opacity:0}}
 #pack-zoom-image{border-radius:4.2% / 3%;clip-path:inset(0 round 4.2% / 3%)}
 @media(max-width:760px){#draw-dialog #pack-grid{row-gap:4px}#draw-dialog .pack-card-label{box-sizing:content-box;height:19.2px;min-height:19.2px;padding:2px 0;white-space:nowrap;overflow-wrap:normal;line-height:19.2px}#draw-dialog .pack-card[data-rarity^="Iconic"]+.pack-card-label{font-size:clamp(8px,2.5vw,10px)}}
-/* V3 shared cinematic opening: intact pack, approach, then physical tear. */
+/* V3 shared cinematic opening: physical tear, then drop. */
 #draw-dialog .v3-stack{display:none}
 #draw-dialog .v3-shell{display:contents}
 @media(prefers-reduced-motion:no-preference){
   #draw-dialog #pack-wrapper.v3-approach.torn .v3-shell{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;filter:drop-shadow(0 0 9px #ffffff45) drop-shadow(0 0 20px #ffffff13) drop-shadow(0 7px 10px #0006)}
   html.pack-opening #draw-dialog.v3-opening-active #pack-stage.pack-selected{overflow:visible}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper{transform:none;transform-origin:center;transition:none}
-  html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach{animation:v3PackApproach .52s cubic-bezier(.35,.02,.19,1) both}
-  html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach.torn{transform:translateY(var(--v3-drop,25vh));animation:none}
+  html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach.torn{animation:v3PackApproach .52s .83s cubic-bezier(.35,.02,.19,1) both}
   #draw-dialog #pack-wrapper.v3-approach:not(.torn) .pack-gesture-hint{opacity:0}
   #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-intact{display:block}
   #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-top,#draw-dialog #pack-wrapper.dragging:not(.torn) .pack-body{display:none}
   #draw-dialog #pack-wrapper.v3-approach.torn .pack-top{transform-origin:94% 18%;animation:v3SealTear .76s cubic-bezier(.2,.7,.25,1) forwards}
   #draw-dialog #pack-wrapper.v3-approach.torn .v3-unpeeled{display:block;animation:v3Unpeeled .67s linear both}
-  #draw-dialog #pack-wrapper.v3-approach.torn .pack-body{animation:v3ShellDrop .65s .55s cubic-bezier(.38,0,.75,1) both}
+  #draw-dialog #pack-wrapper.v3-approach.torn .pack-body{animation:v3ShellDrop .65s 1.35s cubic-bezier(.38,0,.75,1) both}
   #draw-dialog #pack-wrapper.v3-mesh.torn .pack-top,#draw-dialog #pack-wrapper.v3-mesh.torn .v3-unpeeled{display:none}
   #draw-dialog #pack-wrapper.v3-mesh.torn .pack-body{clip-path:polygon(0 18%,5% 18.2%,10% 17.7%,15% 18.3%,20% 17.8%,25% 18.2%,30% 17.7%,35% 18.2%,40% 17.8%,45% 18.3%,50% 17.7%,55% 18.2%,60% 17.8%,65% 18.3%,70% 17.7%,75% 18.2%,80% 17.8%,85% 18.3%,90% 17.7%,95% 18.2%,100% 18%,100% 100%,0 100%)}
   #draw-dialog #pack-wrapper.v3-mesh.torn .v3-foil-canvas{display:block}
   #draw-dialog #pack-wrapper.v3-approach.torn .pack-emerging{display:none}
-  #draw-dialog #pack-wrapper.v3-approach.torn .v3-stack{display:block;position:absolute;inset:10.34% 10% auto;aspect-ratio:480/672;z-index:0;pointer-events:none;animation:v3CardLift .8s .48s cubic-bezier(.18,.72,.25,1) both}
+  #draw-dialog #pack-wrapper.v3-approach.torn .v3-stack{display:block;position:absolute;inset:10.34% 10% auto;aspect-ratio:480/672;z-index:0;pointer-events:none;animation:v3CardLift .8s 1.35s cubic-bezier(.18,.72,.25,1) both}
   .v3-stack>span{position:absolute;inset:0;border-radius:8px;overflow:hidden;background:#fcee09;box-shadow:0 3px 8px #0008}
   .v3-stack>span>img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.42)}
   #draw-dialog #pack-wrapper.v3-approach.torn::after{display:none}
@@ -2137,7 +2136,7 @@ function startFoil(){
   draw(start);
 }
 function finishOpening(){clearTimeout(timer);stopFoil();dialog.classList.remove('v3-opening-active');wrapper.classList.remove('v3-approach','v3-ready');backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');display()}
-function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(!reduced){const r=wrapper.getBoundingClientRect(),bottom=document.body.getBoundingClientRect().bottom,drop=Math.max(0,bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];dialog.classList.add('v3-opening-active');wrapper.classList.add('v3-approach');timer=setTimeout(()=>{startFoil();wrapper.classList.add('torn');timer=setTimeout(finishOpening,1350)},520)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,0)}}
+function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(!reduced){const r=wrapper.getBoundingClientRect(),bottom=document.body.getBoundingClientRect().bottom,drop=Math.max(0,bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];dialog.classList.add('v3-opening-active');wrapper.classList.add('v3-approach');startFoil();wrapper.classList.add('torn');timer=setTimeout(finishOpening,2200)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,0)}}
 wrapper.onclick=openBooster;
 stage.querySelectorAll('[data-pack-edition]').forEach(b=>b.onclick=()=>{if(!wrapper.disabled)selectEdition(b.dataset.packEdition)});if(document.documentElement.classList.contains('pack-view')){document.title='CYBERDEX — 開啟卡包';reset();selectEdition(activeEdition)};
 document.getElementById('draw-again').onclick=()=>{const previousTest=testRarity;let next;try{next=makePack()}catch(e){return}reset();testRarity=previousTest;pack=next;wrapper.disabled=true;testSelect.disabled=true;display()};
