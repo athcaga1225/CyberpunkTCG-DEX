@@ -1197,6 +1197,10 @@
 @media(prefers-reduced-motion:reduce){#draw-dialog #pack-results:not([hidden]){animation:none}}
 #draw-dialog .pack-controls{position:relative;z-index:2}
 #draw-dialog .pack-controls button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#draw-dialog #pack-results{position:relative;isolation:isolate}
+#draw-dialog #pack-results:not([hidden])::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 32%,rgba(252,238,9,.24) 0%,rgba(252,238,9,.09) 30%,transparent 72%);animation:packArrivalGlow 1.2s ease-out both}
+@keyframes packArrivalGlow{0%{opacity:0}24%{opacity:1}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){#draw-dialog #pack-results:not([hidden])::before{animation:none;opacity:0}}
 </style>
 </head>
 
