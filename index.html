@@ -1487,6 +1487,7 @@ body,button,input,select{font-family:var(--dex-font)}
 /* Temporarily keep both hero panels plain yellow until the new artwork is supplied. */
 @media(min-width:761px){.dex-hero::before,html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected))::before{background-image:none}.hero-slider-controls{left:12%}}
 @media(max-width:760px){.hero-art::before,#draw-dialog .slider-visual::before{background-image:none}}
+#draw-dialog #pack-stage.pack-selected #pack-wrapper:not(.torn)::before{content:"";position:absolute;inset:1% 2%;border-radius:5px;box-shadow:0 0 4px 1px #a5b6ee80,0 0 24px 5px #718ce54d;pointer-events:none;z-index:0}
 #draw-dialog .slider-edition{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700}
 .collection-heading,#result .section-heading,#history-panel .history-head h2{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700;color:var(--dex-yellow)}
 .hero-action,.collection-search .search button.primary,#draw-dialog .pack-controls button,#draw-dialog .draw-head .picker-back{font-family:var(--dex-font);font-size:var(--dex-size-body);font-weight:700}
