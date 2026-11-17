@@ -1365,6 +1365,21 @@
 #draw-dialog #pack-wrapper .pack-body,#draw-dialog #pack-wrapper .pack-emerging{pointer-events:none}
 @keyframes packSealPull{0%{transform:translateX(var(--tear-start,0px))}70%{transform:translate(calc(var(--tear-start,0px) + 45px),-22px) rotate(12deg);opacity:1}100%{transform:translate(calc(var(--tear-start,0px) + 100px),-68px) rotate(25deg);opacity:0}}
 @media(prefers-reduced-motion:reduce){#draw-dialog .pack-card .hero-face,#draw-dialog #pack-wrapper:not(.torn) .pack-top{transition:none}}
+/* Pack selection hero: rising copy, expanding booster, centered click cue. */
+#draw-dialog .pack-picker.pack-slider{animation:none}
+#draw-dialog .slider-info>*{animation:packHeroCopy .65s cubic-bezier(.2,.72,.25,1) both}
+#draw-dialog .slider-info>*:nth-child(2){animation-delay:.08s}
+#draw-dialog .slider-info>*:nth-child(3){animation-delay:.16s}
+#draw-dialog .slider-info>*:nth-child(4){animation-delay:.24s}
+#draw-dialog .slider-info>*:nth-child(5){animation-delay:.32s}
+#draw-dialog .slider-pack-hit{animation:packHeroBooster .85s .12s cubic-bezier(.18,.8,.25,1) both}
+@keyframes packHeroCopy{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes packHeroBooster{from{opacity:0;scale:.76}to{opacity:1;scale:1}}
+#draw-dialog .slider-pack-hit .slider-pack-hint{top:50%;left:50%;width:46px;height:46px;padding:0;box-sizing:border-box;transform:translate(-50%,-50%);border:1px solid #fff;border-radius:50%;background:#0b0c104d;box-shadow:0 0 0 1px #0004;animation:none;display:grid;place-items:center}
+#draw-dialog .slider-pack-hit .slider-pack-hint::before{content:"";width:9px;height:9px;background:#fff;border-radius:50%}
+#draw-dialog .slider-pack-hit .slider-pack-hint::after{content:"";position:absolute;inset:-1px;border:1px solid #fff;border-radius:50%;animation:packClickPulse 1.8s ease-out infinite}
+@keyframes packClickPulse{0%{transform:scale(1);opacity:.85}85%,100%{transform:scale(1.75);opacity:0}}
+@media(prefers-reduced-motion:reduce){#draw-dialog .slider-info>*,#draw-dialog .slider-pack-hit,#draw-dialog .slider-pack-hit .slider-pack-hint::after{animation:none}}
 </style>
 </head>
 
@@ -1839,11 +1854,11 @@ function finishTear(e,cancelled=false){if(!tearStart||e.pointerId!==tearStart.id
 wrapper.addEventListener('pointerup',e=>finishTear(e));wrapper.addEventListener('pointercancel',e=>finishTear(e,true));wrapper.addEventListener('lostpointercapture',e=>finishTear(e,true));
 wrapper.addEventListener('click',e=>{if(suppressClick&&e.detail!==0){e.preventDefault();e.stopImmediatePropagation();suppressClick=false}},true);
 const hint=wrapper.querySelector('.pack-gesture-hint');hint.textContent='向右滑動或點擊開啟 →';
-picker.querySelector('.slider-pack-hint').textContent='點擊選擇卡包 ↗';
+picker.querySelector('.slider-pack-hint').replaceChildren();picker.querySelector('.slider-pack-hint').setAttribute('aria-hidden','true');tilt.setAttribute('aria-label','選擇卡包');
 wrapper.addEventListener('animationend',e=>{if(e.animationName==='packSealPull')wrapper.style.removeProperty('--tear-start')});
 wrapper.onclick=()=>{if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;wrapper.classList.add('torn');instruction.textContent='正在開包…';timer=setTimeout(display,matchMedia('(prefers-reduced-motion: reduce)').matches?0:1180)};
 stage.querySelectorAll('[data-pack-edition]').forEach(b=>b.onclick=()=>{if(!wrapper.disabled)selectEdition(b.dataset.packEdition)});if(document.documentElement.classList.contains('pack-view')){document.title='CYBERDEX — 開啟卡包';reset();selectEdition(activeEdition)};
-document.getElementById('draw-again').onclick=()=>{reset();showPack()};
+document.getElementById('draw-again').onclick=()=>{const previousTest=testRarity;let next;try{next=makePack()}catch(e){return}reset();testRarity=previousTest;pack=next;wrapper.disabled=true;testSelect.disabled=true;display()};
  document.getElementById('pack-reveal-all').onclick=()=>{const cards=[...grid.querySelectorAll('.pack-card')];if(cards.length!==12)return;const pending=cards.filter(b=>!b.classList.contains('revealed'));if(!pending.length){reset();return}const finishNow=revealingAll||matchMedia('(prefers-reduced-motion: reduce)').matches;cancelReveal();if(finishNow){pending.forEach(reveal);return}revealingAll=true;document.getElementById('pack-reveal-all').textContent='翻開中…';const run=revealRun;reveal(pending[0]);if(run!==revealRun)return;pending.slice(1).forEach((b,i)=>{revealTimers.push(setTimeout(()=>{if(run===revealRun&&b.isConnected)reveal(b)},(i+1)*100))})};selectEdition(document.documentElement.classList.contains('pack-view')?activeEdition:'beta')})();
 </script>
 </body>
