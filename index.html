@@ -1093,9 +1093,9 @@
         #draw-dialog .pack-card.revealed[data-rarity="Rare"]{--hit:#fcee09;--hit-opacity:.24;--hit-duration:.50s}
         #draw-dialog .pack-card.revealed[data-rarity="Epic"]{--hit:#61bfff;--hit-opacity:.44;--hit-duration:.68s}
         #draw-dialog .pack-card.revealed[data-rarity="Secret"]{--hit:#f6a1ff;--hit-opacity:.92;--hit-duration:1.15s}
-        #draw-dialog .pack-card.revealed[data-rarity^="Iconic"]{--hit:#fcee09;--hit-opacity:.22;--hit-duration:.50s}
+        #draw-dialog .pack-card.revealed[data-rarity^="Iconic"]{--hit:#ffe65c;--hit-opacity:.48;--hit-duration:.85s}
         #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"]{--hit:#fff;--hit-opacity:.85;--hit-duration:1.35s}
-        #draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"])::after{content:"";position:absolute;inset:0;border-radius:8px;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 18%,var(--hit,#fcee09) 49%,transparent 80%);background-size:250% 100%;mix-blend-mode:screen;animation:packRaritySweep var(--hit-duration,.6s) .26s ease-out both}
+        #draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"])::after{content:"";position:absolute;inset:0;border-radius:8px;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 18%,var(--hit,#fcee09) 49%,transparent 80%);background-size:250% 100%;mix-blend-mode:screen;animation:packRaritySweep var(--hit-duration,.6s) .26s ease-out both}
         #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"]::after{background-image:linear-gradient(115deg,transparent 12%,#ff4ad5 35%,#fff7a6 48%,#5deaff 58%,transparent 83%)}
         @keyframes packRaritySweep{0%{opacity:0;background-position:100% 0}25%{opacity:var(--hit-opacity,.4)}100%{opacity:0;background-position:0 0}}
         @media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed::after{animation:none!important;opacity:0}}
