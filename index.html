@@ -1539,10 +1539,10 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 @keyframes packBackgroundOut{from{opacity:1}to{opacity:0}}
 #pack-zoom-image{border-radius:4.2% / 3%;clip-path:inset(0 round 4.2% / 3%)}
 @media(max-width:760px){#draw-dialog #pack-grid{row-gap:4px}#draw-dialog .pack-card-label{box-sizing:content-box;height:19.2px;min-height:19.2px;padding:2px 0;white-space:nowrap;overflow-wrap:normal;line-height:19.2px}#draw-dialog .pack-card[data-rarity^="Iconic"]+.pack-card-label{font-size:clamp(8px,2.5vw,10px)}}
-/* V3 mobile-only cinematic opening: intact pack, approach, then physical tear. */
+/* V3 shared cinematic opening: intact pack, approach, then physical tear. */
 #draw-dialog .v3-stack{display:none}
 #draw-dialog .v3-shell{display:contents}
-@media(max-width:760px) and (prefers-reduced-motion:no-preference){
+@media(prefers-reduced-motion:no-preference){
   #draw-dialog #pack-wrapper.v3-approach.torn .v3-shell{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;filter:drop-shadow(0 0 9px #ffffff45) drop-shadow(0 0 20px #ffffff13) drop-shadow(0 7px 10px #0006)}
   html.pack-opening #draw-dialog.v3-opening-active #pack-stage.pack-selected{overflow:visible}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper{transform:none;transform-origin:center;transition:none}
@@ -2096,7 +2096,7 @@ function startFoil(){
   draw(start);
 }
 function finishOpening(){clearTimeout(timer);stopFoil();dialog.classList.remove('v3-opening-active');wrapper.classList.remove('v3-approach','v3-ready');backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');display()}
-function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,mobile=matchMedia('(max-width:760px)').matches&&!reduced;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(mobile){const r=wrapper.getBoundingClientRect(),bottom=document.body.getBoundingClientRect().bottom,drop=Math.max(0,bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];dialog.classList.add('v3-opening-active');wrapper.classList.add('v3-approach');timer=setTimeout(()=>{startFoil();wrapper.classList.add('torn');timer=setTimeout(finishOpening,1320)},520)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,reduced?0:1180)}}
+function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(!reduced){const r=wrapper.getBoundingClientRect(),bottom=document.body.getBoundingClientRect().bottom,drop=Math.max(0,bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];dialog.classList.add('v3-opening-active');wrapper.classList.add('v3-approach');timer=setTimeout(()=>{startFoil();wrapper.classList.add('torn');timer=setTimeout(finishOpening,1320)},520)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,0)}}
 wrapper.onclick=openBooster;
 stage.querySelectorAll('[data-pack-edition]').forEach(b=>b.onclick=()=>{if(!wrapper.disabled)selectEdition(b.dataset.packEdition)});if(document.documentElement.classList.contains('pack-view')){document.title='CYBERDEX — 開啟卡包';reset();selectEdition(activeEdition)};
 document.getElementById('draw-again').onclick=()=>{const previousTest=testRarity;let next;try{next=makePack()}catch(e){return}reset();testRarity=previousTest;pack=next;wrapper.disabled=true;testSelect.disabled=true;display()};
