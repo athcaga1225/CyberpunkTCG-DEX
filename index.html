@@ -1539,7 +1539,9 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 @media(max-width:760px){#draw-dialog #pack-grid{row-gap:4px}#draw-dialog .pack-card-label{box-sizing:content-box;height:19.2px;min-height:19.2px;padding:2px 0;white-space:nowrap;overflow-wrap:normal;line-height:19.2px}#draw-dialog .pack-card[data-rarity^="Iconic"]+.pack-card-label{font-size:clamp(8px,2.5vw,10px)}}
 /* V3 mobile-only cinematic opening: intact pack, approach, then physical tear. */
 #draw-dialog .v3-stack{display:none}
+#draw-dialog .v3-shell{display:contents}
 @media(max-width:760px) and (prefers-reduced-motion:no-preference){
+  #draw-dialog #pack-wrapper.v3-approach.torn .v3-shell{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;filter:drop-shadow(0 0 9px #ffffff45) drop-shadow(0 0 20px #ffffff13) drop-shadow(0 7px 10px #0006)}
   html.pack-opening #draw-dialog.v3-opening-active #pack-stage.pack-selected{overflow:visible}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper{transform:none;transform-origin:center;transition:none}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach{animation:v3PackApproach .52s cubic-bezier(.35,.02,.19,1) both}
@@ -2059,6 +2061,7 @@ picker.querySelector('.slider-pack-hint').replaceChildren();picker.querySelector
 wrapper.addEventListener('animationend',e=>{if(e.animationName==='packSealPull')wrapper.style.removeProperty('--tear-start')});
 const v3Unpeeled=document.createElement('img');v3Unpeeled.className='v3-unpeeled';v3Unpeeled.alt='';v3Unpeeled.setAttribute('aria-hidden','true');wrapper.append(v3Unpeeled);
 const v3Foil=document.createElement('canvas');v3Foil.className='v3-foil-canvas';v3Foil.setAttribute('aria-hidden','true');wrapper.append(v3Foil);
+const v3Shell=document.createElement('span');v3Shell.className='v3-shell';v3Shell.setAttribute('aria-hidden','true');v3Shell.append(wrapper.querySelector('.pack-top'),wrapper.querySelector('.pack-body'),v3Unpeeled,v3Foil);wrapper.append(v3Shell);
 const v3Stack=document.createElement('span');v3Stack.className='v3-stack';v3Stack.setAttribute('aria-hidden','true');for(let i=0;i<3;i++){const face=document.createElement('span');face.append(wrapper.querySelector('.pack-emerging img').cloneNode(true));v3Stack.append(face)}wrapper.append(v3Stack);
 let v3FoilFrame=0;
 function stopFoil(){cancelAnimationFrame(v3FoilFrame);v3FoilFrame=0;wrapper.classList.remove('v3-mesh')}
