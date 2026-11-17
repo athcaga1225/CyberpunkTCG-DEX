@@ -1186,7 +1186,12 @@
 @media(prefers-reduced-motion:reduce){#draw-dialog #pack-wrapper.torn .pack-top,#draw-dialog #pack-wrapper.torn .pack-body,#draw-dialog #pack-wrapper.torn .pack-emerging,#draw-dialog #pack-wrapper.torn::after,#draw-dialog .pack-card{animation:none!important}}
 
 #draw-dialog #pack-instruction:empty{display:none}
-#draw-dialog .pack-gesture-hint{position:absolute;z-index:4;left:50%;top:50%;transform:translate(-50%,-50%);width:max-content;max-width:90%;padding:9px 13px;margin:0;background:rgba(12,14,16,.84);color:#fcee09;font-size:13px;font-weight:600;letter-spacing:.04em;text-align:center;pointer-events:none;transition:opacity .15s ease}
+#draw-dialog .pack-gesture-hint{position:absolute;z-index:4;left:50%;top:50%;transform:translate(-50%,-50%);width:max-content;max-width:90%;margin:0;color:#fff;font-size:14px;font-weight:700;letter-spacing:.04em;text-align:center;text-shadow:0 1px 5px #000,0 0 12px #000;pointer-events:none;transition:opacity .15s ease}
+#draw-dialog .pack-gesture-hint>span{animation:packHintBreathe 1.8s ease-in-out infinite}
+#draw-dialog .pack-hint-mobile span{display:inline-block;animation:packHintArrow 1.3s ease-in-out infinite}
+@keyframes packHintBreathe{0%,100%{opacity:.72}50%{opacity:1}}
+@keyframes packHintArrow{0%,100%{transform:translateX(0);opacity:.75}50%{transform:translateX(7px);opacity:1}}
+@media(prefers-reduced-motion:reduce){#draw-dialog .pack-gesture-hint>span,#draw-dialog .pack-hint-mobile span{animation:none}}
 #draw-dialog .pack-hint-mobile{display:none}
 #draw-dialog #pack-wrapper.torn .pack-gesture-hint{opacity:0}
 @media(max-width:760px),(hover:none) and (pointer:coarse){#draw-dialog .pack-hint-desktop{display:none}#draw-dialog .pack-hint-mobile{display:inline}}
@@ -1198,9 +1203,6 @@
 #draw-dialog .pack-controls{position:relative;z-index:2}
 #draw-dialog .pack-controls button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #draw-dialog #pack-results{position:relative;isolation:isolate}
-#draw-dialog #pack-results:not([hidden])::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 32%,rgba(252,238,9,.24) 0%,rgba(252,238,9,.09) 30%,transparent 72%);animation:packArrivalGlow 1.2s ease-out both}
-@keyframes packArrivalGlow{0%{opacity:0}24%{opacity:1}100%{opacity:0}}
-@media(prefers-reduced-motion:reduce){#draw-dialog #pack-results:not([hidden])::before{animation:none;opacity:0}}
 </style>
 </head>
 
