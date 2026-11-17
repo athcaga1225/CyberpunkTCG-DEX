@@ -1459,6 +1459,23 @@ html.pack-view{overflow-x:clip}
 #draw-dialog .pack-card.revealed{transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .28s ease-out;transform-origin:center}
 #draw-dialog .pack-card.revealed.is-tilting{transition:transform .14s ease-out}
 @media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed,#draw-dialog .pack-card.revealed.is-tilting{transform:none;transition:none}}
+/* Shared CYBERDEX typography and clear action hierarchy. Display logo remains custom. */
+:root{--dex-font:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;--dex-text:#f4f4f4;--dex-copy:#c2c4c5;--dex-muted:#aeb4b6;--dex-size-caption:12px;--dex-size-body:14px;--dex-size-section:16px}
+body,button,input,select{font-family:var(--dex-font)}
+.hero-copy .intro,#draw-dialog .slider-description{font-family:var(--dex-font);font-size:var(--dex-size-body);font-weight:400;line-height:1.8;color:var(--dex-copy)}
+.hero-kicker,.hero-index,.collection-heading,.collection-step-label,.collection-field-label,.collection-field>label,.collection-status,.collection-aside,#collection-summary,.label,.small,.muted,.note,footer,#draw-dialog .slider-eyebrow,#draw-dialog .slider-composition span,#draw-dialog .pack-card-label,#draw-dialog #pack-summary small,#draw-dialog .pack-best{font-family:var(--dex-font);font-size:var(--dex-size-caption);line-height:1.6}
+.hero-index,.small,.muted,.note,footer,.collection-aside,.collection-status,#draw-dialog .slider-composition span,#draw-dialog #pack-summary small,#draw-dialog .pack-best{color:var(--dex-muted)}
+.hero-subtitle,.cardtitle,#draw-dialog .slider-info h3{font-family:var(--dex-font);color:var(--dex-text)}
+#draw-dialog .slider-edition{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700}
+.collection-heading,#result .section-heading,#history-panel .history-head h2{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700;color:var(--dex-yellow)}
+.hero-action,.collection-search .search button.primary,#draw-dialog .pack-controls button,#draw-dialog .draw-head .picker-back{font-family:var(--dex-font);font-size:var(--dex-size-body);font-weight:700}
+#draw-dialog .slider-composition span{align-items:center;text-align:center;min-width:76px}
+#draw-dialog .slider-composition b{margin-right:0;font-family:var(--dex-font);font-size:32px;font-weight:700;color:var(--dex-text)}
+.hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;margin-top:26px;animation-delay:.34s!important}
+.hero-actions .hero-action{margin:0}
+.hero-actions #open-draw{background:transparent;color:var(--dex-yellow);clip-path:none;min-width:0;padding:12px 0;gap:10px}
+.hero-actions #open-draw:hover,.hero-actions #open-draw:focus-visible{background:transparent;color:var(--dex-text)}
+@media(max-width:680px){.hero-actions{margin-top:17px;gap:8px 18px}.hero-actions #open-draw{padding:12px 0}}
 </style>
 </head>
 
@@ -1475,7 +1492,7 @@ html.pack-view{overflow-x:clip}
                 <p class="hero-subtitle">卡牌價格追蹤</p>
                 <p class="intro">掌握夜城卡牌市場行情，查詢 Beta 與 Retail 版本的市場參考價及價格走勢。</p>
                 
-                <a href="?view=pack" class="hero-action" id="open-draw">開啟卡包 <span class="dex-arrow dex-arrow-up" aria-hidden="true">↗</span></a>
+                <div class="hero-actions"><a href="#browse" class="hero-action">查詢卡牌價格 <span class="dex-arrow dex-arrow-down" aria-hidden="true">↘</span></a><a href="?view=pack" class="hero-action" id="open-draw">開卡包模擬 <span class="dex-arrow dex-arrow-up" aria-hidden="true">↗</span></a></div>
                 <div class="hero-index">WELCOME TO NIGHT CITY</div>
             </div>
             <div class="hero-art">
