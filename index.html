@@ -1447,6 +1447,10 @@ html.pack-view{overflow-x:clip}
 @media(max-width:760px){html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){padding-top:0}#draw-dialog #pack-stage:not(.pack-selected){overflow:visible}#draw-dialog .slider-visual::before{content:"";position:absolute;z-index:-1;inset:-12px auto 0;left:50%;width:100vw;transform:translateX(-50%);background:#fcee09;clip-path:polygon(0 0,100% 0,100% 90%,0 100%);pointer-events:none}#draw-dialog .slider-nav{padding-bottom:60px}}
 /* Subtle, centered perspective: the edge under the pointer recedes. */
 #draw-dialog .slider-pack-hit .slider-tilt.is-tilting{transition:transform .14s ease-out}
+#draw-dialog .slider-pack-hit .slider-tilt,#draw-dialog .slider-pack-hit .slider-tilt.is-tilting{transform:perspective(560px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) rotateZ(-5deg);transform-origin:center}
+#draw-dialog .slider-art .slider-tilt img{filter:drop-shadow(10px 20px 20px #0009)}
+@media(min-width:761px){#draw-dialog .slider-pack-hit{translate:clamp(24px,3vw,48px) 0}}
+@media(prefers-reduced-motion:reduce){#draw-dialog .slider-pack-hit .slider-tilt,#draw-dialog .slider-pack-hit .slider-tilt.is-tilting{transform:rotateZ(-5deg);transition:none}}
 #draw-dialog .pack-card.revealed{transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .28s ease-out;transform-origin:center}
 #draw-dialog .pack-card.revealed.is-tilting{transition:transform .14s ease-out}
 @media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed,#draw-dialog .pack-card.revealed.is-tilting{transform:none;transition:none}}
