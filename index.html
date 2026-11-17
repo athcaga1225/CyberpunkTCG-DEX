@@ -1423,6 +1423,10 @@ header a.brand:focus-visible{outline:2px solid #101010;outline-offset:4px}
 #draw-dialog .slider-art>.slider-pack-hint .pack-hint-ring::after{content:"";position:absolute;inset:-1px;border:1px solid #fcee09;border-radius:50%;animation:packClickPulse 2s ease-out infinite}
 @media(prefers-reduced-motion:reduce){#draw-dialog .slider-art>.slider-pack-hint .pack-hint-ring::after{animation:none;opacity:0}}
 #draw-dialog .slider-art>.slider-pack-hint::before,#draw-dialog .slider-art>.slider-pack-hint::after{display:none;content:none}
+#draw-dialog .slider-art>.slider-pack-hint{animation:packHintEnter .36s 1.08s ease-out both}
+@keyframes packHintEnter{from{opacity:0}to{opacity:1}}
+#draw-dialog .slider-art>.slider-pack-hint .pack-hint-ring::after{animation-delay:1.44s;animation-fill-mode:backwards}
+@media(prefers-reduced-motion:reduce){#draw-dialog .slider-art>.slider-pack-hint{animation:none;opacity:1}}
 @media(min-width:761px){#draw-dialog .slider-art>.slider-pack-hint{left:calc(50% + clamp(24px,3vw,48px))}}
 @media(max-width:760px){#draw-dialog .slider-art>.slider-pack-hint{top:calc(50% + 12px)}}
 #draw-dialog #pack-stage.pack-selected{min-height:calc(100svh - 150px);box-sizing:border-box;justify-content:center;padding:44px 0;gap:0}
