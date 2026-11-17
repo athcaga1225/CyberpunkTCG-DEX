@@ -1444,6 +1444,7 @@ html.pack-view{overflow-x:clip}
 #draw-dialog .slider-nav>span{color:#101214}
 #draw-dialog .slider-nav button{color:#101214;border-color:#101214}
 #draw-dialog .slider-nav .slider-next,#draw-dialog .slider-nav button:hover{background:#101214;color:#fcee09;border-color:#101214}
+@media(hover:none),(pointer:coarse){#draw-dialog .slider-nav .slider-prev:hover{background:transparent;color:#101214;border-color:#101214}#draw-dialog .slider-nav button:active{opacity:.65}}
 @media(max-width:760px){html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){padding-top:0}#draw-dialog #pack-stage:not(.pack-selected){overflow:visible}#draw-dialog .slider-visual::before{content:"";position:absolute;z-index:-1;inset:-12px auto 0;left:50%;width:100vw;transform:translateX(-50%);background:#fcee09;clip-path:polygon(0 0,100% 0,100% 90%,0 100%);pointer-events:none}#draw-dialog .slider-nav{padding-bottom:60px}}
 /* Subtle, centered perspective: the edge under the pointer recedes. */
 #draw-dialog .slider-pack-hit .slider-tilt.is-tilting{transition:transform .14s ease-out}
