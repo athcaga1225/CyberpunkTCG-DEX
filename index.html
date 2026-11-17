@@ -1186,7 +1186,7 @@
 @media(prefers-reduced-motion:reduce){#draw-dialog #pack-wrapper.torn .pack-top,#draw-dialog #pack-wrapper.torn .pack-body,#draw-dialog #pack-wrapper.torn .pack-emerging,#draw-dialog #pack-wrapper.torn::after,#draw-dialog .pack-card{animation:none!important}}
 
 #draw-dialog #pack-instruction:empty{display:none}
-#draw-dialog .pack-gesture-hint{position:absolute;z-index:4;left:50%;top:50%;transform:translate(-50%,-50%);width:max-content;max-width:90%;margin:0;color:#fff;font-size:14px;font-weight:700;letter-spacing:.04em;text-align:center;text-shadow:0 1px 5px #000,0 0 12px #000;pointer-events:none;transition:opacity .15s ease}
+#draw-dialog .pack-gesture-hint{position:absolute;z-index:4;left:50%;top:0;transform:translate(-50%,-100%);padding-bottom:8px;width:max-content;max-width:90%;margin:0;color:#fff;font-size:14px;font-weight:700;letter-spacing:.04em;text-align:center;text-shadow:0 1px 5px #000,0 0 12px #000;pointer-events:none;transition:opacity .15s ease}
 #draw-dialog .pack-gesture-hint>span{animation:packHintBreathe 1.8s ease-in-out infinite}
 #draw-dialog .pack-hint-mobile span{display:inline-block;animation:packHintArrow 1.3s ease-in-out infinite}
 @keyframes packHintBreathe{0%,100%{opacity:.72}50%{opacity:1}}
@@ -1203,6 +1203,7 @@
 #draw-dialog .pack-controls{position:relative;z-index:2}
 #draw-dialog .pack-controls button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #draw-dialog #pack-results{position:relative;isolation:isolate}
+#draw-dialog #pack-wrapper{margin-top:24px}
 </style>
 </head>
 
