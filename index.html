@@ -1419,13 +1419,10 @@ header a.brand:focus-visible{outline:2px solid #101010;outline-offset:4px}
 @keyframes packLabelIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 #draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"]):not([data-rarity="Epic"])::after{animation-delay:.13s}
 #draw-dialog .slider-art>.slider-pack-hint{position:absolute;top:50%;left:50%;z-index:10;width:auto;height:auto;display:flex;align-items:center;justify-content:center;gap:10px;transform:translate(-50%,-50%);padding:0;border:0;border-radius:0;background:transparent;color:#fff;box-shadow:none;text-shadow:0 1px 3px #0007;animation:none;opacity:1;font:700 clamp(18px,2vw,24px) var(--dex-font);letter-spacing:.04em;white-space:nowrap;pointer-events:none}
-#draw-dialog .slider-art>.slider-pack-hint .pack-hint-ring{position:relative;display:block;flex:none;width:22px;height:22px;border:1.5px solid #fcee09;border-radius:50%;box-sizing:border-box}
-#draw-dialog .slider-art>.slider-pack-hint .pack-hint-ring::after{content:"";position:absolute;inset:-1px;border:1px solid #fcee09;border-radius:50%;animation:packClickPulse 2s ease-out infinite}
-@media(prefers-reduced-motion:reduce){#draw-dialog .slider-art>.slider-pack-hint .pack-hint-ring::after{animation:none;opacity:0}}
 #draw-dialog .slider-art>.slider-pack-hint::before,#draw-dialog .slider-art>.slider-pack-hint::after{display:none;content:none}
-#draw-dialog .slider-art>.slider-pack-hint{animation:packHintEnter .36s 1.08s ease-out both}
+#draw-dialog .slider-art>.slider-pack-hint{animation:packHintEnter .36s 1.08s ease-out both,packHintSoftPulse 3.6s 1.44s ease-in-out infinite}
 @keyframes packHintEnter{from{opacity:0}to{opacity:1}}
-#draw-dialog .slider-art>.slider-pack-hint .pack-hint-ring::after{animation-delay:1.44s;animation-fill-mode:backwards}
+@keyframes packHintSoftPulse{0%,100%{scale:1}50%{scale:1.08}}
 @media(prefers-reduced-motion:reduce){#draw-dialog .slider-art>.slider-pack-hint{animation:none;opacity:1}}
 @media(min-width:761px){#draw-dialog .slider-art>.slider-pack-hint{left:calc(50% + clamp(24px,3vw,48px))}}
 @media(max-width:760px){#draw-dialog .slider-art>.slider-pack-hint{top:calc(50% + 12px)}}
@@ -2103,7 +2100,7 @@ let wheelTear=0,wheelTimer=null;
 stage.addEventListener('wheel',e=>{if(wrapper.disabled||!stage.classList.contains('pack-selected')||Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;e.preventDefault();const dx=Math.abs(e.deltaX)*(e.deltaMode===1?16:1);wheelTear+=dx;wrapper.classList.add('dragging');wrapper.style.setProperty('--tear-x',Math.min(wheelTear,100)+'px');clearTimeout(wheelTimer);if(wheelTear>=tearThreshold()){completeTear(wheelTear);wheelTear=0}else wheelTimer=setTimeout(()=>{wheelTear=0;clearTear()},180)},{passive:false});
 wrapper.addEventListener('click',e=>{if(suppressClick&&e.detail!==0){e.preventDefault();e.stopImmediatePropagation();suppressClick=false}},true);
 const hint=wrapper.querySelector('.pack-gesture-hint');hint.replaceChildren(document.createTextNode('向右滑動或點擊卡包開啟'));const arrow=document.createElement('span');arrow.className='pack-swipe-arrow';arrow.textContent='→';arrow.setAttribute('aria-hidden','true');hint.append(arrow);
-const pickerHint=picker.querySelector('.slider-pack-hint'),pickerHintRing=document.createElement('span');pickerHintRing.className='pack-hint-ring';pickerHint.replaceChildren(document.createTextNode('點擊開啟卡包'),pickerHintRing);pickerHint.setAttribute('aria-hidden','true');picker.querySelector('.slider-art').append(pickerHint);tilt.setAttribute('aria-label','點擊開啟卡包');
+const pickerHint=picker.querySelector('.slider-pack-hint');pickerHint.textContent='點擊開啟卡包';pickerHint.setAttribute('aria-hidden','true');picker.querySelector('.slider-art').append(pickerHint);tilt.setAttribute('aria-label','點擊開啟卡包');
 wrapper.addEventListener('animationend',e=>{if(e.animationName==='packSealPull')wrapper.style.removeProperty('--tear-start')});
 const v3Unpeeled=document.createElement('img');v3Unpeeled.className='v3-unpeeled';v3Unpeeled.alt='';v3Unpeeled.setAttribute('aria-hidden','true');wrapper.append(v3Unpeeled);
 const v3Foil=document.createElement('canvas');v3Foil.className='v3-foil-canvas';v3Foil.setAttribute('aria-hidden','true');wrapper.append(v3Foil);
