@@ -1456,8 +1456,8 @@ html.pack-view{overflow-x:clip}
 @media(prefers-reduced-motion:reduce){#draw-dialog #pack-summary:not([hidden]){animation:none}}
 #draw-dialog .slider-pack-hit .slider-tilt,#draw-dialog .slider-pack-hit .slider-tilt.is-tilting{transform:perspective(560px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) rotateZ(-5deg);transform-origin:center}
 #draw-dialog .slider-art .slider-tilt img{filter:drop-shadow(10px 20px 20px #0009)}
-#draw-dialog .slider-pack-hit .slider-tilt::before{content:none;display:none}
-#draw-dialog .slider-art .slider-tilt img{position:relative;z-index:1;filter:drop-shadow(8px 18px 14px #0007)}
+#draw-dialog .slider-pack-hit .slider-tilt::before{content:"";position:absolute;display:block;inset:5% 7% 5% 7%;border-radius:9px;box-shadow:9px 18px 24px #0006;pointer-events:none;z-index:0}
+#draw-dialog .slider-art .slider-tilt img{position:relative;z-index:1;filter:none}
 @media(min-width:761px){#draw-dialog .slider-pack-hit{translate:clamp(24px,3vw,48px) 0}}
 @media(prefers-reduced-motion:reduce){#draw-dialog .slider-pack-hit .slider-tilt,#draw-dialog .slider-pack-hit .slider-tilt.is-tilting{transform:rotateZ(-5deg);transition:none}}
 #draw-dialog .pack-card.revealed{transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .28s ease-out;transform-origin:center}
