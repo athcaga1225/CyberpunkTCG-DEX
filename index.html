@@ -1149,6 +1149,15 @@
         #draw-dialog .pack-art{background:transparent;clip-path:none}
         #draw-dialog .pack-city{display:none}
         #draw-dialog .pack-art-label{color:#b8bec2}
+        /* Refine pack composition without changing the opening flow. */
+        #draw-dialog .draw-head h2{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+        #draw-dialog #pack-stage{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+        #draw-dialog .pack-copy{width:min(100%,440px);box-sizing:border-box;justify-self:end;padding:36px 40px 36px 24px}
+        #draw-dialog .pack-art{width:min(100%,490px);justify-self:start;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:20px}
+        #draw-dialog .pack-art-label{position:static;text-align:center}
+        #draw-dialog #pack-wrapper{width:clamp(195px,21vw,280px);margin:0 0 12px}
+        @media(max-width:760px){#draw-dialog #pack-stage{grid-template-columns:1fr}#draw-dialog .pack-copy{width:100%;justify-self:stretch;padding:24px 20px 30px}#draw-dialog .pack-art{width:100%;justify-self:stretch;min-height:360px;gap:16px}#draw-dialog #pack-wrapper{width:210px;margin:0}}
+        @media(max-width:360px){#draw-dialog #pack-wrapper{width:185px}}
     </style>
 </head>
 
