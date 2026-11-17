@@ -1519,12 +1519,10 @@ body,button,input,select{font-family:var(--dex-font)}
 .hero-slider-controls button:active,#draw-dialog .slider-nav button:active{opacity:.55}
 @media(min-width:761px){#draw-dialog .slider-nav{padding-left:calc(2 * clamp(24px,3vw,48px))}}
 @media(max-width:680px){.hero-card{width:clamp(88px,28vw,160px)}}
-/* Fade the yellow picker background into the existing dark opening screen. */
-html.pack-view.pack-opening #draw-dialog{isolation:isolate}
-html.pack-view.pack-opening #draw-dialog::before{content:"";position:absolute;inset:0 auto 0 50%;width:100vw;transform:translateX(-50%);z-index:-1;pointer-events:none;background:var(--dex-yellow,#fcee09);clip-path:polygon(63% 0,100% 0,100% 100%,42% 100%);animation:packBackgroundOut .3s ease-out both}
-@media(max-width:760px){html.pack-view.pack-opening #draw-dialog::before{clip-path:none}}
+/* Fade the existing picker before changing layout; never recreate its yellow background. */
+html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;animation:packBackgroundOut .3s ease-out both}
+@media(min-width:761px){html.pack-view #draw-dialog.picker-leaving:has(#pack-stage:not([hidden]):not(.pack-selected))::before{animation:packBackgroundOut .3s ease-out both}}
 @keyframes packBackgroundOut{from{opacity:1}to{opacity:0}}
-@media(prefers-reduced-motion:reduce){html.pack-view.pack-opening #draw-dialog::before{animation:none;opacity:0}}
 </style>
 </head>
 
@@ -1988,7 +1986,7 @@ picker.querySelector('.slider-art-index').textContent=String(pickerIndex+1).padS
 picker.querySelector('.slider-next').onclick=()=>renderPicker(pickerIndex+1);
 let pickerSwiped=false;
 function showPack(){wrapper.style.removeProperty('--tear-start');suppressClick=false;window.scrollTo(0,0);stage.classList.add('pack-selected');backPicker.hidden=false;document.documentElement.classList.add('pack-opening');wrapper.focus({preventScroll:true})}
-function choosePack(){selectEdition(editions[pickerIndex]);showPack()}
+function choosePack(){if(dialog.classList.contains('picker-leaving'))return;selectEdition(editions[pickerIndex]);if(matchMedia('(prefers-reduced-motion: reduce)').matches){showPack();return}dialog.classList.add('picker-leaving');setTimeout(()=>{showPack();dialog.classList.remove('picker-leaving')},300)}
 picker.querySelector('.slider-tilt').onclick=()=>{if(pickerSwitching)return;if(pickerSwiped){pickerSwiped=false;return}choosePack()};
 picker.querySelector('.slider-art').addEventListener('pointerdown',e=>{if(e.pointerType==='touch'){pickerSwiped=false;pickerTouch={x:e.clientX,y:e.clientY}}});
 picker.querySelector('.slider-art').addEventListener('pointerup',e=>{if(pickerTouch){const dx=e.clientX-pickerTouch.x,dy=e.clientY-pickerTouch.y;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.3){pickerSwiped=true;renderPicker(pickerIndex+(dx<0?1:-1));setTimeout(()=>pickerSwiped=false,350)}pickerTouch=null}});
