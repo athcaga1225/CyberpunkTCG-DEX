@@ -1503,9 +1503,12 @@ body,button,input,select{font-family:var(--dex-font)}
 @media(max-width:760px){#draw-dialog .slider-composition{justify-content:center}}
 .hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;margin-top:26px;animation-delay:.34s!important}
 .hero-actions .hero-action{margin:0}
-.hero-actions #open-draw{background:transparent;color:var(--dex-yellow);clip-path:none;min-width:0;padding:12px 0;gap:10px}
-.hero-actions #open-draw:hover,.hero-actions #open-draw:focus-visible{background:transparent;color:var(--dex-text)}
-@media(max-width:680px){.hero-actions{margin-top:17px;gap:8px 18px}.hero-actions #open-draw{padding:12px 0}}
+.hero-actions .hero-action{box-sizing:border-box;min-width:0;white-space:nowrap}
+.hero-actions #open-draw{background:transparent;color:var(--dex-text);clip-path:none;border:1px solid var(--dex-muted);padding:11px 17px;gap:18px}
+.hero-actions #open-draw:hover,.hero-actions #open-draw:focus-visible{background:transparent;color:var(--dex-text);border-color:var(--dex-text)}
+@media(max-width:680px){.hero-actions{margin-top:17px;gap:8px 12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.hero-actions .hero-action,.hero-actions #open-draw{padding:10px 12px;gap:8px}.hero-actions #open-draw{padding:9px 11px}}
+.collection-search .search button.primary .dex-arrow{transform:none;align-self:center}
+.collection-search .search button.primary .dex-arrow svg{display:block;width:18px;height:18px}
 /* Consistent, centered carousel navigation: chevron / page count / chevron. */
 .hero-slider-controls,#draw-dialog .slider-nav{display:flex;justify-content:center;align-items:center;gap:16px;color:#101214;font-family:var(--dex-font);font-size:14px;font-weight:700;line-height:1.4}
 .hero-slider-controls{left:0;right:0}
@@ -1542,7 +1545,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
                 <p class="hero-subtitle">卡牌價格追蹤</p>
                 <p class="intro">掌握夜城卡牌市場行情，查詢 Beta 與 Retail 版本的市場參考價及價格走勢。</p>
                 
-                <div class="hero-actions"><a href="#browse" class="hero-action">查詢卡牌價格 <span class="dex-arrow dex-arrow-down" aria-hidden="true">↘</span></a><a href="?view=pack" class="hero-action" id="open-draw">開卡包模擬 <span class="dex-arrow dex-arrow-up" aria-hidden="true">↗</span></a></div>
+                <div class="hero-actions"><a href="#browse" class="hero-action">查詢卡牌價格 <span class="dex-arrow dex-arrow-down" aria-hidden="true">↘</span></a><a href="?view=pack" class="hero-action" id="open-draw">模擬開啟卡包 <span class="dex-arrow dex-arrow-up" aria-hidden="true">↗</span></a></div>
                 <div class="hero-index">WELCOME TO NIGHT CITY</div>
             </div>
             <div class="hero-art">
@@ -1561,7 +1564,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
             <div class="collection-search">
                 <div class="collection-search-head"><span class="collection-step-label">01 / SEARCH · 搜尋卡片</span></div>
                 <div class="search"><input id="query" autocomplete="off" placeholder="135、157、171"
-                        aria-label="輸入卡號或卡名"><button class="primary" id="search">搜尋卡片 <span class="dex-arrow dex-arrow-up" aria-hidden="true">↗</span></button></div>
+                        aria-label="輸入卡號或卡名"><button class="primary" id="search">搜尋卡片 <span class="dex-arrow dex-arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M8 6h10v10"/></svg></span></button></div>
                 <div id="card-match-list" class="card-match-list" hidden aria-label="符合的卡片"></div>
                 <div class="row space" style="margin-top:12px;flex-wrap:wrap">
                     <div class="small" id="loadstate">載入資料中…</div>
