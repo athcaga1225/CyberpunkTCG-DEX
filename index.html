@@ -1447,6 +1447,7 @@ html.pack-view{overflow-x:clip}
 @media(max-width:760px){html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){padding-top:0}#draw-dialog #pack-stage:not(.pack-selected){overflow:visible}#draw-dialog .slider-visual::before{content:"";position:absolute;z-index:-1;inset:-12px auto 0;left:50%;width:100vw;transform:translateX(-50%);background:#fcee09;clip-path:polygon(0 0,100% 0,100% 90%,0 100%);pointer-events:none}#draw-dialog .slider-nav{padding-bottom:60px}}
 /* Subtle, centered perspective: the edge under the pointer recedes. */
 #draw-dialog .slider-pack-hit .slider-tilt.is-tilting{transition:transform .14s ease-out}
+#draw-dialog #pack-results{background:transparent}
 #draw-dialog .slider-pack-hit .slider-tilt,#draw-dialog .slider-pack-hit .slider-tilt.is-tilting{transform:perspective(560px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) rotateZ(-5deg);transform-origin:center}
 #draw-dialog .slider-art .slider-tilt img{filter:drop-shadow(10px 20px 20px #0009)}
 @media(min-width:761px){#draw-dialog .slider-pack-hit{translate:clamp(24px,3vw,48px) 0}}
@@ -1923,7 +1924,7 @@ picker.querySelector('.slider-art').addEventListener('pointerdown',e=>{if(e.poin
 picker.querySelector('.slider-art').addEventListener('pointerup',e=>{if(pickerTouch){const dx=e.clientX-pickerTouch.x,dy=e.clientY-pickerTouch.y;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.3){pickerSwiped=true;renderPicker(pickerIndex+(dx<0?1:-1));setTimeout(()=>pickerSwiped=false,350)}pickerTouch=null}});
 picker.querySelector('.slider-art').addEventListener('pointercancel',()=>pickerTouch=null);const backPicker=stage.querySelector('.picker-back');dialog.querySelector('.draw-head').prepend(backPicker);backPicker.hidden=true;backPicker.onclick=()=>{if(!wrapper.disabled){backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');reset()}};renderPicker(Math.max(0,editions.indexOf(activeEdition)),false);
 const tiltSurface=picker.querySelector('.slider-pack-hit'),tilt=picker.querySelector('.slider-tilt');
-function applyHoverTilt(e,target,rect,range=24){if(e.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const clamp=v=>Math.max(-.5,Math.min(.5,v));const x=clamp((e.clientX-rect.left)/rect.width-.5),y=clamp((e.clientY-rect.top)/rect.height-.5);target.style.setProperty('--rx',(-y*range)+'deg');target.style.setProperty('--ry',(x*range)+'deg');target.classList.add('is-tilting')}
+function applyHoverTilt(e,target,rect,range=16){if(e.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const clamp=v=>Math.max(-.5,Math.min(.5,v));const x=clamp((e.clientX-rect.left)/rect.width-.5),y=clamp((e.clientY-rect.top)/rect.height-.5);target.style.setProperty('--rx',(-y*range)+'deg');target.style.setProperty('--ry',(x*range)+'deg');target.classList.add('is-tilting')}
 function resetHoverTilt(target){target.style.setProperty('--rx','0deg');target.style.setProperty('--ry','0deg');target.classList.remove('is-tilting')}
 tiltSurface.addEventListener('pointermove',e=>applyHoverTilt(e,tilt,tiltSurface.getBoundingClientRect()));tiltSurface.addEventListener('pointerleave',()=>resetHoverTilt(tilt));
 let hoveredCard=null;
