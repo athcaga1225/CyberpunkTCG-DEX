@@ -1435,6 +1435,15 @@ html.pack-view.pack-opening #draw-dialog .pack-gesture-hint{max-width:none;white
 /* Soft reflected highlights on the printed plastic wrapper, clipped to the pack. */
 #draw-dialog .slider-tilt::after,#draw-dialog #pack-wrapper .pack-top::after,#draw-dialog #pack-wrapper .pack-body::after{content:"";display:block;position:absolute;inset:0;width:100%;height:100%;pointer-events:none;background:linear-gradient(108deg,transparent 10%,#ffffff10 22%,#ffffff35 30%,#ffffff0b 39%,transparent 48%,transparent 73%,#ffffff24 82%,transparent 90%),radial-gradient(ellipse at 28% 10%,#ffffff30,transparent 48%);mix-blend-mode:screen;opacity:.58;transform:none;mask-image:var(--pack-mask);-webkit-mask-image:var(--pack-mask);mask-size:contain;-webkit-mask-size:contain;mask-position:center;-webkit-mask-position:center;mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat}
 #draw-dialog .slider-tilt.is-tilting::after{opacity:.84}
+/* Solid Cyberpunk yellow panel, with a diagonal inner edge. */
+#draw-dialog .slider-tilt::after,#draw-dialog #pack-wrapper .pack-top::after,#draw-dialog #pack-wrapper .pack-body::after{display:none}
+#draw-dialog .slider-art::before,#draw-dialog .slider-art::after{display:none}
+#draw-dialog .slider-visual::before{content:"";position:absolute;z-index:-1;inset:-28px calc(-1 * (max(32px,(100vw - 1220px)/2) + clamp(12px,4vw,60px))) -28px -6%;background:#fcee09;clip-path:polygon(20% 0,100% 0,100% 100%,0 100%);pointer-events:none}
+html.pack-view{overflow-x:clip}
+#draw-dialog .slider-nav>span{color:#101214}
+#draw-dialog .slider-nav button{color:#101214;border-color:#101214}
+#draw-dialog .slider-nav .slider-next,#draw-dialog .slider-nav button:hover{background:#101214;color:#fcee09;border-color:#101214}
+@media(max-width:760px){#draw-dialog .slider-visual::before{inset:-12px -16px 0;clip-path:polygon(0 0,100% 0,100% 95%,0 100%)}#draw-dialog .slider-nav{padding-bottom:26px}}
 /* Subtle, centered perspective: the edge under the pointer recedes. */
 #draw-dialog .slider-pack-hit .slider-tilt.is-tilting{transition:transform .14s ease-out}
 #draw-dialog .pack-card.revealed{transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .28s ease-out;transform-origin:center}
