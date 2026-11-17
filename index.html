@@ -1210,6 +1210,13 @@
 #draw-dialog #pack-results{position:relative;isolation:isolate}
 #draw-dialog #pack-wrapper{margin-top:24px}
 #draw-dialog .pack-count-label{display:inline-block;vertical-align:middle;font:700 12px ui-monospace,monospace;letter-spacing:.08em;color:#b8bec2;margin-left:8px}
+#draw-dialog #pack-stage{background:transparent}
+@media(min-width:761px){
+#draw-dialog #pack-stage{max-width:880px;margin:0 auto;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:center;min-height:clamp(460px,64vh,650px)}
+#draw-dialog .pack-copy{width:100%;justify-self:stretch;padding:28px 0 28px 24px}
+#draw-dialog .pack-art{width:100%;justify-self:stretch;min-height:0;overflow:visible}
+#draw-dialog #pack-wrapper{width:clamp(220px,21vw,280px);margin:24px 0 12px}
+}
 </style>
 </head>
 
