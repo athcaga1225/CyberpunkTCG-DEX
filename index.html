@@ -1221,6 +1221,23 @@
 #draw-dialog .pack-art::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:#fcee09;clip-path:polygon(0 76%,100% 9%,100% 34%,73% 52%,69% 52%,0 100%);}
 @media(min-width:761px){#draw-dialog .pack-art{min-height:clamp(420px,53vh,530px)}#draw-dialog .pack-art::before{inset:0 -8%;clip-path:polygon(0 77%,100% 8%,100% 32%,74% 50%,70% 50%,0 98%)}}
 @media(max-width:760px){#draw-dialog .pack-art::before{inset:8px 0 0;clip-path:polygon(0 75%,100% 7%,100% 33%,74% 51%,70% 51%,0 99%)}}
+
+/* Full-width desktop pack key visual. Shared pack actions stay unchanged. */
+@media(min-width:761px){
+#draw-dialog #pack-stage{position:relative;isolation:isolate;overflow:hidden;max-width:none;width:100%;min-height:clamp(540px,76vh,850px);grid-template-columns:minmax(0,46%) minmax(0,54%);gap:0;align-items:center;padding:0}
+#draw-dialog #pack-stage::before{content:"";position:absolute;inset:0;z-index:-3;pointer-events:none;background:linear-gradient(90deg,#0d0f11 0%,#0d0f11d9 35%,#0d0f1155 100%),url("https://images.wallpapersden.com/image/download/cyberpunk-2077-yellow-background_bGpqbmqUmZqaraWkpJRqZmdlrWdrbWU.jpg") right center/cover no-repeat;filter:grayscale(1);opacity:.33;mask-image:linear-gradient(transparent,#000 18%,#000 82%,transparent)}
+#draw-dialog #pack-stage::after{content:"NIGHT CITY";position:absolute;z-index:-2;left:1%;right:1%;top:50%;transform:translateY(-50%);font:900 clamp(95px,17vw,260px)/.9 system-ui,sans-serif;letter-spacing:-.09em;white-space:nowrap;color:#ffffff0b;pointer-events:none}
+#draw-dialog .pack-copy{position:relative;z-index:2;width:100%;padding:40px 0 40px clamp(24px,5vw,78px)}
+#draw-dialog .pack-copy h3{font-size:clamp(42px,5.4vw,84px);margin-bottom:32px}
+#draw-dialog .pack-count-label{display:block;margin:13px 0 0;font-size:13px}
+#draw-dialog .pack-art{position:static;width:100%;min-height:0;isolation:auto;overflow:visible;justify-self:stretch;z-index:auto}
+#draw-dialog .pack-art::before{inset:0;z-index:-1;background:#fcee09;clip-path:polygon(34% 100%,73% 0,91% 0,52% 100%,47% 100%,51% 89%,47% 89%,43% 100%)}
+#draw-dialog #pack-wrapper{width:clamp(230px,min(30vw,46vh),405px);margin:36px 0 12px;transform:translateX(2%) rotate(-5deg);transition:transform .32s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 14px 22px #0009)}
+#draw-dialog #pack-wrapper.torn{transform:translateX(2%) rotate(0)}
+#draw-dialog .pack-gesture-hint{transform:translate(-50%,-100%) rotate(5deg)}
+}
+@media(min-width:761px) and (hover:hover) and (pointer:fine){#draw-dialog #pack-wrapper:not(:disabled):hover{transform:translate(2%,-12px) rotate(0) scale(1.035)}#draw-dialog #pack-wrapper:not(:disabled):hover .pack-gesture-hint{transform:translate(-50%,-100%) rotate(0)}}
+@media(prefers-reduced-motion:reduce){#draw-dialog #pack-wrapper{transition:none}}
 </style>
 </head>
 
