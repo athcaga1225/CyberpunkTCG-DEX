@@ -1526,6 +1526,8 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 #draw-dialog .slider-composition b small{font-size:12px;font-weight:600;margin-left:3px;letter-spacing:0}
 .collection-search .search button.primary .dex-arrow{transform:none;align-self:center}
 .collection-search .search button.primary .dex-arrow svg{display:block;width:18px;height:18px}
+.collection-search #query[aria-invalid="true"]{border-color:#ff606f;box-shadow:0 0 0 1px #ff606f}
+.collection-search #loadstate.search-error{color:#ff7b88;border-left:2px solid #ff606f;padding:8px 10px;background:#ff606f0c}
 /* Consistent, centered carousel navigation: chevron / page count / chevron. */
 .hero-slider-controls,#draw-dialog .slider-nav{display:flex;justify-content:center;align-items:center;gap:16px;color:#101214;font-family:var(--dex-font);font-size:14px;font-weight:700;line-height:1.4}
 .hero-slider-controls{left:0;right:0}
@@ -1636,7 +1638,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
                         aria-label="輸入卡號或卡名"><button class="primary" id="search">搜尋卡片 <span class="dex-arrow dex-arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M8 6h10v10"/></svg></span></button></div>
                 <div id="card-match-list" class="card-match-list" hidden aria-label="符合的卡片"></div>
                 <div class="row space" style="margin-top:12px;flex-wrap:wrap">
-                    <div class="small" id="loadstate">載入資料中…</div>
+                    <div class="small" id="loadstate" role="status" aria-live="polite">載入資料中…</div>
                 </div>
             </div>
             <div class="collection-grid">
@@ -1812,6 +1814,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
             saveCollection();
             $('result').classList.remove('open'); selected = null;
             
+            setSearchError('');
             $('loadstate').textContent = collectionStatusText();
             if ($('query').value.trim()) show($('query').value, false);
         }
@@ -1860,9 +1863,18 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
             list.hidden = false;
         }
         
-        $('query').addEventListener('input', clearCardMatches);
+        function setSearchError(message) {
+            const invalid=Boolean(message), field=$('query'), status=$('loadstate');
+            field.setAttribute('aria-invalid',String(invalid));
+            field.setAttribute('aria-describedby','loadstate');
+            status.classList.toggle('search-error',invalid);
+            if(invalid) status.textContent=message;
+        }
+        $('query').addEventListener('input', () => {clearCardMatches();if($('query').getAttribute('aria-invalid')==='true'){$('loadstate').textContent=collectionStatusText();setSearchError('')}});
         function show(query, scroll) {
             clearCardMatches();
+            setSearchError('');
+            if(!String(query).trim()){setSearchError('請輸入卡號或卡名。');return}
             
             const code = activeEdition === "retail" ? normalize(query).replace(/^B(?=\d{3}[AB]?$)/, "") : normalize(query), cards = currentCatalog();
             let entry = cards[code];
@@ -1886,7 +1898,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
                     return;
                 }
                 $('result').classList.remove('open'); selected = null;
-                $('loadstate').textContent = matches.length > 1 ? "找到多張同名卡，請輸入完整卡號。" : activeSection === "starter" ? "此初始牌組僅收錄 B001～B020；" + code + " 不在目前選擇的牌組中。請檢查卡號或切換系列。" : "此系列查不到卡片，請檢查卡號或切換系列。"; return;
+                setSearchError(activeSection === "starter" ? "找不到卡片：" + code + " 不在目前選擇的初始牌組中（B001～B020）。請檢查卡號或切換系列。" : "找不到卡片。請檢查卡號、卡名或切換系列。"); return;
             }
             $('query').value = '';
             const changedCard = selected !== code || !$('result').classList.contains('open');
@@ -1919,7 +1931,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
             }
             if (scroll) $('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-        $('search').onclick = () => $('query').value && show($('query').value, true);
+        $('search').onclick = () => show($('query').value, true);
         $('query').onkeydown = e => { if (e.key === "Enter") show($('query').value, true) };
         function refreshTwdOnly() {
             if (!selected) return;
