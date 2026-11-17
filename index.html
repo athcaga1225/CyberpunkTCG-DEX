@@ -1538,8 +1538,9 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 #pack-zoom-image{border-radius:4.2% / 3%;clip-path:inset(0 round 4.2% / 3%)}
 @media(max-width:760px){#draw-dialog #pack-grid{row-gap:4px}#draw-dialog .pack-card-label{box-sizing:content-box;height:19.2px;min-height:19.2px;padding:2px 0;white-space:nowrap;overflow-wrap:normal;line-height:19.2px}#draw-dialog .pack-card[data-rarity^="Iconic"]+.pack-card-label{font-size:clamp(8px,2.5vw,10px)}}
 /* V3 mobile-only cinematic opening: intact pack, approach, then physical tear. */
-#draw-dialog .v3-skip{display:none}
+#draw-dialog .v3-stack{display:none}
 @media(max-width:760px) and (prefers-reduced-motion:no-preference){
+  html.pack-opening #draw-dialog.v3-opening-active #pack-stage.pack-selected{overflow:visible}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper{transform:none;transform-origin:center;transition:none}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach{animation:v3PackApproach .52s cubic-bezier(.35,.02,.19,1) both}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach.torn{transform:translateY(var(--v3-drop,25vh));animation:none}
@@ -1552,9 +1553,13 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
   #draw-dialog #pack-wrapper.v3-mesh.torn .pack-top,#draw-dialog #pack-wrapper.v3-mesh.torn .v3-unpeeled{display:none}
   #draw-dialog #pack-wrapper.v3-mesh.torn .pack-body{clip-path:polygon(0 18%,5% 18.2%,10% 17.7%,15% 18.3%,20% 17.8%,25% 18.2%,30% 17.7%,35% 18.2%,40% 17.8%,45% 18.3%,50% 17.7%,55% 18.2%,60% 17.8%,65% 18.3%,70% 17.7%,75% 18.2%,80% 17.8%,85% 18.3%,90% 17.7%,95% 18.2%,100% 18%,100% 100%,0 100%)}
   #draw-dialog #pack-wrapper.v3-mesh.torn .v3-foil-canvas{display:block}
-  #draw-dialog #pack-wrapper.v3-approach.torn .pack-emerging{animation:v3CardLift .8s .48s cubic-bezier(.18,.72,.25,1) both}
+  #draw-dialog #pack-wrapper.v3-approach.torn .pack-emerging{display:none}
+  #draw-dialog #pack-wrapper.v3-approach.torn .v3-stack{display:block;position:absolute;inset:10.34% 10% auto;aspect-ratio:480/672;z-index:0;pointer-events:none;animation:v3CardLift .8s .48s cubic-bezier(.18,.72,.25,1) both}
+  .v3-stack>span{position:absolute;inset:0;border-radius:8px;overflow:hidden;background:#fcee09;box-shadow:0 0 0 1px #111,0 3px 8px #0008}
+  .v3-stack>span>img{display:block;width:100%;height:100%;object-fit:cover;transform:scale(1.42)}
+  .v3-stack>span:nth-child(1){transform:translate(-7%,-5%) rotate(-6deg)}
+  .v3-stack>span:nth-child(2){transform:translate(7%,-3%) rotate(5deg)}
   #draw-dialog #pack-wrapper.v3-approach.torn::after{display:none}
-  #draw-dialog .v3-skip:not([hidden]){display:block;position:fixed;bottom:max(18px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:10;background:#191b1e;color:#fff;border:1px solid #ffffff65;border-radius:20px;padding:8px 18px;font:600 12px var(--dex-font);touch-action:manipulation}
 }
 .v3-unpeeled{display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:3;pointer-events:none}
 .v3-foil-canvas{display:none;position:absolute;left:-50%;top:-45%;width:200%;height:90%;z-index:4;pointer-events:none}
@@ -2012,7 +2017,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 (()=>{const dialog=document.getElementById('draw-dialog'),stage=document.getElementById('pack-stage'),wrapper=document.getElementById('pack-wrapper'),results=document.getElementById('pack-results'),grid=document.getElementById('pack-grid'),progress=document.getElementById('pack-progress'),instruction=document.getElementById('pack-instruction'),summary=document.getElementById('pack-summary');let pack=[],timer=null,edition='beta',recorded=false,revealTimers=[],revealRun=0,revealingAll=false,testRarity='';const testSelect=document.getElementById('pack-test-mode');const devMode=new URLSearchParams(location.search).get('dev')==='1'&&location.hostname.startsWith('v2.');testSelect.closest('.pack-test-control').hidden=!devMode;const back='https://beyondtcg.co.uk/cdn/shop/files/B098_back.webp?width=900',legendBack='https://chromeandgigs.com/card-backs/legend.png',isLegend=code=>{const n=Number(String(code).replace(/^B/i,'').replace(/[AB]$/i,''));return (n>=1&&n<=5)||(n>=36&&n<=40)||(n>=71&&n<=75)||(n>=106&&n<=110)||(n>=141&&n<=158)||n===168||n===169},art={beta:'https://images.ctfassets.net/udihssg1zwbu/6ac4CbcC9gZqe8nv23hsAS/e6e196a4c287c4fff1a5530323bcb2a4/Beta_Booster_Pack.webp',retail:'https://images.ctfassets.net/udihssg1zwbu/2A5q9Be7J8g9O7t7BCmai4/ecd31d261ab12fbebb67b6beb5232117/Retail_Booster_Pack.webp'};
 const statsNode=document.getElementById('pack-stats');const storageKey='cyberdex-pack-stats-v1';let saved={};try{saved=JSON.parse(localStorage.getItem(storageKey)||'{}')||{}}catch{};function stats(){return saved[edition]??=( {packs:0,cards:{},hits:0} )}function renderStats(){const st=stats(),pool=buildPool(),count=Object.keys(st.cards).length;statsNode.textContent=edition.toUpperCase()+' · 已完成 '+st.packs+' 包 · 收藏 '+count+' / '+(pool.length||'—')+' · Iconic '+st.hits+' 張'}function record(){if(recorded||testRarity)return;recorded=true;const st=stats();st.packs++;for(const x of pack){st.cards[x.code]=(st.cards[x.code]||0)+1;if(x.entry.rarity.startsWith('Iconic'))st.hits++}try{localStorage.setItem(storageKey,JSON.stringify(saved))}catch{}renderStats()}
 function selectEdition(value){edition=value;wrapper.style.setProperty('--pack-mask',`url("${art[value]}")`);wrapper.querySelectorAll('.pack-intact,.pack-top img,.pack-body img').forEach(img=>img.src=art[value]);stage.querySelectorAll('[data-pack-edition]').forEach(b=>{const on=b.dataset.packEdition===value;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on))});renderStats()}
-function cancelReveal(){revealRun++;revealTimers.forEach(clearTimeout);revealTimers=[];revealingAll=false}function reset(){stage.classList.remove('pack-selected');clearTimeout(timer);cancelReveal();recorded=false;testRarity='';testSelect.disabled=false;document.getElementById('pack-reveal-all').disabled=false;document.getElementById('pack-reveal-all').textContent='全部翻開 ↗';wrapper.classList.remove('torn','dragging','v3-approach','v3-ready');if(typeof v3Skip!=='undefined'){v3Skip.hidden=true;hint.firstChild.textContent='向右滑動或點擊卡包開啟'};wrapper.style.removeProperty('--tear-x');wrapper.style.removeProperty('--tear-start');wrapper.disabled=false;stage.hidden=false;results.hidden=true;summary.hidden=true;grid.replaceChildren();instruction.textContent='';pack=[];renderStats()}
+function cancelReveal(){revealRun++;revealTimers.forEach(clearTimeout);revealTimers=[];revealingAll=false}function reset(){stage.classList.remove('pack-selected');clearTimeout(timer);cancelReveal();recorded=false;testRarity='';testSelect.disabled=false;document.getElementById('pack-reveal-all').disabled=false;document.getElementById('pack-reveal-all').textContent='全部翻開 ↗';wrapper.classList.remove('torn','dragging','v3-approach','v3-ready');dialog.classList.remove('v3-opening-active');wrapper.style.removeProperty('--tear-x');wrapper.style.removeProperty('--tear-start');wrapper.disabled=false;stage.hidden=false;results.hidden=true;summary.hidden=true;grid.replaceChildren();instruction.textContent='';pack=[];renderStats()}
 function buildPool(){return Object.entries(edition==='beta'?catalog:retailCards).flatMap(([code,entry])=>{if(!/^(B)?\d{3}[AB]?$/.test(code)||entry.set||entry.rarity==='Nova Rare')return [];const img=edition==='beta'?cardImages[code]:(retailIconicVerified[code]||retailImages[code]);return [{code,entry,img,price:(edition==='beta'?prices:retailPrices)[code]?.usd}]})}
 function pick(pool,rarities,count){const candidates=pool.filter(x=>rarities.includes(x.entry.rarity));if(candidates.length<count)throw Error('卡池資料不足');const out=[];for(let i=0;i<count;i++)out.push(candidates.splice(Math.floor(Math.random()*candidates.length),1)[0]);return out}
 function makePack(){const pool=buildPool();if(testRarity==='God Pack'||(!testRarity&&Math.random()<1/10000))return [...pick(pool,['Iconic Legend'],6),...pick(pool,['Iconic Other'],4),...pick(pool,['Iconic Secret'],2)];const out=[...pick(pool,['Common'],7),...pick(pool,['Uncommon'],3)];if(testRarity){const rarities=testRarity==='Iconic'?['Iconic Legend','Iconic Other']:[testRarity];const hit=pick(pool,rarities,1)[0];return [...out,...pick(pool.filter(x=>x.code!==hit.code),['Rare'],1),hit]}const slot=p=>1-Math.sqrt(1-p),isr=slot(1/400);const special=[['Epic',slot(1/4)],['Secret',slot(1/24)],['Iconic Secret',isr],['Iconic',slot(1/18)-isr]];let hits=[];for(let i=0;i<2;i++){let r=Math.random(),type='Rare';for(const [name,p] of special){r-=p;if(r<0){type=name;break}}let rarities=type==='Iconic'?['Iconic Legend','Iconic Other']:[type];hits.push(...pick(pool.filter(x=>!hits.some(y=>y.code===x.code)),rarities,1))}return [...out,...hits]}
@@ -2054,6 +2059,7 @@ picker.querySelector('.slider-pack-hint').replaceChildren();picker.querySelector
 wrapper.addEventListener('animationend',e=>{if(e.animationName==='packSealPull')wrapper.style.removeProperty('--tear-start')});
 const v3Unpeeled=document.createElement('img');v3Unpeeled.className='v3-unpeeled';v3Unpeeled.alt='';v3Unpeeled.setAttribute('aria-hidden','true');wrapper.append(v3Unpeeled);
 const v3Foil=document.createElement('canvas');v3Foil.className='v3-foil-canvas';v3Foil.setAttribute('aria-hidden','true');wrapper.append(v3Foil);
+const v3Stack=document.createElement('span');v3Stack.className='v3-stack';v3Stack.setAttribute('aria-hidden','true');for(let i=0;i<3;i++){const face=document.createElement('span');face.append(wrapper.querySelector('.pack-emerging img').cloneNode(true));v3Stack.append(face)}wrapper.append(v3Stack);
 let v3FoilFrame=0;
 function stopFoil(){cancelAnimationFrame(v3FoilFrame);v3FoilFrame=0;wrapper.classList.remove('v3-mesh')}
 function startFoil(){
@@ -2064,7 +2070,7 @@ function startFoil(){
   const fit=Math.min(w/image.naturalWidth,h/image.naturalHeight),iw=image.naturalWidth*fit,ih=image.naturalHeight*fit,ix=(w-iw)/2,iy=(h-ih)/2;
   const seam=[18,18.2,17.7,18.3,17.8,18.2,17.7,18.2,17.8,18.3,17.7,18.2,17.8,18.3,17.7,18.2,17.8,18.3,17.7,18.2,18];
   const edge=x=>{const u=Math.max(0,Math.min(20,x/w*20)),i=Math.min(19,Math.floor(u));return h*(seam[i]+(seam[i+1]-seam[i])*(u-i))/100};
-  const radius=w*.13,slices=48,start=performance.now();
+  const radius=w*.13,slices=64,start=performance.now();
   wrapper.classList.add('v3-mesh');
   function draw(now){
     const elapsed=Math.max(0,now-start),p=Math.min(1,elapsed/620),front=w*(p*p*(3-2*p)),release=Math.max(0,Math.min(1,(elapsed-620)/210));
@@ -2076,19 +2082,16 @@ function startFoil(){
     for(let i=0;i<slices;i++){
       const a=front*i/slices,b=front*(i+1)/slices;if(b-a<.01)continue;const A=bend(a),B=bend(b),dx=(B.x-A.x)/(b-a),dy=(B.y-A.y)/(b-a);
       if(Math.abs(dx)<.015)continue;
-      ctx.save();ctx.transform(dx,dy,0,1,A.x-dx*a,A.y-dy*a);ctx.beginPath();ctx.moveTo(a,0);ctx.lineTo(b+.12,0);ctx.lineTo(b+.12,edge(b));ctx.lineTo(a,edge(a));ctx.closePath();ctx.clip();ctx.drawImage(image,ix,iy,iw,ih);
-      const angle=(A.angle+B.angle)/2,shine=Math.exp(-Math.pow((angle-1.35)/.42,2));
-      ctx.globalCompositeOperation='source-atop';ctx.fillStyle=angle>Math.PI/2?'rgba(222,225,230,'+(.35+.32*shine)+')':'rgba(255,255,255,'+(.08+.32*shine)+')';ctx.fillRect(Math.max(a,ix),Math.max(0,iy),Math.max(0,Math.min(b+.12,ix+iw)-Math.max(a,ix)),Math.max(edge(a),edge(b)));ctx.restore();
+      const l=Math.max(0,a-1),r=Math.min(front,b+1);
+      ctx.save();ctx.transform(dx,dy,0,1,A.x-dx*a,A.y-dy*a);ctx.beginPath();ctx.moveTo(l,0);ctx.lineTo(r,0);ctx.lineTo(r,edge(r));ctx.lineTo(l,edge(l));ctx.closePath();ctx.clip();ctx.drawImage(image,ix,iy,iw,ih);ctx.restore();
     }
     ctx.globalAlpha=1;
     if(elapsed<830)v3FoilFrame=requestAnimationFrame(draw);else{ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,v3Foil.width,v3Foil.height);v3FoilFrame=0}
   }
   draw(start);
 }
-const v3Skip=document.createElement('button');v3Skip.type='button';v3Skip.className='v3-skip';v3Skip.textContent='跳過動畫 →';v3Skip.hidden=true;dialog.append(v3Skip);
-function finishOpening(){clearTimeout(timer);stopFoil();v3Skip.hidden=true;wrapper.classList.remove('v3-approach','v3-ready');hint.firstChild.textContent='向右滑動或點擊卡包開啟';backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');display()}
-v3Skip.onclick=()=>{if(!v3Skip.hidden)finishOpening()};
-function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,mobile=matchMedia('(max-width:760px)').matches&&!reduced;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(mobile){const r=wrapper.getBoundingClientRect(),s=stage.getBoundingClientRect(),drop=Math.max(0,s.bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];wrapper.classList.add('v3-approach');v3Skip.hidden=false;timer=setTimeout(()=>{startFoil();wrapper.classList.add('torn');timer=setTimeout(finishOpening,1320)},520)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,reduced?0:1180)}}
+function finishOpening(){clearTimeout(timer);stopFoil();dialog.classList.remove('v3-opening-active');wrapper.classList.remove('v3-approach','v3-ready');backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');display()}
+function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,mobile=matchMedia('(max-width:760px)').matches&&!reduced;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(mobile){const r=wrapper.getBoundingClientRect(),bottom=document.body.getBoundingClientRect().bottom,drop=Math.max(0,bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];dialog.classList.add('v3-opening-active');wrapper.classList.add('v3-approach');timer=setTimeout(()=>{startFoil();wrapper.classList.add('torn');timer=setTimeout(finishOpening,1320)},520)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,reduced?0:1180)}}
 wrapper.onclick=openBooster;
 stage.querySelectorAll('[data-pack-edition]').forEach(b=>b.onclick=()=>{if(!wrapper.disabled)selectEdition(b.dataset.packEdition)});if(document.documentElement.classList.contains('pack-view')){document.title='CYBERDEX — 開啟卡包';reset();selectEdition(activeEdition)};
 document.getElementById('draw-again').onclick=()=>{const previousTest=testRarity;let next;try{next=makePack()}catch(e){return}reset();testRarity=previousTest;pack=next;wrapper.disabled=true;testSelect.disabled=true;display()};
