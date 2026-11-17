@@ -1435,6 +1435,11 @@ html.pack-view.pack-opening #draw-dialog .pack-gesture-hint{max-width:none;white
 /* Soft reflected highlights on the printed plastic wrapper, clipped to the pack. */
 #draw-dialog .slider-tilt::after,#draw-dialog #pack-wrapper .pack-top::after,#draw-dialog #pack-wrapper .pack-body::after{content:"";display:block;position:absolute;inset:0;width:100%;height:100%;pointer-events:none;background:linear-gradient(108deg,transparent 10%,#ffffff10 22%,#ffffff35 30%,#ffffff0b 39%,transparent 48%,transparent 73%,#ffffff24 82%,transparent 90%),radial-gradient(ellipse at 28% 10%,#ffffff30,transparent 48%);mix-blend-mode:screen;opacity:.58;transform:none;mask-image:var(--pack-mask);-webkit-mask-image:var(--pack-mask);mask-size:contain;-webkit-mask-size:contain;mask-position:center;-webkit-mask-position:center;mask-repeat:no-repeat;-webkit-mask-repeat:no-repeat}
 #draw-dialog .slider-tilt.is-tilting::after{opacity:.84}
+/* Subtle, centered perspective: the edge under the pointer recedes. */
+#draw-dialog .slider-pack-hit .slider-tilt.is-tilting{transition:transform .14s ease-out}
+#draw-dialog .pack-card.revealed{transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .28s ease-out;transform-origin:center}
+#draw-dialog .pack-card.revealed.is-tilting{transition:transform .14s ease-out}
+@media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed,#draw-dialog .pack-card.revealed.is-tilting{transform:none;transition:none}}
 </style>
 </head>
 
@@ -1903,7 +1908,13 @@ picker.querySelector('.slider-tilt').onclick=()=>{if(pickerSwiped){pickerSwiped=
 picker.querySelector('.slider-art').addEventListener('pointerdown',e=>{if(e.pointerType==='touch'){pickerSwiped=false;pickerTouch={x:e.clientX,y:e.clientY}}});
 picker.querySelector('.slider-art').addEventListener('pointerup',e=>{if(pickerTouch){const dx=e.clientX-pickerTouch.x,dy=e.clientY-pickerTouch.y;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.3){pickerSwiped=true;renderPicker(pickerIndex+(dx<0?1:-1));setTimeout(()=>pickerSwiped=false,350)}pickerTouch=null}});
 picker.querySelector('.slider-art').addEventListener('pointercancel',()=>pickerTouch=null);const backPicker=stage.querySelector('.picker-back');dialog.querySelector('.draw-head').prepend(backPicker);backPicker.hidden=true;backPicker.onclick=()=>{if(!wrapper.disabled){backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');reset()}};renderPicker(Math.max(0,editions.indexOf(activeEdition)),false);
-const tiltSurface=picker.querySelector('.slider-pack-hit'),tilt=picker.querySelector('.slider-tilt');tiltSurface.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const r=tiltSurface.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;tilt.style.setProperty('--rx',(y*24)+'deg');tilt.style.setProperty('--ry',(-x*30)+'deg');tilt.classList.add('is-tilting')});tiltSurface.addEventListener('pointerleave',()=>{tilt.style.setProperty('--rx','0deg');tilt.style.setProperty('--ry','0deg');tilt.classList.remove('is-tilting')});
+const tiltSurface=picker.querySelector('.slider-pack-hit'),tilt=picker.querySelector('.slider-tilt');
+function applyHoverTilt(e,target,rect,range=12){if(e.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const clamp=v=>Math.max(-.5,Math.min(.5,v));const x=clamp((e.clientX-rect.left)/rect.width-.5),y=clamp((e.clientY-rect.top)/rect.height-.5);target.style.setProperty('--rx',(-y*range)+'deg');target.style.setProperty('--ry',(x*range)+'deg');target.classList.add('is-tilting')}
+function resetHoverTilt(target){target.style.setProperty('--rx','0deg');target.style.setProperty('--ry','0deg');target.classList.remove('is-tilting')}
+tiltSurface.addEventListener('pointermove',e=>applyHoverTilt(e,tilt,tiltSurface.getBoundingClientRect()));tiltSurface.addEventListener('pointerleave',()=>resetHoverTilt(tilt));
+let hoveredCard=null;
+grid.addEventListener('pointermove',e=>{const tile=e.target.closest('.pack-tile'),card=tile?.querySelector('.pack-card.revealed');const r=tile?.getBoundingClientRect(),h=card?.offsetHeight;const next=card&&e.clientY<=r.top+h?card:null;if(hoveredCard&&hoveredCard!==next)resetHoverTilt(hoveredCard);hoveredCard=next;if(next)applyHoverTilt(e,next,{left:r.left,top:r.top,width:r.width,height:h})});
+grid.addEventListener('pointerleave',()=>{if(hoveredCard)resetHoverTilt(hoveredCard);hoveredCard=null});
 let tearStart=null,suppressClick=false;
 stage.querySelector('.pack-art').addEventListener('pointerdown',e=>{if(!stage.classList.contains('pack-selected')||wrapper.disabled||e.isPrimary===false||(e.pointerType==='mouse'&&e.button!==0))return;tearStart={id:e.pointerId,x:e.clientX,y:e.clientY};suppressClick=false;if(wrapper.contains(e.target)){try{wrapper.setPointerCapture(e.pointerId)}catch{}}});
 function tearThreshold(){return Math.min(65,wrapper.clientWidth*.22)}
