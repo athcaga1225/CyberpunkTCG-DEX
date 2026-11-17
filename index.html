@@ -1726,7 +1726,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
         }
         function collectionStatusText() {
             const qty = Object.keys(currentCatalog()).length;
-            return activeEdition === "retail" ? "Welcome to Night City Retail · " + qty + " 張卡" : activeSection === "main"
+            return activeEdition === "retail" ? "Welcome to Night City Retail · " + qty + " 張卡（001～171（含 005A、005B））" : activeSection === "main"
                 ? "Welcome to Night City Beta · " + qty + " 張卡（B001～B171（含 B005A、B005B）、T001～T006）"
                 : (activeStarter === "heist" ? "The Heist" : "Embracing Power") + " Beta · " + qty + " 張卡（B001～B020）";
         }
