@@ -1856,6 +1856,9 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 }
 @media(prefers-reduced-motion:reduce){#market-ranking .ranking-expanded-history.ranking-expanding,#market-ranking .ranking-expanded-history.ranking-collapsing{animation:none}#search.primary,#draw-dialog .pack-controls button,#draw-dialog .pack-odds button,#draw-dialog .pack-odds button::after{transition:none;translate:none}}
 
+/* Slightly smaller desktop booster selector artwork. */
+@media(min-width:761px){#draw-dialog .slider-pack-hit{width:min(71.76%,368px)}}
+
 /* Stable irregular ranking glow */
 :root.ranking-view{background-image:var(--dex-grain),var(--ranking-ambient,radial-gradient(ellipse 680px 400px at 8% 300px,rgba(48,100,210,.10),transparent 75%));background-size:auto;background-repeat:repeat;background-attachment:scroll}
 </style>
