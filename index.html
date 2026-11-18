@@ -1820,6 +1820,18 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 .dex-hero{background:transparent}
 @media(max-width:760px){:root{background-image:var(--dex-grain),radial-gradient(ellipse 360px 350px at 0% 720px,rgba(48,100,210,.10),transparent 76%),radial-gradient(ellipse 350px 420px at 100% 1150px,rgba(115,61,180,.08),transparent 76%)}}
 
+/* Keep the selector's tilted pack inside the visible viewport, not clipped by its stage. */
+@media(min-width:761px){
+#draw-dialog #pack-stage:not(.pack-selected){overflow:visible}
+#draw-dialog .slider-art{perspective:none;overflow:visible}
+#draw-dialog .slider-pack-hit .slider-tilt{transform-style:flat}
+}
+/* Hide source-image corner halos without scaling or changing card artwork. */
+#imagebox img{clip-path:inset(.2% round 6% / 4.3%);-webkit-clip-path:inset(.2% round 6% / 4.3%)}
+#imagebox img[src*="tcgplayer-cdn.tcgplayer.com"]{clip-path:inset(.2% round 6.5% / 4.65%);-webkit-clip-path:inset(.2% round 6.5% / 4.65%)}
+#pack-zoom-image{clip-path:inset(1% round 7% / 5%);-webkit-clip-path:inset(1% round 7% / 5%)}
+#draw-dialog .pack-card .hero-front img{clip-path:inset(.2% round 5.5% / 3.93%);-webkit-clip-path:inset(.2% round 5.5% / 3.93%)}
+
 /* Stable irregular ranking glow */
 :root.ranking-view{background-image:var(--dex-grain),var(--ranking-ambient,radial-gradient(ellipse 680px 400px at 8% 300px,rgba(48,100,210,.10),transparent 75%));background-size:auto;background-repeat:repeat;background-attachment:scroll}
 </style>
@@ -2354,7 +2366,7 @@ picker.querySelector('.slider-art').addEventListener('pointercancel',()=>pickerT
 const tiltSurface=picker.querySelector('.slider-pack-hit'),tilt=picker.querySelector('.slider-tilt');
 function applyHoverTilt(e,target,rect,range=10){if(e.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const clamp=v=>Math.max(-.5,Math.min(.5,v));const x=clamp((e.clientX-rect.left)/rect.width-.5),y=clamp((e.clientY-rect.top)/rect.height-.5);target.style.setProperty('--rx',(-y*range)+'deg');target.style.setProperty('--ry',(x*range)+'deg');target.classList.add('is-tilting')}
 function resetHoverTilt(target){target.style.setProperty('--rx','0deg');target.style.setProperty('--ry','0deg');target.classList.remove('is-tilting')}
-tiltSurface.addEventListener('pointermove',e=>applyHoverTilt(e,tilt,tiltSurface.getBoundingClientRect(),18));tiltSurface.addEventListener('pointerleave',()=>resetHoverTilt(tilt));
+tiltSurface.addEventListener('pointermove',e=>applyHoverTilt(e,tilt,tiltSurface.getBoundingClientRect(),12));tiltSurface.addEventListener('pointerleave',()=>resetHoverTilt(tilt));
 let hoveredCard=null;
 grid.addEventListener('pointermove',e=>{const tile=e.target.closest('.pack-tile'),card=tile?.querySelector('.pack-card.revealed');const r=tile?.getBoundingClientRect(),h=card?.offsetHeight;const next=card&&e.clientY<=r.top+h?card:null;if(hoveredCard&&hoveredCard!==next)resetHoverTilt(hoveredCard);hoveredCard=next;if(next)applyHoverTilt(e,next,{left:r.left,top:r.top,width:r.width,height:h})});
 grid.addEventListener('pointerleave',()=>{if(hoveredCard)resetHoverTilt(hoveredCard);hoveredCard=null});
