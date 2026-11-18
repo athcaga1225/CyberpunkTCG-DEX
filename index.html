@@ -1763,6 +1763,23 @@ body>header .dex-nav.is-open a:nth-child(3){transition-delay:.15s}
 #browse .collection-heading{font-size:clamp(16px,1.5vw,22px);font-weight:600;letter-spacing:1px}
 #browse .collection-search{padding-top:20px}
 @media(max-width:760px){#browse.collection-nav{margin:24px 0 22px;padding:20px 0 0}#browse .collection-nav-top{margin-bottom:4px}}
+
+/* Keep the pack picker within the viewport; results keep normal scrolling. */
+html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)),html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body{height:100dvh;overflow:hidden;overscroll-behavior:none}
+html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body{position:fixed;inset:0;display:flex;flex-direction:column;min-height:0}
+html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header{flex:none}
+html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){flex:1 1 auto;min-height:0;height:auto;padding-bottom:12px}
+html.pack-view #draw-dialog #pack-stage:not([hidden]):not(.pack-selected){min-height:0}
+@media(max-width:760px){
+html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){padding-top:min(var(--page-heading-top),3dvh)}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-visual{margin:8px 0 12px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-art{min-height:0;padding-top:12px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-pack-hit{width:min(65vw,28dvh,285px)}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-nav{padding-bottom:20px;margin-top:4px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-description{margin-bottom:10px}
+#draw-dialog #pack-stage:not(.pack-selected) .pack-odds{margin-bottom:0}
+#draw-dialog #pack-stage:not(.pack-selected) .pack-picker{padding-bottom:4px}
+}
 </style>
 </head>
 
@@ -2382,6 +2399,14 @@ revealAllButton.onclick=()=>{if(performance.now()-lastRevealTouch>600)revealAll(
  },{passive:false});
  for(const type of ['pointerdown','keydown','touchstart','resize'])window.addEventListener(type,stop,{passive:true});
  desktop.addEventListener('change',stop);
+})();
+</script>
+
+<script>
+(()=>{if(!document.documentElement.classList.contains('pack-view'))return;
+const stage=document.getElementById('pack-stage'),picker=stage.querySelector('.pack-picker'),panel=document.getElementById('draw-dialog');
+let pending=0;function fit(){cancelAnimationFrame(pending);pending=requestAnimationFrame(()=>{if(stage.hidden||stage.classList.contains('pack-selected')){picker.style.removeProperty('zoom');return}picker.style.zoom='1';const available=Math.max(1,innerHeight-panel.getBoundingClientRect().top-parseFloat(getComputedStyle(panel).paddingTop)-parseFloat(getComputedStyle(panel).paddingBottom));for(let i=0;i<3;i++){const height=picker.getBoundingClientRect().height;if(height<=available+1)break;picker.style.zoom=String(parseFloat(picker.style.zoom)*available/height)}})}
+window.addEventListener('resize',fit);new MutationObserver(fit).observe(stage,{attributes:true,attributeFilter:['class','hidden']});document.fonts?.ready.then(fit);window.addEventListener('load',fit);fit();
 })();
 </script>
 </body>
