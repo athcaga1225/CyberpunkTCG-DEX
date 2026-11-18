@@ -1822,6 +1822,21 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 #draw-dialog #pack-stage:not(.pack-selected) .pack-odds button{padding:8px 0}
 }
 
+@media(max-width:760px) and (max-height:740px){
+html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){padding-top:8px;padding-bottom:8px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-info #picker-name{font-size:clamp(32px,9vw,40px);margin:4px 0}
+#draw-dialog #pack-stage:not(.pack-selected) .picker-subtitle{font-size:16px;margin:0 0 4px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-visual{margin:4px 0 8px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-art{padding:20px 0 0}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-pack-hit{width:clamp(112px,calc((100dvh - 475px)/1.53),175px)}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-nav{margin-top:4px;padding-bottom:24px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-description{font-size:13px;line-height:1.5;margin-bottom:6px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-composition{padding:6px 0;margin-bottom:6px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-composition b{font-size:20px}
+}
+@media(max-width:760px) and (max-height:620px){
+html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){width:100%;padding-inline:var(--page-heading-side);overflow:auto;box-sizing:border-box;overscroll-behavior:contain}
+}
 </style>
 </head>
 
