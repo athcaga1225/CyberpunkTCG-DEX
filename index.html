@@ -1813,13 +1813,15 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 }
 @media(max-width:760px){body>header{height:52px;min-height:52px;padding:0 18px;box-sizing:border-box}}
 
+/* V3 fine background noise — 2.5% opacity, behind all content. */
+:root{--dex-grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E")}
 /* V3 subtle ambient light — dark surfaces only. */
-:root{background-color:var(--dex-black);background-image:radial-gradient(ellipse 680px 440px at 8% 170px,rgba(48,100,210,.10),transparent 75%),radial-gradient(ellipse 620px 460px at 96% 820px,rgba(115,61,180,.08),transparent 76%),radial-gradient(ellipse 780px 550px at 15% 1500px,rgba(39,100,205,.08),transparent 76%);background-repeat:no-repeat}
+:root{background-color:var(--dex-black);background-image:var(--dex-grain),radial-gradient(ellipse 680px 440px at 8% 170px,rgba(48,100,210,.10),transparent 75%),radial-gradient(ellipse 620px 460px at 96% 820px,rgba(115,61,180,.08),transparent 76%),radial-gradient(ellipse 780px 550px at 15% 1500px,rgba(39,100,205,.08),transparent 76%);background-repeat:repeat;background-size:auto}
 .dex-hero{background:transparent}
-@media(max-width:760px){:root{background-image:radial-gradient(ellipse 360px 350px at 0% 720px,rgba(48,100,210,.10),transparent 76%),radial-gradient(ellipse 350px 420px at 100% 1150px,rgba(115,61,180,.08),transparent 76%)}}
+@media(max-width:760px){:root{background-image:var(--dex-grain),radial-gradient(ellipse 360px 350px at 0% 720px,rgba(48,100,210,.10),transparent 76%),radial-gradient(ellipse 350px 420px at 100% 1150px,rgba(115,61,180,.08),transparent 76%)}}
 
 /* Stable irregular ranking glow */
-:root.ranking-view{background-image:var(--ranking-ambient,radial-gradient(ellipse 680px 400px at 8% 300px,rgba(48,100,210,.10),transparent 75%));background-size:100% 100%;background-repeat:no-repeat;background-attachment:scroll}
+:root.ranking-view{background-image:var(--dex-grain),var(--ranking-ambient,radial-gradient(ellipse 680px 400px at 8% 300px,rgba(48,100,210,.10),transparent 75%));background-size:auto;background-repeat:repeat;background-attachment:scroll}
 </style>
 </head>
 
