@@ -1790,6 +1790,10 @@ body>header .dex-nav a{position:relative}
 body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;left:auto;right:0;top:50%;bottom:auto;width:6px;height:6px;background:#fcee09;transform:translateY(-50%);float:none}
 }
 @media(max-width:760px){body>header{height:52px;min-height:52px;padding:0 18px;box-sizing:border-box}}
+/* V3 subtle ambient light — dark surfaces only. */
+:root{background-color:var(--dex-black);background-image:radial-gradient(ellipse 680px 440px at 8% 170px,rgba(48,100,210,.10),transparent 75%),radial-gradient(ellipse 620px 460px at 96% 820px,rgba(115,61,180,.08),transparent 76%),radial-gradient(ellipse 780px 550px at 15% 1500px,rgba(39,100,205,.08),transparent 76%);background-repeat:no-repeat}
+.dex-hero{background:transparent}
+@media(max-width:760px){:root{background-image:radial-gradient(ellipse 360px 350px at 0% 720px,rgba(48,100,210,.10),transparent 76%),radial-gradient(ellipse 350px 420px at 100% 1150px,rgba(115,61,180,.08),transparent 76%)}}
 </style>
 </head>
 
