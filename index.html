@@ -1794,6 +1794,10 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 :root{background-color:var(--dex-black);background-image:radial-gradient(ellipse 680px 440px at 8% 170px,rgba(48,100,210,.10),transparent 75%),radial-gradient(ellipse 620px 460px at 96% 820px,rgba(115,61,180,.08),transparent 76%),radial-gradient(ellipse 780px 550px at 15% 1500px,rgba(39,100,205,.08),transparent 76%);background-repeat:no-repeat}
 .dex-hero{background:transparent}
 @media(max-width:760px){:root{background-image:radial-gradient(ellipse 360px 350px at 0% 720px,rgba(48,100,210,.10),transparent 76%),radial-gradient(ellipse 350px 420px at 100% 1150px,rgba(115,61,180,.08),transparent 76%)}}
+
+/* Continue the ambient glow along the full ranking list. */
+:root.ranking-view{background-image:radial-gradient(ellipse 680px 400px at 8% 300px,rgba(48,100,210,.10),transparent 75%),radial-gradient(ellipse 620px 400px at 96% 900px,rgba(115,61,180,.08),transparent 75%);background-size:100% 1200px;background-repeat:repeat-y}
+@media(max-width:760px){:root.ranking-view{background-image:radial-gradient(ellipse 360px 400px at 0% 300px,rgba(48,100,210,.10),transparent 75%),radial-gradient(ellipse 350px 400px at 100% 900px,rgba(115,61,180,.08),transparent 75%)}}
 </style>
 </head>
 
