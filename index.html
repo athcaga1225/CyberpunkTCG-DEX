@@ -1832,6 +1832,14 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 #pack-zoom-image{clip-path:inset(1% round 7% / 5%);-webkit-clip-path:inset(1% round 7% / 5%)}
 #draw-dialog .pack-card .hero-front img{clip-path:inset(.2% round 5.5% / 3.93%);-webkit-clip-path:inset(.2% round 5.5% / 3.93%)}
 
+/* Tear view: no pointer-hover movement or browser focus rectangle. */
+#draw-dialog #pack-stage.pack-selected #pack-wrapper:focus{outline:none;box-shadow:none}
+#draw-dialog #pack-stage.pack-selected #pack-wrapper:focus-visible .pack-gesture-hint{text-decoration:underline;text-underline-offset:5px}
+@media(min-width:761px) and (hover:hover) and (pointer:fine){
+#draw-dialog #pack-stage.pack-selected #pack-wrapper:not(:disabled):hover{transform:none}
+#draw-dialog #pack-stage.pack-selected #pack-wrapper:not(:disabled):hover .pack-gesture-hint{transform:translate(-50%,-100%)}
+}
+
 /* Stable irregular ranking glow */
 :root.ranking-view{background-image:var(--dex-grain),var(--ranking-ambient,radial-gradient(ellipse 680px 400px at 8% 300px,rgba(48,100,210,.10),transparent 75%));background-size:auto;background-repeat:repeat;background-attachment:scroll}
 </style>
