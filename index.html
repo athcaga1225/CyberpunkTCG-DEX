@@ -1728,11 +1728,6 @@ html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){w
 .hero-art{order:-1;margin-top:16px;margin-bottom:48px}
 .hero-copy .intro,.hero-copy .hero-actions{order:0}
 #market-ranking{width:calc(100% - 2 * var(--page-heading-side));padding-top:var(--page-heading-top)}
-html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){width:calc(100% - 2 * var(--page-heading-side));padding-top:var(--page-heading-top)}
-#draw-dialog .pack-picker.pack-slider{display:flex;flex-direction:column;align-items:stretch;gap:0;max-width:none;width:100%;padding:0 0 20px}
-#draw-dialog .slider-info{display:contents}
-#draw-dialog .slider-info .slider-eyebrow,#draw-dialog .slider-info #picker-name,#draw-dialog .slider-info .picker-subtitle{order:-2}
-#draw-dialog .slider-visual{order:-1;margin-top:16px;margin-bottom:24px}
 .hero-copy h1,#ranking-title,#draw-dialog .slider-info #picker-name{font-size:clamp(40px,10vw,64px)}
 }
 @media(prefers-reduced-motion:reduce){.hero-kicker,.ranking-kicker,#draw-dialog .slider-info .slider-eyebrow,.hero-copy h1,#ranking-title,#draw-dialog .slider-info #picker-name,.hero-subtitle,.ranking-subtitle,#draw-dialog .slider-info .picker-subtitle{animation:none!important}}
@@ -1764,7 +1759,7 @@ body>header .dex-nav.is-open a:nth-child(3){transition-delay:.15s}
 #browse .collection-search{padding-top:20px}
 @media(max-width:760px){#browse.collection-nav{margin:24px 0 22px;padding:20px 0 0}#browse .collection-nav-top{margin-bottom:4px}}
 
-/* Keep desktop picker locked; mobile uses production-size artwork without scaling. */
+/* Keep desktop picker locked; mobile inherits the production picker grid. */
 @media(min-width:761px){
 html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)),html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body{height:100dvh;overflow:hidden;overscroll-behavior:none}
 html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body{position:fixed;inset:0;display:flex;flex-direction:column;min-height:0}
@@ -1772,9 +1767,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header{fl
 html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){flex:1 1 auto;min-height:0;height:auto;padding-bottom:12px}
 html.pack-view #draw-dialog #pack-stage:not([hidden]):not(.pack-selected){min-height:0}
 }
-@media(max-width:760px){
-#draw-dialog #pack-stage:not(.pack-selected) .slider-description{max-width:none;width:100%}
-}
+
 
 .hero-deck .hero-card[data-legend="true"] .hero-back{background:#08090b;overflow:hidden}
 .hero-deck .hero-card[data-legend="true"] .hero-back img{width:140%;height:71.4286%;position:absolute;top:50%;left:50%;object-fit:cover;transform:translate(-50%,-50%) rotate(90deg) scale(1.12);filter:contrast(1.3)}
