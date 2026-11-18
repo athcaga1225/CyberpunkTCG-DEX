@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 
 <head>
-    <script>if(new URLSearchParams(location.search).get('view')==='pack')document.documentElement.classList.add('pack-view');</script>
+    <script>{const view=new URLSearchParams(location.search).get('view');if(view==='pack'||view==='ranking')document.documentElement.classList.add(view+'-view');}</script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
     <meta name="theme-color" content="#fcee09">
@@ -1620,6 +1620,22 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 #pack-odds-modal p{margin:0 0 10px;font-size:13px;line-height:1.6;color:#aab8bf}
 #pack-odds-modal p:last-child{margin:10px 0 0}
 #pack-odds-modal .pack-odds-list+p{margin-top:18px}
+body>header .dex-nav{display:flex;align-items:center;gap:clamp(12px,3vw,36px);font-size:14px;font-weight:700}
+.dex-nav a{color:#151515;text-decoration:none;white-space:nowrap;padding:5px 0;border-bottom:2px solid transparent}
+.dex-nav a[aria-current="page"]{border-color:#151515}
+@media(max-width:560px){body>header{flex-wrap:wrap;gap:8px}.dex-nav{width:100%;justify-content:space-between}.dex-nav a{font-size:13px}}
+#market-ranking[hidden]{display:none!important}html.ranking-view body>.dex-hero,html.ranking-view body>main.wrap{display:none}
+#market-ranking{width:min(1100px,calc(100% - 40px));margin:0 auto;padding:clamp(36px,7vw,84px) 0;color:#e2e8e9}
+.ranking-kicker{color:#fcee09;font-size:13px;letter-spacing:.12em;font-weight:700}
+#ranking-title{font-size:clamp(34px,5vw,64px);color:#fcee09;margin:12px 0;line-height:1.1}
+.ranking-intro,.ranking-note,#ranking-status{color:#aab8bf;font-size:14px;line-height:1.6}
+.ranking-tools{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;margin:28px 0 18px}
+.ranking-editions,.ranking-sorts{display:flex;flex-wrap:wrap;border:1px solid #424b54;background:#0d1419}
+.ranking-tools button{border:0;border-radius:0;border-bottom:3px solid transparent;background:transparent;color:#aab8bf;padding:12px 18px;cursor:pointer;font:inherit;font-weight:600}
+.ranking-tools button+button{border-left:1px solid #424b54}.ranking-tools button[aria-pressed=true]{color:#fcee09;border-bottom-color:#fcee09}.ranking-tools button:disabled{opacity:.4;cursor:not-allowed}
+.ranking-list{border-top:1px solid #424b54}.ranking-row{display:grid;grid-template-columns:44px 64px minmax(0,1fr) minmax(100px,auto);align-items:center;gap:18px;border-bottom:1px solid #424b54;padding:14px 0;color:inherit;text-decoration:none}
+.ranking-row:hover{background:#ffffff06}.ranking-position{font-size:20px;color:#fcee09;font-weight:700;font-variant-numeric:tabular-nums}.ranking-image{width:64px;aspect-ratio:5/7;object-fit:contain;border-radius:5%;background:#0d1419}.ranking-name{min-width:0;overflow-wrap:anywhere;font-weight:600}.ranking-meta,.ranking-price small{display:block;color:#aab8bf;font-size:12px;margin-top:5px}.ranking-price{text-align:right;font-size:19px;font-weight:700;white-space:nowrap}.ranking-change{font-size:13px;color:#aab8bf}.ranking-change.up{color:#7ed8a4}.ranking-change.down{color:#f45d6e}
+@media(max-width:560px){#market-ranking{width:calc(100% - 32px)}.ranking-tools{gap:10px}.ranking-editions,.ranking-sorts{width:100%}.ranking-tools button{flex:1;padding:10px 6px;font-size:13px}.ranking-row{grid-template-columns:26px 44px minmax(0,1fr) auto;gap:9px}.ranking-image{width:44px}.ranking-position{font-size:16px}.ranking-name{font-size:13px}.ranking-price{font-size:14px}}
 #pack-odds-modal .pack-odds-list{display:grid;grid-template-columns:1fr auto;gap:0;margin:0}
 #pack-odds-modal .pack-odds-list dt,#pack-odds-modal .pack-odds-list dd{padding:8px 0;margin:0;border-bottom:1px solid #333d44}
 #pack-odds-modal .pack-odds-list dd{color:#fcee09;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
@@ -1644,7 +1660,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 <body>
     <header>
         <a class="brand" href="./" aria-label="CyberDEX 首頁">Cyber<em>DEX.</em></a>
-        <div class="label">Cyberpunk TCG / MARKET TRACKER</div>
+        <nav class="dex-nav" aria-label="主選單"><a href="./" data-view="home">價格追蹤</a><a href="?view=ranking" data-view="ranking">價格排行</a><a href="?view=pack" data-view="pack">卡包模擬</a></nav>
     </header>
     <section class="dex-hero" aria-label="CyberDEX 卡牌價格追蹤">
         <div class="hero-inner">
@@ -1666,6 +1682,13 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
                 
             </div>
         </div>
+    </section>
+    <section id="market-ranking" aria-labelledby="ranking-title" hidden>
+        <div class="ranking-kicker">NIGHT CITY / MARKET RANKING</div>
+        <h1 id="ranking-title">價格排行</h1><p class="ranking-intro">Welcome to Night City · 依市場參考價格與歷史變動排序。</p>
+        <div class="ranking-tools"><div class="ranking-editions" aria-label="版本"><button type="button" data-rank-edition="beta" aria-pressed="true">BETA</button><button type="button" data-rank-edition="retail" aria-pressed="false">RETAIL</button></div><div class="ranking-sorts" aria-label="排序"><button type="button" data-rank-sort="price" aria-pressed="true">市場價格</button><button type="button" data-rank-sort="up" aria-pressed="false">30 日漲幅</button><button type="button" data-rank-sort="down" aria-pressed="false">30 日跌幅</button></div></div>
+        <p id="ranking-status" role="status">載入市場資料中…</p><div id="ranking-list" class="ranking-list"></div>
+        <p class="ranking-note">市場參考價非保證成交價。30 日變動僅使用已有的歷史觀測資料。</p>
     </section>
     <main class="wrap">
         <section id="browse" class="collection-nav" aria-label="卡牌系列與版本">
@@ -2096,8 +2119,16 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
         // Apply saved selection synchronously before displaying navigation; no BETA -> RETAIL flash.
         restoreCollection();
         document.querySelector('.collection-nav').style.visibility = 'visible';
-        init();
-        loadDailyRate();
+        const routeParams=new URLSearchParams(location.search),rankDev=routeParams.get('dev')==='1'&&location.hostname.startsWith('v3.'),rankView=routeParams.get('view')||'home';
+        let rankEdition=['beta','retail'].includes(routeParams.get('edition'))?routeParams.get('edition'):activeEdition,rankSort='price',rankLoaded=false;
+        function rankingUrl(view,extras={}){const p=new URLSearchParams(extras);if(view!=='home')p.set('view',view);if(rankDev)p.set('dev','1');return './'+(p.size?'?'+p:'')}
+        document.querySelectorAll('.dex-nav a').forEach(a=>{a.href=rankingUrl(a.dataset.view);if(a.dataset.view===rankView)a.setAttribute('aria-current','page')});
+        const ranking=$('market-ranking');if(rankView==='ranking'){ranking.hidden=false;document.title='CyberDEX — 價格排行'}
+        function rankChange(code,p){if(rankEdition!=='beta')return null;const end=Date.parse(p.observedDate),target=end-30*86400000;if(!Number.isFinite(end))return null;const history=(historyCards[code]||[]).filter(x=>Number.isFinite(x.usd)&&x.usd>0&&Math.abs(Date.parse(x.date)-target)<=7*86400000).sort((a,b)=>Math.abs(Date.parse(a.date)-target)-Math.abs(Date.parse(b.date)-target));return history.length?(p.usd/history[0].usd-1)*100:null}
+        function renderRanking(){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=rankEdition.toUpperCase()+' · '+sorted.length+' 張有報價卡牌'+(!hasHistory?' · 暫無足夠歷史資料':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list');list.replaceChildren();if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();sorted.forEach(({code,p,entry,change},i)=>{const a=document.createElement('a');a.className='ranking-row';a.href=rankingUrl('home',{edition:rankEdition,card:code});const pos=document.createElement('span');pos.className='ranking-position';pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';name.textContent=entry.name;const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';value.textContent=fmtUSD(p.usd);const twd=document.createElement('small');twd.textContent=currency(p.usd);value.append(twd);if(change!==null){const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=(change>0?'+':'')+change.toFixed(1)+'%';value.append(delta)}a.append(pos,img,name,value);frag.append(a)});list.append(frag)}
+        ranking.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.rankEdition){rankEdition=b.dataset.rankEdition;rankSort='price'}else if(b.dataset.rankSort)rankSort=b.dataset.rankSort;renderRanking()});
+        init().then(()=>{rankLoaded=true;if(rankView==='ranking')renderRanking();else if(routeParams.get('card')&&['beta','retail'].includes(routeParams.get('edition'))){$('query').value='';chooseEdition(routeParams.get('edition'));chooseSection('main');$('query').value=routeParams.get('card');show(routeParams.get('card'),true)}});
+        loadDailyRate().then(renderRanking);
     </script>
 <script>
 (()=>{const root=document.querySelector('.hero-art');if(!root)return;const slides=[...root.querySelectorAll('[data-hero-slide]')],dots=[...root.querySelectorAll('[data-hero-dot]')],labels=["BETA COLLECTION","ICONIC SECRET","NIGHT CITY LEGENDS","RETAIL COLLECTION","RETAIL ICONIC SECRET"];let active=0;function show(i){active=(i+slides.length)%slides.length;slides.forEach((s,j)=>s.hidden=j!==active);dots.forEach((d,j)=>d.setAttribute('aria-current',String(j===active)));root.querySelector('.hero-art-label span').textContent=' / '+labels[active];root.querySelector('[data-hero-count]').textContent=String(active+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');}root.querySelector('[data-hero-prev]').addEventListener('click',()=>show(active-1));root.querySelector('[data-hero-next]').addEventListener('click',()=>show(active+1));dots.forEach((d,i)=>d.addEventListener('click',()=>show(i)));let gesture=null;root.addEventListener('touchstart',e=>{if(e.touches.length!==1){gesture=null;return}const t=e.touches[0];gesture={id:t.identifier,x:t.clientX,y:t.clientY,axis:null}},{passive:true});root.addEventListener('touchmove',e=>{if(!gesture||e.touches.length!==1){gesture=null;return}const t=e.touches[0];if(t.identifier!==gesture.id){gesture=null;return}const dx=Math.abs(t.clientX-gesture.x),dy=Math.abs(t.clientY-gesture.y);if(!gesture.axis&&Math.max(dx,dy)>=6){gesture.axis=dx>dy?'x':'y'}if(gesture.axis==='x'&&e.cancelable)e.preventDefault()},{passive:false});root.addEventListener('touchend',e=>{if(!gesture)return;const t=Array.from(e.changedTouches).find(t=>t.identifier===gesture.id);if(t&&gesture.axis==='x'){const dx=t.clientX-gesture.x;if(Math.abs(dx)>50)show(active+(dx<0?1:-1))}gesture=null},{passive:true});root.addEventListener('touchcancel',()=>{gesture=null},{passive:true});})();
