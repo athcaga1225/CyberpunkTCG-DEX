@@ -1803,6 +1803,25 @@ body>header .dex-nav a{position:relative}
 body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;left:auto;right:0;top:50%;bottom:auto;width:6px;height:6px;background:#fcee09;transform:translateY(-50%);float:none}
 }
 @media(max-width:760px){body>header{height:52px;min-height:52px;padding:0 18px;box-sizing:border-box}}
+/* Mobile pack picker: fit with responsive dimensions, never CSS zoom. */
+@media(max-width:760px){
+#draw-dialog #pack-stage:not(.pack-selected) .pack-picker.pack-slider{display:flex;flex-direction:column;align-items:stretch;width:100%;box-sizing:border-box;gap:0}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-info{display:contents}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-info #picker-name{font-size:clamp(32px,10vw,52px);margin:8px 0 6px}
+#draw-dialog #pack-stage:not(.pack-selected) .picker-subtitle{font-size:18px;margin:0 0 8px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-visual{margin:8px 0 12px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-art{min-height:0;padding:28px 0 4px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-pack-hit{width:clamp(120px,calc((100dvh - 390px)/1.53),220px)}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-nav{margin-top:8px;padding-bottom:30px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-nav button{width:40px;height:40px;min-width:40px}
+#draw-dialog #pack-stage:not(.pack-selected) .picker-series{margin:0 0 4px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-info .slider-edition{margin:0 0 6px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-description{width:100%;max-width:none;margin:0 0 8px;line-height:1.6}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-composition{padding:8px 0;margin:0 0 8px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-composition b{font-size:22px}
+#draw-dialog #pack-stage:not(.pack-selected) .pack-odds button{padding:8px 0}
+}
+
 </style>
 </head>
 
@@ -2428,7 +2447,7 @@ revealAllButton.onclick=()=>{if(performance.now()-lastRevealTouch>600)revealAll(
 <script>
 (()=>{if(!document.documentElement.classList.contains('pack-view'))return;
 const stage=document.getElementById('pack-stage'),picker=stage.querySelector('.pack-picker'),panel=document.getElementById('draw-dialog');
-let pending=0;function fit(){cancelAnimationFrame(pending);pending=requestAnimationFrame(()=>{if(stage.hidden||stage.classList.contains('pack-selected')){picker.style.removeProperty('zoom');return}picker.style.zoom='1';const available=Math.max(1,innerHeight-panel.getBoundingClientRect().top-parseFloat(getComputedStyle(panel).paddingTop)-parseFloat(getComputedStyle(panel).paddingBottom));for(let i=0;i<3;i++){const height=picker.getBoundingClientRect().height;if(height<=available+1)break;picker.style.zoom=String(parseFloat(picker.style.zoom)*available/height)}})}
+let pending=0;function fit(){cancelAnimationFrame(pending);pending=requestAnimationFrame(()=>{if(stage.hidden||stage.classList.contains('pack-selected')||matchMedia('(max-width:760px)').matches){picker.style.removeProperty('zoom');return}picker.style.zoom='1';const available=Math.max(1,innerHeight-panel.getBoundingClientRect().top-parseFloat(getComputedStyle(panel).paddingTop)-parseFloat(getComputedStyle(panel).paddingBottom));for(let i=0;i<3;i++){const height=picker.getBoundingClientRect().height;if(height<=available+1)break;picker.style.zoom=String(parseFloat(picker.style.zoom)*available/height)}})}
 window.addEventListener('resize',fit);new MutationObserver(fit).observe(stage,{attributes:true,attributeFilter:['class','hidden']});document.fonts?.ready.then(fit);window.addEventListener('load',fit);fit();
 })();
 </script>
