@@ -1608,13 +1608,13 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 @keyframes v3ShellDrop{0%,15%{transform:translateY(0);opacity:1}100%{transform:translateY(175px);opacity:0}}
 @keyframes v3CardLift{0%{opacity:0;transform:translateY(12%) scale(.94)}15%{opacity:1}100%{opacity:1;transform:translateY(var(--v3-lift,-180px)) scale(1.05)}}
 /* Development-only rarity selector on the pack picker, outside the opening animation. */
-#draw-dialog .pack-odds{margin:0 0 12px;color:#aab8bf;font-size:14px;line-height:1.5}
-#draw-dialog .pack-odds summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid #424b54;background:#0d1419;color:#e2e8e9;cursor:pointer;list-style:none;font-weight:600}
+#draw-dialog .pack-odds{margin:0 0 12px;border-block:1px solid #424b54;color:#aab8bf;font-size:14px;line-height:1.5}
+#draw-dialog .pack-odds summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border:0;background:transparent;color:#e2e8e9;cursor:pointer;list-style:none;font-weight:600}
 #draw-dialog .pack-odds summary::-webkit-details-marker{display:none}
 #draw-dialog .pack-odds summary::after{content:'+';color:#fcee09;font-size:20px;line-height:1}
 #draw-dialog .pack-odds[open] summary::after{content:'−'}
 #draw-dialog .pack-odds summary:focus-visible{outline:2px solid #fcee09;outline-offset:2px}
-#draw-dialog .pack-odds-body{border:1px solid #424b54;border-top:0;padding:12px 14px;background:#0d1419}
+#draw-dialog .pack-odds-body{border:0;padding:0 0 12px;background:transparent}
 #draw-dialog .pack-odds-body p{margin:0 0 10px;font-size:12px;line-height:1.6}
 #draw-dialog .pack-odds-body p:last-child{margin:10px 0 0}
 #draw-dialog .pack-odds-list{display:grid;grid-template-columns:1fr auto;gap:0;margin:0}
