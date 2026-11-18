@@ -2368,7 +2368,7 @@ revealAllButton.onclick=()=>{if(performance.now()-lastRevealTouch>600)revealAll(
  for(let el=e.target;el&&el!==document.body&&el!==root;el=el.parentElement){if(/auto|scroll|overlay/.test(getComputedStyle(el).overflowY)&&el.scrollHeight>el.clientHeight+1){stop();return}}
  const delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?innerHeight:1);
  if(!frame||Math.abs(scrollY-last)>2){stop();target=scrollY}
- if((delta<0&&target<=0)||(delta>0&&target>=max()))return;
+ if((delta<0&&target<=0)||(delta>0&&target>=max())){if(frame)e.preventDefault();return;}
  e.preventDefault();target=Math.min(max(),Math.max(0,target+delta));
  if(!frame){last=scrollY;stamp=performance.now();frame=requestAnimationFrame(tick)}
  },{passive:false});
