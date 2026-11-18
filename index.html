@@ -1764,21 +1764,16 @@ body>header .dex-nav.is-open a:nth-child(3){transition-delay:.15s}
 #browse .collection-search{padding-top:20px}
 @media(max-width:760px){#browse.collection-nav{margin:24px 0 22px;padding:20px 0 0}#browse .collection-nav-top{margin-bottom:4px}}
 
-/* Keep the pack picker within the viewport; results keep normal scrolling. */
+/* Keep desktop picker locked; mobile uses production-size artwork without scaling. */
+@media(min-width:761px){
 html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)),html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body{height:100dvh;overflow:hidden;overscroll-behavior:none}
 html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body{position:fixed;inset:0;display:flex;flex-direction:column;min-height:0}
 html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header{flex:none}
 html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){flex:1 1 auto;min-height:0;height:auto;padding-bottom:12px}
 html.pack-view #draw-dialog #pack-stage:not([hidden]):not(.pack-selected){min-height:0}
+}
 @media(max-width:760px){
-html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){padding-top:min(var(--page-heading-top),3dvh)}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-visual{margin:8px 0 12px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-art{min-height:0;padding-top:12px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-pack-hit{width:min(65vw,28dvh,285px)}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-nav{padding-bottom:20px;margin-top:4px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-description{margin-bottom:10px}
-#draw-dialog #pack-stage:not(.pack-selected) .pack-odds{margin-bottom:0}
-#draw-dialog #pack-stage:not(.pack-selected) .pack-picker{padding-bottom:4px}
+#draw-dialog #pack-stage:not(.pack-selected) .slider-description{max-width:none;width:100%}
 }
 
 .hero-deck .hero-card[data-legend="true"] .hero-back{background:#08090b;overflow:hidden}
@@ -1803,40 +1798,6 @@ body>header .dex-nav a{position:relative}
 body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;left:auto;right:0;top:50%;bottom:auto;width:6px;height:6px;background:#fcee09;transform:translateY(-50%);float:none}
 }
 @media(max-width:760px){body>header{height:52px;min-height:52px;padding:0 18px;box-sizing:border-box}}
-/* Mobile pack picker: fit with responsive dimensions, never CSS zoom. */
-@media(max-width:760px){
-#draw-dialog #pack-stage:not(.pack-selected) .pack-picker.pack-slider{display:flex;flex-direction:column;align-items:stretch;width:100%;box-sizing:border-box;gap:0}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-info{display:contents}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-info #picker-name{font-size:clamp(32px,10vw,52px);margin:8px 0 6px}
-#draw-dialog #pack-stage:not(.pack-selected) .picker-subtitle{font-size:18px;margin:0 0 8px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-visual{margin:8px 0 12px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-art{min-height:0;padding:28px 0 4px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-pack-hit{width:clamp(120px,calc((100dvh - 390px)/1.53),220px)}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-nav{margin-top:8px;padding-bottom:30px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-nav button{width:40px;height:40px;min-width:40px}
-#draw-dialog #pack-stage:not(.pack-selected) .picker-series{margin:0 0 4px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-info .slider-edition{margin:0 0 6px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-description{width:100%;max-width:none;margin:0 0 8px;line-height:1.6}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-composition{padding:8px 0;margin:0 0 8px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-composition b{font-size:22px}
-#draw-dialog #pack-stage:not(.pack-selected) .pack-odds button{padding:8px 0}
-}
-
-@media(max-width:760px) and (max-height:740px){
-html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){padding-top:8px;padding-bottom:8px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-info #picker-name{font-size:clamp(32px,9vw,40px);margin:4px 0}
-#draw-dialog #pack-stage:not(.pack-selected) .picker-subtitle{font-size:16px;margin:0 0 4px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-visual{margin:4px 0 8px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-art{padding:20px 0 0}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-pack-hit{width:clamp(112px,calc((100dvh - 475px)/1.53),175px)}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-nav{margin-top:4px;padding-bottom:24px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-description{font-size:13px;line-height:1.5;margin-bottom:6px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-composition{padding:6px 0;margin-bottom:6px}
-#draw-dialog #pack-stage:not(.pack-selected) .slider-composition b{font-size:20px}
-}
-@media(max-width:760px) and (max-height:620px){
-html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){width:100%;padding-inline:var(--page-heading-side);overflow:auto;box-sizing:border-box;overscroll-behavior:contain}
-}
 </style>
 </head>
 
