@@ -1571,7 +1571,7 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;animation:packBackgroundOut .3s ease-out both}
 @media(min-width:761px){html.pack-view #draw-dialog.picker-leaving:has(#pack-stage:not([hidden]):not(.pack-selected))::before{animation:packBackgroundOut .3s ease-out both}}
 @keyframes packBackgroundOut{from{opacity:1}to{opacity:0}}
-#pack-zoom-image{border-radius:3% / 2.14%;clip-path:inset(0 round 3% / 2.14%)}
+#pack-zoom-image,#imagebox img{clip-path:inset(0.2% round 4.5% / 3.2%);-webkit-clip-path:inset(0.2% round 4.5% / 3.2%)}
 #pack-zoom-image[src*="tcgplayer-cdn.tcgplayer.com"],#imagebox img[src*="tcgplayer-cdn.tcgplayer.com"]{clip-path:inset(0.2% round 5.5% / 3.94%);-webkit-clip-path:inset(0.2% round 5.5% / 3.94%)}
 #imagebox:has(img){min-height:0;border:0;background:transparent;overflow:visible}
 #draw-dialog .pack-card .hero-face,#draw-dialog .pack-card.revealed::after{border-radius:3% / 2.14%}
