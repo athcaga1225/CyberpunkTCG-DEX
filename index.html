@@ -1818,9 +1818,8 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 .dex-hero{background:transparent}
 @media(max-width:760px){:root{background-image:radial-gradient(ellipse 360px 350px at 0% 720px,rgba(48,100,210,.10),transparent 76%),radial-gradient(ellipse 350px 420px at 100% 1150px,rgba(115,61,180,.08),transparent 76%)}}
 
-/* Continue the ambient glow along the full ranking list. */
-:root.ranking-view{background-image:radial-gradient(ellipse 680px 400px at 8% 300px,rgba(48,100,210,.10),transparent 75%),radial-gradient(ellipse 620px 400px at 96% 900px,rgba(115,61,180,.08),transparent 75%);background-size:100% 1200px;background-repeat:repeat-y}
-@media(max-width:760px){:root.ranking-view{background-image:radial-gradient(ellipse 360px 400px at 0% 300px,rgba(48,100,210,.10),transparent 75%),radial-gradient(ellipse 350px 400px at 100% 900px,rgba(115,61,180,.08),transparent 75%)}}
+/* Stable irregular ranking glow */
+:root.ranking-view{background-image:var(--ranking-ambient,radial-gradient(ellipse 680px 400px at 8% 300px,rgba(48,100,210,.10),transparent 75%));background-size:100% 100%;background-repeat:no-repeat;background-attachment:scroll}
 </style>
 </head>
 
@@ -2448,6 +2447,38 @@ revealAllButton.onclick=()=>{if(performance.now()-lastRevealTouch>600)revealAll(
 const stage=document.getElementById('pack-stage'),picker=stage.querySelector('.pack-picker'),panel=document.getElementById('draw-dialog');
 let pending=0;function fit(){cancelAnimationFrame(pending);pending=requestAnimationFrame(()=>{if(stage.hidden||stage.classList.contains('pack-selected')||matchMedia('(max-width:760px)').matches){picker.style.removeProperty('zoom');return}picker.style.zoom='1';const available=Math.max(1,innerHeight-panel.getBoundingClientRect().top-parseFloat(getComputedStyle(panel).paddingTop)-parseFloat(getComputedStyle(panel).paddingBottom));for(let i=0;i<3;i++){const height=picker.getBoundingClientRect().height;if(height<=available+1)break;picker.style.zoom=String(parseFloat(picker.style.zoom)*available/height)}})}
 window.addEventListener('resize',fit);new MutationObserver(fit).observe(stage,{attributes:true,attributeFilter:['class','hidden']});document.fonts?.ready.then(fit);window.addEventListener('load',fit);fit();
+})();
+</script>
+<script>
+(function(){
+const root=document.documentElement,ranking=document.getElementById('market-ranking');
+if(!ranking)return;
+let lastKey='';
+function refreshRankingGlow(){
+if(!root.classList.contains('ranking-view')||ranking.hidden)return;
+const mobile=window.matchMedia('(max-width:760px)').matches;
+const height=Math.max(root.scrollHeight,Math.ceil(ranking.getBoundingClientRect().bottom+window.scrollY),window.innerHeight);
+const key=height+':'+mobile;
+if(key===lastKey)return;
+lastKey=key;
+let seed=2077;
+const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+const layers=[];
+for(let y=280;y<height+500;y+=1200+Math.round(random()*1000)){
+const side=random()<.5;
+const x=Math.round(side?random()*18:82+random()*18);
+const w=Math.round(mobile?300+random()*120:540+random()*280);
+const h=Math.round(420+random()*220);
+const color=random()<.5?'48,100,210,.10':'115,61,180,.08';
+layers.push('radial-gradient(ellipse '+w+'px '+h+'px at '+x+'% '+y+'px,rgba('+color+'),transparent 75%)');
+}
+root.style.setProperty('--ranking-ambient',layers.join(','));
+}
+if(typeof ResizeObserver!=='undefined')new ResizeObserver(refreshRankingGlow).observe(ranking);
+new MutationObserver(refreshRankingGlow).observe(root,{attributes:true,attributeFilter:['class']});
+window.addEventListener('resize',refreshRankingGlow);
+window.addEventListener('load',refreshRankingGlow);
+refreshRankingGlow();
 })();
 </script>
 </body>
