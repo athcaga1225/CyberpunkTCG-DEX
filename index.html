@@ -1506,6 +1506,26 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 #draw-dialog .slider-edition{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700}
 #draw-dialog .slider-info h3{margin-bottom:clamp(30px,3vw,44px)}
 .collection-heading,#result .section-heading,#history-panel .history-head h2{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700;color:var(--dex-yellow)}
+.collection-nav .edition-options{gap:0;border:1px solid #465057;background:#10171b}
+.collection-nav .edition-options .edition-btn{position:relative;justify-content:center;min-height:46px;border:0;border-bottom:3px solid transparent;background:transparent;color:#aab8bf;box-shadow:none;transition:background-color .2s,color .2s,border-color .2s}
+.collection-nav .edition-options .edition-btn + .edition-btn{border-left:1px solid #465057}
+.collection-nav .edition-options .edition-btn.active,.collection-nav .edition-options .edition-btn.active:hover,.collection-nav .edition-options .edition-btn.active:active{background:#fcee0910;color:#fcee09;border-bottom-color:#fcee09}
+.collection-nav .edition-options .edition-btn:not(.active):hover{background:#ffffff08;color:#d4dfe2;border-bottom-color:transparent}
+.collection-nav .edition-options .edition-btn span{display:none}
+.collection-nav .edition-options .edition-btn:focus-visible{outline:2px solid #fcee09;outline-offset:-3px;z-index:1}
+.collection-select-wrap.custom-series::after{display:none}
+.custom-series #collection-select{display:none}
+.series-trigger{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:46px;padding:12px 14px;border:1px solid #424b54;border-radius:0;background:#0d1419;color:#e2e8e9;font:inherit;font-weight:500;text-align:left;cursor:pointer;box-sizing:border-box}
+.series-trigger svg{width:18px;height:18px;flex:none;color:#fcee09;transition:transform .18s}
+.series-trigger[aria-expanded="true"] svg{transform:rotate(180deg)}
+.series-trigger:focus-visible{outline:2px solid #fcee09;outline-offset:-2px}
+.series-menu{position:fixed;z-index:1000;padding:6px 0;border:1px solid #465057;background:#191b1e;box-shadow:0 6px 22px #0007;overflow-y:auto;box-sizing:border-box;animation:seriesMenuIn .2s ease-out both}
+.series-menu[hidden]{display:none}
+.series-menu button{display:block;width:100%;padding:12px 14px;border:0;border-radius:0;background:transparent;color:#e1e3e4;font:inherit;text-align:left;cursor:pointer;box-shadow:none}
+.series-menu button[aria-selected="true"]{background:#fcee0918;color:#fcee09}
+.series-menu button:hover,.series-menu button:focus-visible{background:#fcee092b;color:#fcee09;outline:none}
+@keyframes seriesMenuIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.series-menu{animation:none}}
 .hero-action,.collection-search .search button.primary,#draw-dialog .pack-controls button,#draw-dialog .draw-head .picker-back{font-family:var(--dex-font);font-size:var(--dex-size-body);font-weight:700}
 #draw-dialog .slider-composition span{align-items:center;text-align:center;min-width:76px}
 #draw-dialog .slider-composition b{margin-right:0;font-family:var(--dex-font);font-size:32px;font-weight:700;color:var(--dex-text)}
@@ -1631,7 +1651,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
     </section>
     <main class="wrap">
         <section id="browse" class="collection-nav" aria-label="卡牌系列與版本">
-            <div class="collection-nav-top"><span class="collection-heading">COLLECTION / 系列導覽</span></div>
+            <div class="collection-nav-top"><span class="collection-heading">COLLECTION / 卡牌查詢</span></div>
             <div class="collection-search">
                 <div class="collection-search-head"><span class="collection-step-label">01 / SEARCH · 搜尋卡片</span></div>
                 <div class="search"><input id="query" autocomplete="off" placeholder="135、157、171"
@@ -1643,14 +1663,14 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
             </div>
             <div class="collection-grid">
                 <div class="collection-field">
-                    <span class="collection-field-label">02 / EDITION · 版本</span>
+                    <span class="collection-field-label">02 / EDITION · 切換版本</span>
                     <div class="edition-options" role="group" aria-label="卡牌版本">
                         <button type="button" id="edition-retail" class="edition-btn upcoming" aria-pressed="false" title="正式版資料尚未加入">RETAIL <span>●</span></button>
                         <button type="button" id="edition-beta" class="edition-btn active" aria-pressed="true">BETA <span>●</span></button>
                     </div>
                 </div>
                 <div class="collection-field">
-                    <label for="collection-select">03 / SERIES · 卡牌系列</label>
+                    <label for="collection-select">03 / SERIES · 選擇系列</label>
                     <div class="collection-select-wrap">
                         <select id="collection-select" aria-label="選擇卡牌系列">
                             <option value="main">Welcome to Night City</option>
@@ -1773,6 +1793,17 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
             else chooseSection("main");
         }
         const starterOptions = [...$('collection-select').querySelectorAll('option')].filter(option => option.value === "heist" || option.value === "power");
+        const seriesSelect=$('collection-select'),seriesWrap=seriesSelect.parentElement;
+        const seriesTrigger=document.createElement('button'),seriesMenu=document.createElement('div'),seriesText=document.createElement('span');
+        seriesTrigger.type='button';seriesTrigger.id='series-trigger';seriesTrigger.className='series-trigger';seriesTrigger.setAttribute('aria-label','選擇卡牌系列');seriesTrigger.setAttribute('aria-haspopup','listbox');seriesTrigger.setAttribute('aria-expanded','false');seriesTrigger.setAttribute('aria-controls','series-menu');seriesTrigger.append(seriesText);seriesTrigger.insertAdjacentHTML('beforeend','<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3 6 5 5 5-5" stroke="currentColor" stroke-width="1.5"/></svg>');
+        seriesMenu.id='series-menu';seriesMenu.className='series-menu';seriesMenu.setAttribute('role','listbox');seriesMenu.setAttribute('aria-label','卡牌系列');seriesMenu.hidden=true;
+        seriesWrap.append(seriesTrigger);document.body.append(seriesMenu);seriesWrap.classList.add('custom-series');document.querySelector('label[for="collection-select"]').htmlFor='series-trigger';
+        function closeSeries(focus=false){seriesMenu.hidden=true;seriesTrigger.setAttribute('aria-expanded','false');if(focus)seriesTrigger.focus({preventScroll:true})}
+        function syncSeries(){closeSeries();seriesText.textContent=seriesSelect.selectedOptions[0]?.textContent||'';seriesMenu.replaceChildren();for(const option of seriesSelect.options){const item=document.createElement('button');item.type='button';item.tabIndex=-1;item.setAttribute('role','option');item.setAttribute('aria-selected',String(option.selected));item.textContent=option.textContent;item.onclick=()=>{seriesSelect.value=option.value;seriesSelect.dispatchEvent(new Event('change',{bubbles:true}));closeSeries(true)};seriesMenu.append(item)}}
+        function openSeries(){const r=seriesTrigger.getBoundingClientRect(),below=window.innerHeight-r.bottom-8,above=r.top-8,need=seriesMenu.children.length*48+14,up=below<need&&above>below;seriesMenu.style.left=r.left+'px';seriesMenu.style.width=r.width+'px';seriesMenu.style.maxHeight=Math.max(48,up?above:below)+'px';seriesMenu.style.top=up?'auto':(r.bottom+5)+'px';seriesMenu.style.bottom=up?(window.innerHeight-r.top+5)+'px':'auto';seriesMenu.hidden=false;seriesTrigger.setAttribute('aria-expanded','true');seriesMenu.querySelector('[aria-selected="true"]')?.focus({preventScroll:true})}
+        seriesTrigger.onclick=()=>seriesMenu.hidden?openSeries():closeSeries(true);seriesTrigger.addEventListener('keydown',e=>{if(['ArrowDown','ArrowUp'].includes(e.key)){e.preventDefault();openSeries()}});
+        seriesMenu.addEventListener('keydown',e=>{const items=[...seriesMenu.children],i=items.indexOf(document.activeElement);if(e.key==='Escape'){e.preventDefault();closeSeries(true)}else if(e.key==='Tab'){closeSeries(true)}else if(['ArrowDown','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();items[e.key==='Home'?0:e.key==='End'?items.length-1:(i+(e.key==='ArrowDown'?1:-1)+items.length)%items.length]?.focus()}});
+        document.addEventListener('pointerdown',e=>{if(!seriesWrap.contains(e.target)&&!seriesMenu.contains(e.target))closeSeries()});window.addEventListener('resize',()=>closeSeries());window.addEventListener('scroll',()=>closeSeries(),{passive:true});syncSeries();
         function updateSearchInput() {
             const input = $('query');
             const retail = activeEdition === "retail";
@@ -1805,6 +1836,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
             }
             activeSection = section; if (starter) activeStarter = starter;
             $('collection-select').value = section === "main" ? "main" : activeStarter;
+            syncSeries();
             $('collection-summary').textContent = (section === "main" ? "Welcome to Night City" : activeStarter === "heist" ? "THE HEIST" : "EMBRACING POWER") + " / " + activeEdition.toUpperCase();
             for (const [edition, id] of [["beta", "edition-beta"], ["retail", "edition-retail"]]) {
                 const active = activeEdition === edition, btn = $(id);
