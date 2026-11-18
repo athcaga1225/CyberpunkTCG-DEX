@@ -1736,6 +1736,25 @@ html.pack-view #draw-dialog:has(#pack-stage:not([hidden]):not(.pack-selected)){w
 .hero-copy h1,#ranking-title,#draw-dialog .slider-info #picker-name{font-size:clamp(40px,10vw,64px)}
 }
 @media(prefers-reduced-motion:reduce){.hero-kicker,.ranking-kicker,#draw-dialog .slider-info .slider-eyebrow,.hero-copy h1,#ranking-title,#draw-dialog .slider-info #picker-name,.hero-subtitle,.ranking-subtitle,#draw-dialog .slider-info .picker-subtitle{animation:none!important}}
+
+/* Mobile navigation: match desktop motion without changing its full-width layout. */
+@media(max-width:760px){
+body>header .dex-menu-toggle{position:relative}
+body>header .dex-menu-toggle svg{display:none}
+body>header .dex-menu-toggle::before,body>header .dex-menu-toggle::after{content:"";position:absolute;left:8px;right:8px;height:2px;background:currentColor;transform-origin:center;transition:transform .28s cubic-bezier(.2,.75,.25,1),top .28s cubic-bezier(.2,.75,.25,1)}
+body>header .dex-menu-toggle::before{top:16px}
+body>header .dex-menu-toggle::after{top:24px}
+body>header .dex-menu-toggle[aria-expanded=true]::before{top:20px;transform:rotate(45deg)}
+body>header .dex-menu-toggle[aria-expanded=true]::after{top:20px;transform:rotate(-45deg)}
+body>header .dex-nav{display:flex;flex-direction:column;align-items:stretch;gap:0;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-8px);clip-path:inset(0 0 100% 0);transition:clip-path .32s cubic-bezier(.22,.8,.25,1),opacity .25s,transform .32s cubic-bezier(.22,.8,.25,1),visibility 0s linear .32s}
+body>header .dex-nav.is-open{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);clip-path:inset(0);transition-delay:0s}
+body>header .dex-nav a{opacity:0;transform:translateY(-7px);transition:opacity .2s,transform .25s}
+body>header .dex-nav.is-open a{opacity:1;transform:translateY(0)}
+body>header .dex-nav.is-open a:nth-child(1){transition-delay:.07s}
+body>header .dex-nav.is-open a:nth-child(2){transition-delay:.11s}
+body>header .dex-nav.is-open a:nth-child(3){transition-delay:.15s}
+}
+@media(max-width:760px) and (prefers-reduced-motion:reduce){body>header .dex-nav,body>header .dex-nav a,body>header .dex-menu-toggle::before,body>header .dex-menu-toggle::after{transition:none!important}}
 </style>
 </head>
 
@@ -2331,6 +2350,31 @@ revealAllButton.addEventListener('touchstart',e=>{const t=e.changedTouches[0];re
 revealAllButton.addEventListener('touchcancel',()=>revealTouch=null,{passive:true});
 revealAllButton.addEventListener('touchend',e=>{const t=e.changedTouches[0],start=revealTouch;revealTouch=null;if(!start||Math.hypot(t.clientX-start.x,t.clientY-start.y)>12)return;e.preventDefault();lastRevealTouch=performance.now();revealAll()},{passive:false});
 revealAllButton.onclick=()=>{if(performance.now()-lastRevealTouch>600)revealAll()};selectEdition(document.documentElement.classList.contains('pack-view')?activeEdition:'beta')})();
+</script>
+
+<script>
+/* Desktop-only eased wheel scroll; keep native input and nested scrolling intact. */
+(()=>{
+ const desktop=matchMedia('(min-width:761px) and (pointer:fine) and (prefers-reduced-motion:no-preference)');
+ let frame=0,target=0,last=0,stamp=0;
+ const root=document.documentElement;
+ const blocked=()=>!desktop.matches||root.classList.contains('pack-opening')||!!document.querySelector('dialog[open]')||getComputedStyle(document.body).overflowY==='hidden';
+ const stop=()=>{if(frame)cancelAnimationFrame(frame);frame=0};
+ const max=()=>Math.max(0,document.scrollingElement.scrollHeight-innerHeight);
+ const tick=t=>{if(blocked()||Math.abs(scrollY-last)>2){stop();return}const dt=Math.min(48,t-stamp||16);stamp=t;target=Math.min(max(),Math.max(0,target));const diff=target-scrollY;if(Math.abs(diff)<1){window.scrollTo({top:target,behavior:'instant'});stop();return}window.scrollTo({top:scrollY+Math.sign(diff)*Math.max(1,Math.abs(diff)*(1-Math.exp(-dt/105))),behavior:'instant'});last=scrollY;frame=requestAnimationFrame(tick)};
+ window.addEventListener('wheel',e=>{
+ if(blocked()||e.defaultPrevented||!e.cancelable||e.ctrlKey||e.metaKey||e.shiftKey||Math.abs(e.deltaX)>=Math.abs(e.deltaY)||!e.deltaY){stop();return}
+ if(!(e.target instanceof Element)||e.target.closest('input,textarea,select,dialog,.series-menu,.test-dropdown-menu,#pack-wrapper,[contenteditable]')){stop();return}
+ for(let el=e.target;el&&el!==document.body&&el!==root;el=el.parentElement){if(/auto|scroll|overlay/.test(getComputedStyle(el).overflowY)&&el.scrollHeight>el.clientHeight+1){stop();return}}
+ const delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?innerHeight:1);
+ if(!frame||Math.abs(scrollY-last)>2){stop();target=scrollY}
+ if((delta<0&&target<=0)||(delta>0&&target>=max()))return;
+ e.preventDefault();target=Math.min(max(),Math.max(0,target+delta));
+ if(!frame){last=scrollY;stamp=performance.now();frame=requestAnimationFrame(tick)}
+ },{passive:false});
+ for(const type of ['pointerdown','keydown','touchstart','resize'])window.addEventListener(type,stop,{passive:true});
+ desktop.addEventListener('change',stop);
+})();
 </script>
 </body>
 
