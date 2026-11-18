@@ -1580,7 +1580,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 /* V3 pack interaction polish */
 #draw-dialog .slider-art{isolation:isolate}
 #draw-dialog .slider-art::after{content:attr(data-edition);position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);font-size:clamp(56px,11vw,180px);font-weight:900;letter-spacing:-.055em;color:#16191c;opacity:.09;line-height:1;white-space:nowrap;pointer-events:none;z-index:-1}
-#draw-dialog #pack-wrapper.dragging:not(.torn) .pack-intact{transform:skewY(var(--tear-skew,0deg)) translateX(calc(var(--tear-x,0px) * .045));transform-origin:50% 80%;transition:transform .08s linear}
+#draw-dialog #pack-wrapper.dragging:not(.torn) .pack-intact{transform:none}
 #draw-dialog .pack-card.revealed[data-rarity="Rare"]::after{content:"";position:absolute;inset:0;border-radius:3% / 2.14%;pointer-events:none;background:linear-gradient(115deg,transparent 28%,#fff5 49%,transparent 70%);background-size:250% 100%;mix-blend-mode:screen;animation:packRaritySweep .55s .16s ease-out both}
 #draw-dialog .pack-card.revealed[data-rarity="Epic"] .hero-front{animation:dexEpicEdge .8s .16s ease-out both}
 #draw-dialog .pack-card.revealed[data-rarity="Secret"] .hero-front{animation:dexSecretGlitch .44s .25s ease-out both}
@@ -1610,8 +1610,11 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper{transform:none;transform-origin:center;transition:none}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach.torn{animation:v3PackApproach .78s .62s cubic-bezier(.35,.02,.19,1) both}
   #draw-dialog #pack-wrapper.v3-approach:not(.torn) .pack-gesture-hint{opacity:0}
-  #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-intact{display:block}
-  #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-top,#draw-dialog #pack-wrapper.dragging:not(.torn) .pack-body{display:none}
+  /* Stable pack body while dragging: only the seal follows the gesture. */
+  #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-intact{display:none}
+  #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-top,#draw-dialog #pack-wrapper.dragging:not(.torn) .pack-body{display:block}
+  #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-top{transform:translateX(calc(var(--tear-x,0px) * .18));transition:none}
+  #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-body{transform:none}
   #draw-dialog #pack-wrapper.v3-approach.torn .pack-top{transform-origin:94% 18%;animation:v3SealTear .64s cubic-bezier(.2,.7,.25,1) forwards}
   #draw-dialog #pack-wrapper.v3-approach.torn .v3-unpeeled{display:block;animation:v3Unpeeled .52s linear both}
   #draw-dialog #pack-wrapper.v3-approach.torn .pack-body{animation:v3ShellDrop .78s .84s cubic-bezier(.38,0,.75,1) both}
@@ -2383,11 +2386,11 @@ stage.querySelector('.pack-art').addEventListener('pointerdown',e=>{if(!stage.cl
 function tearThreshold(){return Math.min(65,wrapper.clientWidth*.22)}
 function clearTear(){tearStart=null;wrapper.classList.remove('dragging');wrapper.style.removeProperty('--tear-x')}
 function completeTear(dx){suppressClick=true;wrapper.style.setProperty('--tear-start',Math.min(dx,100)+'px');clearTear();openBooster()}
-window.addEventListener('pointermove',e=>{if(!tearStart||e.pointerId!==tearStart.id||wrapper.disabled)return;const dx=e.clientX-tearStart.x,dy=e.clientY-tearStart.y;if(dx>5&&dx>Math.abs(dy)*1.15){wrapper.classList.add('dragging');wrapper.style.setProperty('--tear-x',Math.min(dx,100)+'px');wrapper.style.setProperty('--tear-skew',Math.min(dx,100)*.025+'deg');if(dx>=tearThreshold())completeTear(dx)}});
+window.addEventListener('pointermove',e=>{if(!tearStart||e.pointerId!==tearStart.id||wrapper.disabled)return;const dx=e.clientX-tearStart.x,dy=e.clientY-tearStart.y;if(dx>5&&dx>Math.abs(dy)*1.15){wrapper.classList.add('dragging');wrapper.style.setProperty('--tear-x',Math.min(dx,100)+'px');if(dx>=tearThreshold())completeTear(dx)}});
 function finishTear(e,cancelled=false){if(!tearStart||e.pointerId!==tearStart.id)return;const dx=e.clientX-tearStart.x,dy=e.clientY-tearStart.y;suppressClick=cancelled||Math.abs(dx)>8||Math.abs(dy)>8;if(!cancelled&&dx>=tearThreshold()&&dx>Math.abs(dy)*1.15){completeTear(dx);return}clearTear()}
 window.addEventListener('pointerup',e=>finishTear(e));window.addEventListener('pointercancel',e=>finishTear(e,true));wrapper.addEventListener('lostpointercapture',e=>finishTear(e,true));
 let wheelTear=0,wheelTimer=null;
-stage.addEventListener('wheel',e=>{if(wrapper.disabled||!stage.classList.contains('pack-selected')||Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;e.preventDefault();const dx=Math.abs(e.deltaX)*(e.deltaMode===1?16:1);wheelTear+=dx;wrapper.classList.add('dragging');wrapper.style.setProperty('--tear-x',Math.min(wheelTear,100)+'px');wrapper.style.setProperty('--tear-skew',Math.min(wheelTear,100)*.025+'deg');clearTimeout(wheelTimer);if(wheelTear>=tearThreshold()){completeTear(wheelTear);wheelTear=0}else wheelTimer=setTimeout(()=>{wheelTear=0;clearTear()},180)},{passive:false});
+stage.addEventListener('wheel',e=>{if(wrapper.disabled||!stage.classList.contains('pack-selected')||Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;e.preventDefault();const dx=Math.abs(e.deltaX)*(e.deltaMode===1?16:1);wheelTear+=dx;wrapper.classList.add('dragging');wrapper.style.setProperty('--tear-x',Math.min(wheelTear,100)+'px');clearTimeout(wheelTimer);if(wheelTear>=tearThreshold()){completeTear(wheelTear);wheelTear=0}else wheelTimer=setTimeout(()=>{wheelTear=0;clearTear()},180)},{passive:false});
 wrapper.addEventListener('click',e=>{if(suppressClick&&e.detail!==0){e.preventDefault();e.stopImmediatePropagation();suppressClick=false}},true);
 const hint=wrapper.querySelector('.pack-gesture-hint');hint.replaceChildren(document.createTextNode('向右滑動或點擊卡包開啟'));const arrow=document.createElement('span');arrow.className='pack-swipe-arrow';arrow.textContent='→';arrow.setAttribute('aria-hidden','true');hint.append(arrow);
 const pickerHint=picker.querySelector('.slider-pack-hint');pickerHint.textContent='點擊開啟卡包';pickerHint.setAttribute('aria-hidden','true');picker.querySelector('.slider-art').append(pickerHint);tilt.setAttribute('aria-label','點擊開啟卡包');
