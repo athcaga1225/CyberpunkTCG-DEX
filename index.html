@@ -1589,7 +1589,6 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 #draw-dialog .pack-tile.pack-top-value .pack-card-label::before{content:"■ ";font-size:.72em}
 #draw-dialog .pack-god-banner{color:#fcee09;font-weight:800;letter-spacing:.18em;text-align:center;padding:12px 0}
 #draw-dialog .pack-god-flash{position:fixed;inset:0;z-index:999;pointer-events:none;background:radial-gradient(ellipse,#fcee091c,transparent 65%);animation:dexGodFlash 1.1s ease-out both}
-#draw-dialog .pack-tear-flash{position:fixed;inset:0;z-index:100;pointer-events:none;background:repeating-linear-gradient(0deg,transparent 0 8px,#fcee0922 9px 10px,transparent 11px 17px);animation:dexGodFlash .32s ease-out both}
 #pack-zoom .dex-zoom-face{position:relative;display:table;margin:auto;max-width:100%;isolation:isolate}
 #pack-zoom .dex-zoom-face::after{content:"";position:absolute;inset:0;border-radius:3% / 2.14%;pointer-events:none;background:radial-gradient(ellipse at var(--shine-x,50%) var(--shine-y,50%),#fff6,transparent 52%),linear-gradient(120deg,transparent 30%,#a6e5ff22 47%,#ffde8c33 55%,transparent 71%);mix-blend-mode:screen;opacity:0;transition:opacity .2s}
 #pack-zoom[data-foil="true"] .dex-zoom-face.is-tilting::after{opacity:1}
@@ -1597,7 +1596,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 @keyframes dexSecretGlitch{0%,100%{filter:none;translate:0}25%{filter:drop-shadow(2px 0 #ed64d9) drop-shadow(-2px 0 #55dfff);translate:2px 0}55%{filter:drop-shadow(-2px 0 #ed64d9) drop-shadow(2px 0 #55dfff);translate:-2px 0}}
 @keyframes dexSecretHit{0%,100%{filter:none}40%{filter:brightness(1.3) drop-shadow(0 0 10px #fff0a8)}}
 @keyframes dexGodFlash{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
-@media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed::after,#draw-dialog .pack-card.revealed .hero-front{animation:none!important}#draw-dialog .pack-god-flash,#draw-dialog .pack-tear-flash{display:none}#pack-zoom .dex-zoom-face::after{display:none}}
+@media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed::after,#draw-dialog .pack-card.revealed .hero-front{animation:none!important}#draw-dialog .pack-god-flash{display:none}#pack-zoom .dex-zoom-face::after{display:none}}
 /* V3 shared cinematic opening: physical tear, then drop. */
 #draw-dialog .v3-stack{display:none}
 #draw-dialog .v3-shell{display:contents}
@@ -2394,7 +2393,7 @@ function startFoil(){
   draw(start);
 }
 function packFlash(cls){const flash=document.createElement('span');flash.className=cls;flash.setAttribute('aria-hidden','true');dialog.append(flash);setTimeout(()=>flash.remove(),1200)}function finishOpening(){clearTimeout(timer);stopFoil();dialog.classList.remove('v3-opening-active');wrapper.classList.remove('v3-approach','v3-ready');backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');display()}
-function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(!reduced){const r=wrapper.getBoundingClientRect(),bottom=document.body.getBoundingClientRect().bottom,drop=Math.max(0,bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];dialog.classList.add('v3-opening-active');wrapper.classList.add('v3-approach');startFoil();wrapper.classList.add('torn');packFlash('pack-tear-flash');timer=setTimeout(finishOpening,1460)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,0)}}
+function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(!reduced){const r=wrapper.getBoundingClientRect(),bottom=document.body.getBoundingClientRect().bottom,drop=Math.max(0,bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];dialog.classList.add('v3-opening-active');wrapper.classList.add('v3-approach');startFoil();wrapper.classList.add('torn');timer=setTimeout(finishOpening,1460)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,0)}}
 wrapper.onclick=openBooster;
 stage.querySelectorAll('[data-pack-edition]').forEach(b=>b.onclick=()=>{if(!wrapper.disabled)selectEdition(b.dataset.packEdition)});if(document.documentElement.classList.contains('pack-view')){document.title='CyberDEX — 開啟卡包';reset();selectEdition(activeEdition)};
 document.getElementById('draw-again').onclick=()=>{const previousTest=testRarity;let next;try{next=makePack()}catch(e){return}reset();testRarity=previousTest;pack=next;wrapper.disabled=true;testSelect.disabled=true;display()};
