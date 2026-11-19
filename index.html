@@ -1188,13 +1188,13 @@
 @keyframes packShellDrop{0%,25%{transform:translateY(0);opacity:1}100%{transform:translateY(70px) rotate(-4deg);opacity:0}}
 @keyframes packCardLift{0%{opacity:0;transform:translateY(26%) scale(.92)}15%{opacity:1}75%{opacity:1;transform:translateY(-16%) scale(1.04)}100%{opacity:1;transform:translateY(-12%) scale(1.02)}}
 @keyframes packSeam{0%{transform:scaleX(0);opacity:0}30%{opacity:1}85%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
-#draw-dialog .pack-tile{animation:packGridArrival .65s var(--delay) cubic-bezier(.16,.85,.25,1) backwards;transform-origin:50% 65%}
+#draw-dialog .pack-tile{animation:packGridArrival .85s var(--delay) linear backwards;transform-origin:50% 65%}
 #draw-dialog .pack-card{animation:none;touch-action:manipulation;-webkit-perspective:850px;perspective:850px}
 #draw-dialog .pack-card .hero-flip{pointer-events:none;-webkit-transform-style:preserve-3d;transform-style:preserve-3d;-webkit-transform:rotateY(180deg);transform:rotateY(180deg)}
 #draw-dialog .pack-card.revealed .hero-flip{-webkit-transform:rotateY(0deg);transform:rotateY(0deg)}
 #draw-dialog .pack-card .hero-face,#draw-dialog .pack-card img{pointer-events:none;-webkit-user-select:none;user-select:none}
 @media(prefers-reduced-motion:reduce){#draw-dialog .pack-tile{animation:none}}
-@keyframes packGridArrival{0%{opacity:0;transform:perspective(900px) translate3d(-28px,68px,-120px) rotateX(28deg) rotateZ(-12deg) scale(.86);filter:blur(5px)}35%{opacity:1;filter:blur(0)}72%{transform:perspective(900px) translate3d(0,-3px,0) rotateX(-4deg) rotateZ(1deg) scale(1.015)}100%{opacity:1;transform:none;filter:none}}
+@keyframes packGridArrival{0%{opacity:0;transform:perspective(900px) translate3d(-34px,92px,-150px) rotateX(32deg) rotateZ(-14deg) scale(.82);filter:blur(4px);animation-timing-function:cubic-bezier(.55,0,.18,1)}48%{opacity:1;transform:perspective(900px) translate3d(0,-12px,0) rotateX(-6deg) rotateZ(2deg) scale(1.035);filter:blur(0);animation-timing-function:cubic-bezier(.12,.75,.25,1)}100%{opacity:1;transform:none;filter:none}}
 #draw-dialog .pack-card[data-legend="true"] .hero-back{background:#08090b}
 #draw-dialog .pack-card[data-legend="true"] .hero-back img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;transform:none;filter:none}
 @media(prefers-reduced-motion:reduce){#draw-dialog #pack-wrapper.torn .pack-top,#draw-dialog #pack-wrapper.torn .pack-body,#draw-dialog #pack-wrapper.torn .pack-emerging,#draw-dialog #pack-wrapper.torn::after,#draw-dialog .pack-card{animation:none!important}}
