@@ -1194,9 +1194,9 @@
 #draw-dialog .pack-card.revealed .hero-flip{-webkit-transform:rotateY(0deg);transform:rotateY(0deg)}
 #draw-dialog .pack-card .hero-face,#draw-dialog .pack-card img{pointer-events:none;-webkit-user-select:none;user-select:none}
 @media(prefers-reduced-motion:reduce){#draw-dialog .pack-tile{animation:none}}
-@keyframes packGridArrival{from{opacity:0;transform:translateY(20px) scale(.94)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes packGridArrival{from{opacity:0;transform:translateY(20px) scale(.94);filter:blur(5px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
 @keyframes packDealB{from{opacity:0;transform:translateY(-75px)}to{opacity:1;transform:translateY(0)}}
-@keyframes packDealC{from{opacity:0;transform:scale(.65)}to{opacity:1;transform:scale(1)}}
+@keyframes packDealC{from{opacity:0;transform:scale(.65);filter:blur(7px)}to{opacity:1;transform:scale(1);filter:blur(0)}}
 @keyframes packDealD{from{opacity:0;transform:translateX(var(--deal-x,0px))}to{opacity:1;transform:translateX(0)}}
 @keyframes packDealE{from{opacity:0;transform:translate(18px,28px)}to{opacity:1;transform:translate(0,0)}}
 @keyframes packDealF{from{opacity:0;transform:perspective(700px) rotateX(-55deg)}to{opacity:1;transform:perspective(700px) rotateX(0deg)}}
