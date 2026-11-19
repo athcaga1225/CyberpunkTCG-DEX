@@ -1973,7 +1973,7 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
                     <div class="market-fx-note">
                         <div class="small">USD / TWD 參考匯率 · 1 USD ≈ <strong id="rate">32.47</strong> TWD</div>
                         <p class="note"><span id="rate-source">匯率載入中；暫用備援參考值 32.47。</span> <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">Rates By Exchange Rate API</a></p>
-                        <p class="note">資料說明：價格為歷史參考值，非即時成交價；外部價格及卡圖資料可能變動。卡圖來源：主系列 Spellbound Games、Box Topper HoloHoard；Box Topper 使用 T001～T006 編號以區別主系列。</p>
+                        <p class="note">資料說明：價格為歷史參考值，非即時成交價；外部價格及卡圖資料可能變動。</p>
                     </div>
 
                 </div>
@@ -2219,7 +2219,7 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
             if (p && Number.isFinite(p.usd)) { const prefix = document.createElement('span'); prefix.className = 'currency-prefix'; prefix.textContent = 'US$'; const value = document.createElement('span'); value.textContent = p.usd.toFixed(2); usd.append(prefix, value) }
             else usd.textContent = '尚無報價';
             const twd = $('twd'); twd.replaceChildren(); if (p && Number.isFinite(p.usd)) { const prefix = document.createElement('span'); prefix.className = 'twd-prefix'; prefix.textContent = '約 NT$'; const amount = document.createElement('span'); amount.textContent = Math.round(p.usd * rate).toLocaleString('zh-TW'); twd.append(prefix, amount); }
-            $('pricenote').textContent = p ? '歷史價格快照 · 非即時 · 參考資料日期：' + (p.observedDate || (activeEdition === 'retail' ? retailPriceDate : priceDate)) + '。' + (activeSection === "starter" ? '初始牌組獨立報價（' + p.printing + '），不沿用主系列同號價格；尚無價格走勢。' : activeEdition === "retail" ? 'RETAIL 專屬資料，與 Beta 分開統計；目前尚無歷史走勢。來源：' + (p.sourceName || "未註明") + '。' : '不同來源時間可能不同。') : '尚未建立這張卡的價格紀錄。';
+            $('pricenote').textContent = p ? '歷史價格快照 · 非即時 · 參考資料日期：' + (p.observedDate || (activeEdition === 'retail' ? retailPriceDate : priceDate)) + '。' + (activeSection === "starter" ? '初始牌組獨立報價（' + p.printing + '），不沿用主系列同號價格；尚無價格走勢。' : activeEdition === "retail" ? '目前尚無歷史走勢。來源：' + (p.sourceName || "未註明") + '。' : '不同來源時間可能不同。') : '尚未建立這張卡的價格紀錄。';
             $('tcg').href = 'https://www.tcgplayer.com/search/all/product?q=' + encodeURIComponent("Cyberpunk TCG " + (activeSection === "starter" ? (activeStarter === "heist" ? "The Heist Beta starter " : "Embracing Power Beta starter ") : "Welcome to Night City " + (activeEdition === "retail" ? "Retail " : "Beta ")) + code + " " + entry.name);
             $('cataloglink').href = activeEdition === "retail" ? (entry.sourceUrl || 'https://cyberpunktcg.com/cards') : activeSection === "starter" ? entry.sourceUrl : setUrl;
             displayArt(code, entry);
