@@ -747,14 +747,14 @@
         @keyframes chartDraw {from {stroke-dashoffset:var(--chart-length)}to {stroke-dashoffset:0}}
         @keyframes pointReveal {from {opacity:0}to {opacity:1}}
         @keyframes cardRefresh {from {opacity:.15;transform:translateY(7px)}to {opacity:1;transform:translateY(0)}}
-        .collection-nav {animation:hudEnter .38s ease-out both}
-        main > .panel {animation:hudEnter .38s ease-out .10s both}
+        .collection-nav {animation:hudEnter .62s cubic-bezier(.2,.7,.2,1) both}
+        main > .panel {animation:hudEnter .62s cubic-bezier(.2,.7,.2,1) .10s both}
         
         .history-graph svg path[stroke="#e5e9ec"][data-animated] {
             stroke-dasharray:var(--chart-length);
-            animation:chartDraw .8s cubic-bezier(.2,.7,.2,1) both;
+            animation:chartDraw 1s cubic-bezier(.2,.7,.2,1) both;
         }
-        .history-graph svg circle[fill="#e5e9ec"] {animation:pointReveal .25s ease-out .62s both}
+        .history-graph svg circle[fill="#e5e9ec"] {animation:pointReveal .28s ease-out var(--point-delay,.82s) both}
         #result.card-refresh .cardgrid,#result.card-refresh .history-panel {
             animation:cardRefresh .32s ease-out both;
         }
@@ -1926,6 +1926,7 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 
 /* Stable irregular ranking glow */
 :root.ranking-view{background-image:var(--dex-grain),var(--ranking-ambient,radial-gradient(ellipse 680px 400px at 8% 300px,rgba(48,100,210,.10),transparent 75%));background-size:auto;background-repeat:repeat;background-attachment:scroll}
+@media(prefers-reduced-motion:no-preference){html.ranking-view .ranking-intro{animation:dexCopyIn .62s cubic-bezier(.2,.7,.2,1) .24s both}html.ranking-view .ranking-tools{animation:dexCopyIn .62s cubic-bezier(.2,.7,.2,1) .30s both}#draw-dialog .pack-picker{animation-duration:.62s;animation-timing-function:cubic-bezier(.2,.7,.2,1)}}
 </style>
 </head>
 
@@ -2219,6 +2220,13 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
             if(invalid) status.textContent=message;
         }
         $('query').addEventListener('input', () => {clearCardMatches();if($('query').getAttribute('aria-invalid')==='true'){$('loadstate').textContent=collectionStatusText();setSearchError('')}});
+        function animateMarketAmount(node,target,previous,format){
+            node.textContent=format(target);
+            if(!Number.isFinite(previous)||previous===target||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+            const start=performance.now();
+            function tick(now){if(!node.isConnected)return;const t=Math.min(1,(now-start)/650),ease=1-Math.pow(1-t,3);node.textContent=format(t===1?target:previous+(target-previous)*ease);if(t<1)requestAnimationFrame(tick)}
+            node.textContent=format(previous);requestAnimationFrame(tick);
+        }
         function show(query, scroll) {
             clearCardMatches();
             setSearchError('');
@@ -2262,10 +2270,10 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
             expanded.className = 'rarityname';
             expanded.textContent = entry.rarity ? '（' + (RARITY_ZH[entry.rarity] || '待確認') + '）' : '';
             line.append(value, expanded); rn.append(line);
-            const p = activeEdition === "retail" ? retailPrices[code] : activeSection === "main" ? prices[code] : starterPrices[activeStarter]?.prices?.[code], usd = $('usd'); usd.replaceChildren();
-            if (p && Number.isFinite(p.usd)) { const prefix = document.createElement('span'); prefix.className = 'currency-prefix'; prefix.textContent = 'US$'; const value = document.createElement('span'); value.textContent = p.usd.toFixed(2); usd.append(prefix, value) }
+            const p = activeEdition === "retail" ? retailPrices[code] : activeSection === "main" ? prices[code] : starterPrices[activeStarter]?.prices?.[code], usd = $('usd'); const oldUSD=Number(usd.lastElementChild?.textContent?.replace(/,/g,'')),oldTWD=Number($('twd').lastElementChild?.textContent?.replace(/,/g,'')); usd.replaceChildren();
+            if (p && Number.isFinite(p.usd)) { const prefix = document.createElement('span'); prefix.className = 'currency-prefix'; prefix.textContent = 'US$'; const value = document.createElement('span'); usd.append(prefix, value); animateMarketAmount(value,p.usd,Number.isFinite(oldUSD)?oldUSD:0,n=>n.toFixed(2)) }
             else usd.textContent = '尚無報價';
-            const twd = $('twd'); twd.replaceChildren(); if (p && Number.isFinite(p.usd)) { const prefix = document.createElement('span'); prefix.className = 'twd-prefix'; prefix.textContent = '約 NT$'; const amount = document.createElement('span'); amount.textContent = Math.round(p.usd * rate).toLocaleString('zh-TW'); twd.append(prefix, amount); }
+            const twd = $('twd'); twd.replaceChildren(); if (p && Number.isFinite(p.usd)) { const prefix = document.createElement('span'); prefix.className = 'twd-prefix'; prefix.textContent = '約 NT$'; const amount = document.createElement('span'); twd.append(prefix, amount); animateMarketAmount(amount,Math.round(p.usd*rate),Number.isFinite(oldTWD)?oldTWD:0,n=>Math.round(n).toLocaleString('zh-TW')); }
             $('pricenote').textContent = p ? '歷史價格快照 · 非即時 · 參考資料日期：' + (p.observedDate || (activeEdition === 'retail' ? retailPriceDate : priceDate)) + '。' + (activeSection === "starter" ? '初始牌組獨立報價（' + p.printing + '），不沿用主系列同號價格；尚無價格走勢。' : activeEdition === "retail" ? '目前尚無歷史走勢。來源：' + (p.sourceName || "未註明") + '。' : '不同來源時間可能不同。') : '尚未建立這張卡的價格紀錄。';
             $('tcg').href = 'https://www.tcgplayer.com/search/all/product?q=' + encodeURIComponent("Cyberpunk TCG " + (activeSection === "starter" ? (activeStarter === "heist" ? "The Heist Beta starter " : "Embracing Power Beta starter ") : "Welcome to Night City " + (activeEdition === "retail" ? "Retail " : "Beta ")) + code + " " + entry.name);
             $('cataloglink').href = activeEdition === "retail" ? (entry.sourceUrl || 'https://cyberpunktcg.com/cards') : activeSection === "starter" ? entry.sourceUrl : setUrl;
@@ -2348,10 +2356,10 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
             for(let i=0;i<4;i++){const v=min+(max-min)*i/3,Y=y(v);el("line",{x1:left,y1:Y,x2:W-right,y2:Y,stroke:"#455255","stroke-width":.7,"stroke-dasharray":"3 5"});el("text",{x:0,y:Y+4,fill:"#aab9bc","font-size":12},v.toFixed(v>=100?0:2))}
             const d=points.map((p,i)=>(i?"L":"M")+x(times[i]).toFixed(2)+","+y(p.usd).toFixed(2)).join(" ");
             const curve=el("path",{d,stroke:"#e5e9ec","stroke-width":1.5,fill:"none","stroke-linecap":"round","stroke-linejoin":"round"});
-            const curveLength=Math.ceil(curve.getTotalLength());
+            const curveLength=Math.max(1,Math.ceil(points.slice(1).reduce((len,p,i)=>len+Math.hypot(x(times[i+1])-x(times[i]),y(p.usd)-y(points[i].usd)),0)));
             curve.style.setProperty("--chart-length",curveLength+"px");
             curve.setAttribute("data-animated","");
-            points.forEach((p,i)=>{el("circle",{cx:x(times[i]),cy:y(p.usd),r:2.8,fill:"#e5e9ec"})});
+            points.forEach((p,i)=>{const dot=el("circle",{cx:x(times[i]),cy:y(p.usd),r:2.8,fill:"#e5e9ec"});dot.style.setProperty("--point-delay",(0.45+0.45*i/Math.max(1,points.length-1))+"s")});
             for(const p of [first,last]){const T=Date.parse(p.date+"T00:00:00Z");el("text",{x:x(T),y:H-10,fill:"#aab9bc","font-size":12,"text-anchor":p===first?"start":"end"},p.date.slice(5))}
             const guide=el("line",{x1:0,y1:top,x2:0,y2:H-bottom,stroke:"#c5003c","stroke-width":1,"stroke-dasharray":"4 4",visibility:"hidden"});
             const hit=el("rect",{x:left,y:top,width:W-left-right,height:H-top-bottom,fill:"transparent"});
