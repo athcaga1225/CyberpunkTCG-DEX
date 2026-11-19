@@ -357,7 +357,7 @@
 
         .cardtitle {
             font-size: clamp(18px, 4.8vw, 26px);
-            margin: 10px 0;
+            margin: 4px 0 10px;
             line-height: 1.35;
             overflow-wrap: anywhere
         }
@@ -383,6 +383,8 @@
             font-weight: 700
         }
 
+        #result #twd > span:not(.twd-prefix){position:relative;top:1px}
+        #result #usd > span:not(.currency-prefix){position:relative;top:1px}
         .approx .twd-prefix {
             font-size: 12px;
             font-weight: 400;
@@ -560,6 +562,8 @@
         .history-periods button{border-radius:0;padding:7px 9px;background:#10171a;border:1px solid #4b5b5e;color:#b9c9c9;font:11px ui-monospace,monospace}
         .history-periods button[aria-pressed="true"]{color:#111713;background:#c5003c;border-color:#c5003c}
         .history-graph{min-height:155px;position:relative;margin-top:12px}
+        .history-graph:empty,#history-note:empty,[data-history-note]:empty{display:none}
+        .history-graph:has(.empty-history){min-height:0}
         /* Safari: prevent long-press selecting chart labels or SVG paths. */
         .history-graph, .history-graph svg, .history-graph svg text {
             -webkit-user-select:none;
@@ -573,8 +577,8 @@
         .history-tooltip[hidden]{display:none}
         .history-graph svg{width:100%;height:auto;display:block;max-height:260px}
         .history-graph .empty-history{padding:32px 12px;border:1px dashed #4d5c5e;color:#aab9bc;text-align:center;font-size:12px;line-height:1.7}
-        #history-summary{color:#c8d4d4;font-size:12px}
-        #history-note{margin-top:8px}
+        :is(#history-summary,[data-history-summary]){color:#c8d4d4;font-size:12px}
+        :is(#history-note,[data-history-note]){margin-top:8px}
         @media(max-width:600px){.history-head{display:block}.history-periods{margin-top:10px}.history-periods button{font-size:10px;padding:7px 9px}}
         /* Safari double-tap zoom prevention; pinch-to-zoom remains available. */
         html { touch-action: manipulation; }
@@ -583,7 +587,7 @@
         .collection-search-head {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
         .collection-search-step {color:#718d8e;font:10px monospace;letter-spacing:.1em}
         .collection-search .search {margin-top:0;align-items:stretch;gap:14px}
-        .collection-search .search input {flex:1 1 auto;width:0;min-width:0}
+        .collection-search .search input {flex:1 1 auto;width:0;min-width:0;box-sizing:border-box;height:50px;min-height:50px;padding-block:0}
         .collection-search .search button {flex:0 0 auto;min-width:142px;padding-left:24px;padding-right:24px;letter-spacing:.04em}
         @media(max-width:580px) {
             .collection-search .search {gap:9px}
@@ -641,6 +645,7 @@
         /* Search-first sequence: no top divider; separate series/edition below. */
         .collection-search {border-top:0;border-bottom:1px solid #333d44;padding:18px 0 16px}
         .collection-grid {margin:18px 0 17px}
+        @media(min-width:761px){.collection-grid{column-gap:15px;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)}.collection-grid>.collection-field:nth-child(2){padding-left:17px;min-width:0}}
                 /* 2077 cyberware-inspired dark UI: restrained crimson, cyan highlights, no yellow. */
         :root {background:#0b0d10;color:#d8e0e3}
         /* Background atmosphere study: glow + subtle edge light + scanline grain + vignette.
@@ -689,7 +694,7 @@
         /* All four section headings share a single cyan typography system. */
         .collection-heading,
         #result .section-heading,
-        #history-panel .history-head h2,
+        :is(#history-panel,.ranking-expanded-history) .history-head h2,
         .source-disclosure {
             font-family:"Noto Sans TC","PingFang TC",sans-serif;
             font-size:13px;
@@ -726,7 +731,7 @@
         .history-tooltip {transition:none;will-change:left}
         .history-tooltip strong {color:#29ffff}
         .divider {background:#354048}
-        #history-summary {color:#d0dce0}
+        :is(#history-summary,[data-history-summary]) {color:#d0dce0}
         .note {color:#a0b1b8}
         .collection-search .search button {color:#f7edef}
         .history-graph svg path[stroke="#e5e9ec"] {stroke:#e5e9ec}
@@ -790,6 +795,8 @@
         .market-fx-note .note {font-size:11px;line-height:1.65;color:#98a5ac}
         .market-fx-note .small {font-size:12px}
         @media(min-width:700px) {.cardgrid {gap:24px}}
+        @media(min-width:761px){#result{padding-left:30px}#result #imgnote{text-align:center}}
+        @media(min-width:761px){#result .cardgrid{grid-template-columns:276px minmax(0,1fr);gap:32px}#result .rarityline{flex-direction:row;align-items:center;gap:7px 11px}#result .cardgrid>div:nth-child(2) .label{font-size:14px}#result #number{font-size:16px}#result .cardtitle{font-size:30px}#result .raritycode{font-size:16px}#result .rarityname{font-size:14px}#result .price{font-size:34px}#result .price .currency-prefix{font-size:17px}#result .approx{font-size:20px}#result .approx .twd-prefix{font-size:14px}#result #pricenote{font-size:14px}#result .market-fx-note .small{font-size:14px}#result .market-fx-note .note{font-size:13px}}
         /* Secondary external links: quiet hover, no decorative arrows. */
         .links a {
             display:inline-flex;align-items:center;
@@ -869,7 +876,7 @@
         #browse{scroll-margin-top:20px}
         .collection-nav,.panel{background:#202226;border-color:#373b3e;border-left:2px solid #fcee09;box-shadow:none}
         .collection-nav::before,.panel::before{background:linear-gradient(45deg,transparent calc(50% - 1px),#fcee09 50%,transparent calc(50% + 1px))}
-        .collection-heading,#result .section-heading,#history-panel .history-head h2,.source-disclosure,.card-match-head{color:#fcee09}
+        .collection-heading,#result .section-heading,:is(#history-panel,.ranking-expanded-history) .history-head h2,.source-disclosure,.card-match-head{color:#fcee09}
         .collection-dot{background:#fcee09;box-shadow:none}
         .collection-search .search button.primary,.edition-options .edition-btn.active,.history-periods button[aria-pressed="true"],.primary,.settab[aria-selected="true"]{background:#fcee09;color:#151515;border-color:#fcee09}
         .edition-options .edition-btn.active:hover,.edition-options .edition-btn.active:active,.collection-search .search button.primary:hover,.primary:hover{background:#f2e526;color:#151515;border-color:#fcee09}
@@ -1093,10 +1100,10 @@
         /* Rarity reveal: effects stay inside each card and never resize the modal. */
         #draw-dialog .pack-card.revealed[data-rarity="Rare"]{--hit:#fcee09;--hit-opacity:.24;--hit-duration:.50s}
         #draw-dialog .pack-card.revealed[data-rarity="Epic"]{--hit:#61bfff;--hit-opacity:.44;--hit-duration:.68s}
-        #draw-dialog .pack-card.revealed[data-rarity="Secret"]{--hit:#f6a1ff;--hit-opacity:.92;--hit-duration:1.15s}
+        #draw-dialog .pack-card.revealed[data-rarity="Secret"]{--hit:#61bfff;--hit-opacity:.44;--hit-duration:.68s}
         #draw-dialog .pack-card.revealed[data-rarity^="Iconic"]{--hit:#ffe65c;--hit-opacity:.48;--hit-duration:.85s}
         #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"]{--hit:#fff;--hit-opacity:.85;--hit-duration:1.35s}
-        #draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"]):not([data-rarity="Epic"])::after{content:"";position:absolute;inset:0;border-radius:3% / 2.14%;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 18%,var(--hit,#fcee09) 49%,transparent 80%);background-size:250% 100%;mix-blend-mode:screen;animation:packRaritySweep var(--hit-duration,.6s) .26s ease-out both}
+        #draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"])::after{content:"";position:absolute;inset:0;border-radius:3% / 2.14%;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 18%,var(--hit,#fcee09) 49%,transparent 80%);background-size:250% 100%;mix-blend-mode:screen;animation:packRaritySweep var(--hit-duration,.6s) .26s ease-out both}
         #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"]::after{background-image:linear-gradient(115deg,transparent 12%,#ff4ad5 35%,#fff7a6 48%,#5deaff 58%,transparent 83%)}
         @keyframes packRaritySweep{0%{opacity:0;background-position:100% 0}25%{opacity:var(--hit-opacity,.4)}100%{opacity:0;background-position:0 0}}
         @media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed::after{animation:none!important;opacity:0}}
@@ -1165,10 +1172,10 @@
         @media(max-width:760px){#draw-dialog #pack-results{min-height:0;padding:20px 14px}}
         /* Keep the Iconic Secret aura after the one-shot reveal sweep. */
         #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"]{filter:none}
-        #draw-dialog .pack-card.revealed[data-rarity="Rare"] .hero-front{box-shadow:0 0 2px #fcee0999}
+        #draw-dialog .pack-card.revealed[data-rarity="Rare"] .hero-front{box-shadow:none}
 #draw-dialog .pack-card.revealed[data-rarity="Epic"] .hero-front{box-shadow:0 0 3px #61bfffe6}
 #draw-dialog .pack-card.revealed[data-rarity="Iconic Legend"] .hero-front,#draw-dialog .pack-card.revealed[data-rarity="Iconic Other"] .hero-front{box-shadow:0 0 3px #fcee09bf}
-#draw-dialog .pack-card.revealed[data-rarity="Secret"] .hero-front{box-shadow:0 0 3px #f7a4ff,0 0 5px #e851ff}
+#draw-dialog .pack-card.revealed[data-rarity="Secret"] .hero-front{box-shadow:0 0 3px #61bfffe6}
 #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"] .hero-front{box-shadow:0 0 2px #fff0a8,-1px -1px 4px #ed64d9,1px 1px 5px #55dfff}
     #pack-zoom{border:0;background:transparent;color:#fff;padding:0;max-width:calc(100vw - 32px);max-height:calc(100dvh - 24px);overflow:auto;text-align:center}#pack-zoom::backdrop{background:rgba(0,0,0,.88)}#pack-zoom img{display:block;width:auto;height:auto;max-width:100%;max-height:min(76dvh,780px);object-fit:contain;margin:auto}#pack-zoom-close{display:block;margin:0 0 8px auto;background:transparent;border:0;color:#fcee09;font-size:32px;line-height:1;cursor:pointer;padding:4px 10px}#pack-zoom-close:focus{outline:none;box-shadow:none}#pack-zoom-caption{margin:12px 0 4px;color:#ddd;font-size:14px}html:has(#pack-zoom[open]){overflow:hidden}
 /* Pack tear and deal: separate seal, rising card, then staggered grid. */
@@ -1417,7 +1424,7 @@ header a.brand:focus-visible{outline:2px solid #101010;outline-offset:4px}
 @keyframes packCardTurn{from{transform:rotateY(180deg)}to{transform:rotateY(0)}}
 #draw-dialog .pack-card.revealed+.pack-card-label{animation:packLabelIn .26s .13s ease-out both}
 @keyframes packLabelIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-#draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"]):not([data-rarity="Epic"])::after{animation-delay:.13s}
+#draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"])::after{animation-delay:.13s}
 #draw-dialog .slider-art>.slider-pack-hint{position:absolute;top:50%;left:50%;z-index:10;width:auto;height:auto;display:flex;align-items:center;justify-content:center;gap:10px;transform:translate(-50%,-50%);padding:0;border:0;border-radius:0;background:transparent;color:#fff;box-shadow:none;text-shadow:0 1px 3px #0007;animation:none;opacity:1;font:500 clamp(18px,2vw,24px) var(--dex-font);letter-spacing:.04em;white-space:nowrap;pointer-events:none}
 #draw-dialog .slider-art>.slider-pack-hint::before,#draw-dialog .slider-art>.slider-pack-hint::after{display:none;content:none}
 #draw-dialog .slider-art>.slider-pack-hint{animation:packHintFade 2.5s 1.08s ease-in-out infinite both}
@@ -1505,7 +1512,7 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 #draw-dialog #pack-wrapper.torn .pack-intact{display:none}
 #draw-dialog .slider-edition{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700}
 #draw-dialog .slider-info h3{margin-bottom:clamp(30px,3vw,44px)}
-.collection-heading,#result .section-heading,#history-panel .history-head h2{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700;color:var(--dex-yellow)}
+.collection-heading,#result .section-heading,:is(#history-panel,.ranking-expanded-history) .history-head h2{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700;color:var(--dex-yellow)}
 .collection-nav .edition-options{gap:0;border:1px solid #424b54;background:#0d1419}
 .collection-nav .edition-options .edition-btn{font-size:14px;position:relative;justify-content:center;min-height:46px;border:0;border-bottom:3px solid transparent;background:transparent;color:#aab8bf;box-shadow:none;transition:background-color .2s,color .2s,border-color .2s}
 .collection-nav .edition-options .edition-btn + .edition-btn{border-left:1px solid #424b54}
@@ -1513,6 +1520,17 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 .collection-nav .edition-options .edition-btn:not(.active):hover{background:#0d1419;color:#d4dfe2;border-bottom-color:transparent}
 .collection-nav .edition-options .edition-btn span{display:none}
 .collection-nav .edition-options .edition-btn:focus-visible{outline:2px solid #fcee09;outline-offset:-3px;z-index:1}
+
+/* Edition selectors: individual outline buttons */
+.collection-nav .edition-options,.ranking-tools .ranking-editions{gap:0;border:0;background:transparent}
+.collection-nav .edition-options .edition-btn,.collection-nav .series-trigger{box-sizing:border-box;height:50px;min-height:50px}
+.collection-nav .edition-options .edition-btn+.edition-btn{margin-left:-1px;width:calc(100% + 1px)}
+.ranking-tools .ranking-editions button+button{margin-left:-1px}
+.collection-nav .edition-options .edition-btn.active,.ranking-tools .ranking-editions button[aria-pressed=true]{position:relative;z-index:1}
+.collection-nav .edition-options .edition-btn,.collection-nav .edition-options .edition-btn+.edition-btn,.ranking-tools .ranking-editions button,.ranking-tools .ranking-editions button+button{border:1px solid #424b54;background:#0d1419;color:#aab8bf;transition:color .2s,border-color .2s}
+.collection-nav .edition-options .edition-btn.active,.collection-nav .edition-options .edition-btn.active:hover,.collection-nav .edition-options .edition-btn.active:active,.ranking-tools .ranking-editions button[aria-pressed=true]{border-color:#fcee09;background:#0d1419;color:#fcee09}
+.collection-nav .edition-options .edition-btn:not(.active):hover,.ranking-tools .ranking-editions button[aria-pressed=false]:hover{border-color:#69767b;background:#0d1419;color:#d4dfe2}
+
 .collection-select-wrap.custom-series::after{display:none}
 .custom-series #collection-select{display:none}
 .series-trigger{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:46px;padding:12px 14px;border:1px solid #424b54;border-radius:0;background:#0d1419;color:#e2e8e9;font:inherit;font-size:16px;font-weight:500;text-align:left;cursor:pointer;box-sizing:border-box}
@@ -1532,7 +1550,7 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 @media(max-width:760px){#draw-dialog .slider-composition{justify-content:center}}
 .hero-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px 22px;margin-top:26px;animation-delay:.34s!important}
 .hero-actions .hero-action{margin:0}
-.hero-actions .hero-action{box-sizing:border-box;min-width:0;white-space:nowrap}
+.hero-actions .hero-action{box-sizing:border-box;min-width:0;white-space:nowrap;height:50px;min-height:50px}
 .hero-actions #open-draw{position:relative;background:transparent;color:var(--dex-text);padding:12px 18px;gap:18px}
 .hero-actions #open-draw::before{content:"";position:absolute;inset:0;pointer-events:none;background:var(--dex-muted);clip-path:polygon(evenodd,0 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 0,1px 1px,1px calc(100% - 1px),calc(100% - 10.4px) calc(100% - 1px),calc(100% - 1px) calc(100% - 10.4px),calc(100% - 1px) 1px,1px 1px)}
 .hero-actions #open-draw:hover,.hero-actions #open-draw:focus-visible{background:transparent;color:var(--dex-text)}
@@ -1544,6 +1562,8 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 #draw-dialog .slider-composition>span{flex:1;min-width:0;padding:0 8px}
 #draw-dialog .slider-composition>span+span{border-left:1px solid #3b4145}
 #draw-dialog .slider-composition b small{font-size:12px;font-weight:600;margin-left:3px;letter-spacing:0}
+.collection-search .search #search.primary{box-sizing:border-box;width:var(--hero-search-width,156px);height:50px;min-width:0;min-height:50px;max-width:100%;padding:10px 18px;justify-content:space-between;gap:8px}
+@media(max-width:680px){.collection-search .search #search.primary{width:136px;height:50px;padding:10px 12px}}
 .collection-search .search button.primary .dex-arrow{transform:none;align-self:center}
 .collection-search .search button.primary .dex-arrow svg{display:block;width:18px;height:18px}
 .collection-search #query[aria-invalid="true"]{border-color:#ee4053;box-shadow:0 0 0 1px #ee4053}
@@ -1581,9 +1601,9 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 #draw-dialog .slider-art{isolation:isolate}
 #draw-dialog .slider-art::after{content:attr(data-edition);position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);font-size:clamp(56px,11vw,180px);font-weight:900;letter-spacing:-.055em;color:#16191c;opacity:.09;line-height:1;white-space:nowrap;pointer-events:none;z-index:-1}
 #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-intact{transform:none}
-#draw-dialog .pack-card.revealed[data-rarity="Rare"]::after{content:"";position:absolute;inset:0;border-radius:3% / 2.14%;pointer-events:none;background:linear-gradient(115deg,transparent 28%,#fff5 49%,transparent 70%);background-size:250% 100%;mix-blend-mode:screen;animation:packRaritySweep .55s .16s ease-out both}
-#draw-dialog .pack-card.revealed[data-rarity="Epic"] .hero-front{animation:dexEpicEdge .8s .16s ease-out both}
-#draw-dialog .pack-card.revealed[data-rarity="Secret"] .hero-front{animation:dexSecretGlitch .44s .25s ease-out both}
+#draw-dialog .pack-card.revealed[data-rarity="Rare"]::after{content:none;animation:none}
+#draw-dialog .pack-card.revealed[data-rarity="Epic"] .hero-front{animation:none}
+#draw-dialog .pack-card.revealed[data-rarity="Secret"] .hero-front{animation:none}
 #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"] .hero-front{animation:dexSecretHit .95s .25s ease-out both}
 
 #draw-dialog .pack-god-banner{color:#fcee09;font-weight:800;letter-spacing:.18em;text-align:center;padding:12px 0}
@@ -1597,14 +1617,18 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 @keyframes dexGodFlash{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed::after,#draw-dialog .pack-card.revealed .hero-front{animation:none!important}#draw-dialog .pack-god-flash{display:none}#pack-zoom .dex-zoom-face::after{display:none}}
 /* V3 continuous opening choreography */
-#draw-dialog #pack-wrapper.v3-approach.torn .v3-shell::after{content:"";position:absolute;left:0;right:0;top:18%;height:2px;pointer-events:none;background:linear-gradient(90deg,transparent,#fff 80%,#fff);box-shadow:0 0 6px #fff9;transform-origin:left;animation:dexSealLight .48s ease-out both}
+#draw-dialog #pack-wrapper.v3-approach.torn .v3-shell::after{display:none}
 @keyframes dexSealLight{0%{clip-path:inset(0 100% 0 0);opacity:0}15%{opacity:.8}75%{clip-path:inset(0 5% 0 0);opacity:.65}100%{clip-path:inset(0 0 0 100%);opacity:0}}
 @media(prefers-reduced-motion:reduce){#draw-dialog #pack-wrapper.v3-approach.torn .v3-shell::after{display:none}}
 /* V3 shared cinematic opening: physical tear, then drop. */
 #draw-dialog .v3-stack{display:none}
 #draw-dialog .v3-shell{display:contents}
+#draw-dialog #pack-wrapper.dragging.v3-mesh:not(.torn) .pack-intact{display:none}
+#draw-dialog #pack-wrapper.dragging.v3-mesh:not(.torn) .v3-shell{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;filter:drop-shadow(0 7px 10px #0006)}
+#draw-dialog #pack-wrapper.dragging.v3-mesh:not(.torn) .pack-body{display:block;clip-path:polygon(0 18%,5% 18.2%,10% 17.7%,15% 18.3%,20% 17.8%,25% 18.2%,30% 17.7%,35% 18.2%,40% 17.8%,45% 18.3%,50% 17.7%,55% 18.2%,60% 17.8%,65% 18.3%,70% 17.7%,75% 18.2%,80% 17.8%,85% 18.3%,90% 17.7%,95% 18.2%,100% 18%,100% 100%,0 100%)}
+#draw-dialog #pack-wrapper.dragging.v3-mesh:not(.torn) .v3-foil-canvas{display:block}
 @media(prefers-reduced-motion:no-preference){
-  #draw-dialog #pack-wrapper.v3-approach.torn .v3-shell{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;filter:drop-shadow(0 0 9px #ffffff45) drop-shadow(0 0 20px #ffffff13) drop-shadow(0 7px 10px #0006)}
+  #draw-dialog #pack-wrapper.v3-approach.torn .v3-shell{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;filter:drop-shadow(0 7px 10px #0006)}
   html.pack-opening #draw-dialog.v3-opening-active #pack-stage.pack-selected{overflow:visible}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper{transform:none;transform-origin:center;transition:none}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach.torn{animation:v3PackApproach .78s .62s cubic-bezier(.35,.02,.19,1) both}
@@ -1827,8 +1851,17 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 /* Hide source-image corner halos without scaling or changing card artwork. */
 #imagebox img{clip-path:inset(.2% round 6% / 4.3%);-webkit-clip-path:inset(.2% round 6% / 4.3%)}
 #imagebox img[src*="tcgplayer-cdn.tcgplayer.com"]{clip-path:inset(.2% round 6.5% / 4.65%);-webkit-clip-path:inset(.2% round 6.5% / 4.65%)}
+
+@media (hover:hover) and (pointer:fine) and (min-width:761px) and (prefers-reduced-motion:no-preference){
+  #result #imagebox:has(img)::after{content:"";position:absolute;inset:0;pointer-events:none;clip-path:inset(.2% round 6% / 4.3%);-webkit-clip-path:inset(.2% round 6% / 4.3%);background:linear-gradient(135deg,transparent 36%,rgba(255,255,255,.12) 50%,transparent 64%);background-size:250% 250%;background-position:100% 100%;opacity:0}
+  #result #imagebox:has(img[src*="tcgplayer-cdn.tcgplayer.com"])::after{clip-path:inset(.2% round 6.5% / 4.65%);-webkit-clip-path:inset(.2% round 6.5% / 4.65%)}
+  #result #imagebox:has(img):hover::after{animation:dexDetailSweep 1s ease-out both}
+  @keyframes dexDetailSweep{0%{background-position:100% 100%;opacity:0}15%{opacity:1}85%{opacity:1}100%{background-position:0 0;opacity:0}}
+}
+
 #pack-zoom-image{clip-path:inset(1% round 7% / 5%);-webkit-clip-path:inset(1% round 7% / 5%)}
 #draw-dialog .pack-card .hero-front img{clip-path:inset(.2% round 5.5% / 3.93%);-webkit-clip-path:inset(.2% round 5.5% / 3.93%)}
+#draw-dialog .pack-card .hero-front{inset:.2%;border-radius:5.5% / 3.93%}#draw-dialog .pack-card .hero-front img{clip-path:none;-webkit-clip-path:none;transform:scale(1.004)}#draw-dialog .pack-card.revealed::after{inset:.2%;border-radius:5.5% / 3.93%}
 
 /* Tear view: no pointer-hover movement or browser focus rectangle. */
 #draw-dialog #pack-stage.pack-selected #pack-wrapper:focus{outline:none;box-shadow:none}
@@ -1949,7 +1982,7 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
         </section>
         <section class="panel detail" id="result">
             <div class="row space">
-                <div class="label section-heading">CARD DETAIL</div>
+                <div class="label section-heading">卡牌資訊 / CARD DETAIL</div>
                 <div class="badge" id="variant">BETA</div>
             </div>
             <div class="cardgrid" style="margin-top:14px">
@@ -1970,7 +2003,7 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
                     <div class="market-fx-note">
                         <div class="small">USD / TWD 參考匯率 · 1 USD ≈ <strong id="rate">32.47</strong> TWD</div>
                         <p class="note"><span id="rate-source">匯率載入中；暫用備援參考值 32.47。</span> <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">Rates By Exchange Rate API</a></p>
-                        <p class="note">資料說明：價格為歷史參考值，非即時成交價；外部價格及卡圖資料可能變動。卡圖來源：主系列 Spellbound Games、Box Topper HoloHoard；Box Topper 使用 T001～T006 編號以區別主系列。</p>
+                        <p class="note">資料說明：價格為歷史參考值，非即時成交價；外部價格及卡圖資料可能變動。</p>
                     </div>
 
                 </div>
@@ -1990,6 +2023,8 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
     <script>
         'use strict';
         const $ = id => document.getElementById(id);
+        // Match the search button to the actual responsive hero CTA dimensions.
+        {const hero=document.querySelector('.hero-actions .hero-action[href="#browse"]'),search=$('search');if(hero&&search){const syncSearchSize=()=>{const r=hero.getBoundingClientRect();if(r.width>0&&r.height>0){search.style.setProperty('--hero-search-width',r.width+'px');search.style.setProperty('--hero-search-height',r.height+'px')}};syncSearchSize();if(typeof ResizeObserver==='function'){const observer=new ResizeObserver(syncSearchSize);observer.observe(hero)}else window.addEventListener('resize',syncSearchSize);document.fonts?.ready.then(syncSearchSize);}}
         const base = "https://www.tcgplayer.com/categories/trading-and-collectible-card-games/cyberpunk-tcg/price-guides/welcome-to-night-city-beta";
         const setUrl = "https://www.tcgplayer.com/search/cyberpunk-tcg/welcome-to-night-city-beta?page=1&productLineName=cyberpunk-tcg&setName=welcome-to-night-city-beta&view=grid";
         let activeEdition = "beta", catalog = {}, prices = {}, retailPrices = {}, retailPriceDate = "", starterPrices = {}, historyCards = {}, historyDays = 30, selected = null, rate = 32.47, priceDate = "", starterSets = {}, activeSection = "main", activeStarter = "heist";
@@ -2216,11 +2251,11 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
             if (p && Number.isFinite(p.usd)) { const prefix = document.createElement('span'); prefix.className = 'currency-prefix'; prefix.textContent = 'US$'; const value = document.createElement('span'); value.textContent = p.usd.toFixed(2); usd.append(prefix, value) }
             else usd.textContent = '尚無報價';
             const twd = $('twd'); twd.replaceChildren(); if (p && Number.isFinite(p.usd)) { const prefix = document.createElement('span'); prefix.className = 'twd-prefix'; prefix.textContent = '約 NT$'; const amount = document.createElement('span'); amount.textContent = Math.round(p.usd * rate).toLocaleString('zh-TW'); twd.append(prefix, amount); }
-            $('pricenote').textContent = p ? '歷史價格快照 · 非即時 · 參考資料日期：' + (p.observedDate || (activeEdition === 'retail' ? retailPriceDate : priceDate)) + '。' + (activeSection === "starter" ? '初始牌組獨立報價（' + p.printing + '），不沿用主系列同號價格；尚無價格走勢。' : activeEdition === "retail" ? 'RETAIL 專屬資料，與 Beta 分開統計；目前尚無歷史走勢。來源：' + (p.sourceName || "未註明") + '。' : '不同來源時間可能不同。') : '尚未建立這張卡的價格紀錄。';
+            $('pricenote').textContent = p ? '歷史價格快照 · 非即時 · 參考資料日期：' + (p.observedDate || (activeEdition === 'retail' ? retailPriceDate : priceDate)) + '。' + (activeSection === "starter" ? '初始牌組獨立報價（' + p.printing + '），不沿用主系列同號價格；尚無價格走勢。' : activeEdition === "retail" ? '目前尚無歷史走勢。來源：' + (p.sourceName || "未註明") + '。' : '不同來源時間可能不同。') : '尚未建立這張卡的價格紀錄。';
             $('tcg').href = 'https://www.tcgplayer.com/search/all/product?q=' + encodeURIComponent("Cyberpunk TCG " + (activeSection === "starter" ? (activeStarter === "heist" ? "The Heist Beta starter " : "Embracing Power Beta starter ") : "Welcome to Night City " + (activeEdition === "retail" ? "Retail " : "Beta ")) + code + " " + entry.name);
             $('cataloglink').href = activeEdition === "retail" ? (entry.sourceUrl || 'https://cyberpunktcg.com/cards') : activeSection === "starter" ? entry.sourceUrl : setUrl;
             displayArt(code, entry);
-            if (activeEdition === "retail") { $('history-periods').closest('.history-head')?.setAttribute("hidden",""); $('history-graph').replaceChildren(); $('history-summary').textContent = '尚無歷史走勢'; $('history-note').textContent = 'RETAIL 價格走勢尚未建立；價格與 Beta 分開記錄。'; if (!p || !Number.isFinite(p.usd)) $('pricenote').textContent = 'RETAIL 尚無已核實市場參考價；不沿用 Beta 報價，也不以預售掛牌價冒充成交價。'; } else { $('history-periods').closest('.history-head')?.removeAttribute("hidden"); renderHistory(); }
+            if (activeEdition === "retail") { $('history-periods').closest('.history-head')?.setAttribute("hidden",""); $('history-graph').replaceChildren(); $('history-summary').textContent = '尚無歷史走勢'; $('history-note').textContent = ''; if (!p || !Number.isFinite(p.usd)) $('pricenote').textContent = 'RETAIL 尚無已核實市場參考價；不沿用 Beta 報價，也不以預售掛牌價冒充成交價。'; } else { $('history-periods').closest('.history-head')?.removeAttribute("hidden"); renderHistory(); }
             if (changedCard && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                 const result = $('result');
                 result.classList.remove('card-refresh');
@@ -2261,16 +2296,16 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
                 info.textContent = "每日參考匯率載入失敗，目前使用備援參考值 32.47（非當日報價）。";
             }
         }
-        function renderHistory(){
-            const root=$('history-graph'),summary=$('history-summary'),note=$('history-note');
+        function renderHistory(panel=$('history-panel'),days=historyDays){
+            const root=panel.querySelector('.history-graph'),summary=panel.querySelector('[data-history-summary],#history-summary'),note=panel.querySelector('[data-history-note],#history-note');
             root.replaceChildren();
-            const rankingCode=root.closest('#market-ranking')?$('history-panel').dataset.rankCode:null,historyCode=rankingCode||selected;
+            const rankingCode=panel.dataset.rankCode||null,historyCode=rankingCode||selected;
             if((!rankingCode&&activeSection!=="main")||!historyCode||!historyCode.startsWith("B")){
                 summary.textContent="尚無歷史走勢";note.textContent="目前僅 Beta 主系列建立逐日市場參考價格走勢。";return;
             }
             const all=(historyCards[historyCode]||[]).filter(p=>p.date>="2026-09-10"&&Number.isFinite(p.usd)).slice().sort((a,b)=>a.date.localeCompare(b.date));
             const today=new Date().toISOString().slice(0,10);
-            const threshold=historyDays?new Date(Date.now()-historyDays*86400000).toISOString().slice(0,10):"2026-09-10";
+            const threshold=days?new Date(Date.now()-days*86400000).toISOString().slice(0,10):"2026-09-10";
             const points=all.filter(p=>p.date>=threshold&&p.date<=today);
             note.textContent="ValueMyCard / TCGplayer 市場參考價（USD），非逐筆成交價；缺少資料的日期不補值。統一起算日：2026/09/10。";
             // The summary always compares the latest two weeks, independent of the chart's visible range.
@@ -2351,11 +2386,32 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
         const menuToggle=document.querySelector('.dex-menu-toggle'),mainNav=$('dex-nav');function setMenu(open){mainNav.classList.toggle('is-open',open);menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'關閉主選單':'開啟主選單')}menuToggle.onclick=()=>setMenu(menuToggle.getAttribute('aria-expanded')!=='true');mainNav.addEventListener('click',e=>{if(e.target.closest('a'))setMenu(false)});document.addEventListener('pointerdown',e=>{if(!menuToggle.contains(e.target)&&!mainNav.contains(e.target))setMenu(false)});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuToggle.getAttribute('aria-expanded')==='true'){setMenu(false);menuToggle.focus()}});matchMedia('(max-width:760px)').addEventListener('change',()=>setMenu(false));
         const ranking=$('market-ranking');if(rankView==='ranking'){ranking.hidden=false;document.title='CyberDEX — 價格排行'}
         function rankChange(code,p){if(rankEdition!=='beta')return null;const end=Date.parse(p.observedDate),target=end-30*86400000;if(!Number.isFinite(end))return null;const history=(historyCards[code]||[]).filter(x=>Number.isFinite(x.usd)&&x.usd>0&&Math.abs(Date.parse(x.date)-target)<=7*86400000).sort((a,b)=>Math.abs(Date.parse(a.date)-target)-Math.abs(Date.parse(b.date)-target));return history.length?(p.usd/history[0].usd-1)*100:null}
-        let rankLimit=20;function renderRanking(append=false){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=sorted.length+' 張有報價卡牌'+(!hasHistory?' · 暫無足夠歷史資料':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list'),more=$('ranking-more'),visible=rankSort==='price'?sorted.slice(0,rankLimit):sorted;more.hidden=rankSort!=='price'||visible.length>=sorted.length;const start=append?list.querySelectorAll('.ranking-row').length:0;if(!append){rankHistory.remove();list.replaceChildren()}if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();visible.slice(start).forEach(({code,p,entry,change},index)=>{const i=index+start;const a=document.createElement('button');a.type='button';a.className='ranking-row';a.dataset.rankCode=code;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','history-panel');const pos=document.createElement('span');pos.className='ranking-position';pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';name.textContent=entry.name;const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';value.textContent=fmtUSD(p.usd);const twd=document.createElement('small');twd.textContent=currency(p.usd);value.append(twd);if(change!==null){const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=(change>0?'+':'')+change.toFixed(1)+'%';value.append(delta)}a.append(pos,img,name,value);frag.append(a)});list.append(frag);if(!append&&rankOpen){const row=[...list.querySelectorAll('.ranking-row')].find(b=>b.dataset.rankCode===rankOpen);if(row)openRankHistory(row);else rankOpen=null}}
-        let rankOpen=null,rankCloseTimer=0;const rankHistory=$('history-panel');
-        function openRankHistory(row,animate=false){rankOpen=row.dataset.rankCode;rankHistory.dataset.rankCode=rankOpen;rankHistory.classList.add('ranking-expanded-history');clearTimeout(rankCloseTimer);rankHistory.classList.remove('ranking-expanding','ranking-collapsing');row.after(rankHistory);row.setAttribute('aria-expanded','true');renderHistory();if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches){rankHistory.style.setProperty('--rank-open-height',rankHistory.offsetHeight+'px');rankHistory.classList.add('ranking-expanding')}}
-        function closeRankHistory(animate=false,after=()=>{}){clearTimeout(rankCloseTimer);ranking.querySelectorAll('.ranking-row[aria-expanded=true]').forEach(b=>b.setAttribute('aria-expanded','false'));rankOpen=null;const finish=()=>{rankHistory.classList.remove('ranking-expanding','ranking-collapsing');rankHistory.remove();after()};if(animate&&rankHistory.isConnected&&!rankHistory.classList.contains('ranking-collapsing')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const height=rankHistory.getBoundingClientRect().height;rankHistory.classList.remove('ranking-expanding');rankHistory.style.setProperty('--rank-open-height',height+'px');rankHistory.classList.add('ranking-collapsing');rankCloseTimer=setTimeout(finish,380)}else finish()}
-        ranking.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='ranking-more'){rankLimit+=20;renderRanking(true);return}if(b.dataset.rankCode){const code=b.dataset.rankCode,same=rankOpen===code;closeRankHistory(true,()=>{if(!same){const row=[...ranking.querySelectorAll('.ranking-row')].find(x=>x.dataset.rankCode===code);if(row)openRankHistory(row,true)}});return}if(b.dataset.rankEdition){closeRankHistory();rankLimit=20;rankEdition=b.dataset.rankEdition;rankSort='price'}else if(b.dataset.rankSort){closeRankHistory();rankLimit=20;rankSort=b.dataset.rankSort}else return;renderRanking();const list=$('ranking-list');list.classList.remove('ranking-enter');void list.offsetWidth;list.classList.add('ranking-enter')});
+        let rankLimit=20;function renderRanking(append=false){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=sorted.length+' 張有報價卡牌'+(!hasHistory?' · 暫無足夠歷史資料':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list'),more=$('ranking-more'),visible=rankSort==='price'?sorted.slice(0,rankLimit):sorted;more.hidden=rankSort!=='price'||visible.length>=sorted.length;const start=append?list.querySelectorAll('.ranking-row').length:0;if(!append){closeRankHistory();list.replaceChildren()}if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();visible.slice(start).forEach(({code,p,entry,change},index)=>{const i=index+start;const a=document.createElement('button');a.type='button';a.className='ranking-row';a.dataset.rankCode=code;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','rank-history-'+code);const pos=document.createElement('span');pos.className='ranking-position';pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';name.textContent=entry.name;const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';value.textContent=fmtUSD(p.usd);const twd=document.createElement('small');twd.textContent=currency(p.usd);value.append(twd);if(change!==null){const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=(change>0?'+':'')+change.toFixed(1)+'%';value.append(delta)}a.append(pos,img,name,value);frag.append(a)});list.append(frag);}
+        const rankPanels=new Map();
+        function openRankHistory(row,animate=false){
+            const code=row.dataset.rankCode;let panel=rankPanels.get(code);
+            if(panel){clearTimeout(panel.closeTimer);panel.classList.remove('ranking-collapsing','ranking-expanding')}
+            else{
+                panel=$('history-panel').cloneNode(true);panel.id='rank-history-'+code;panel.dataset.rankCode=code;
+                panel.querySelectorAll('[id]').forEach(el=>{el.setAttribute('data-'+el.id,'');el.removeAttribute('id')});
+                panel.querySelector('.history-head').removeAttribute('hidden');panel.classList.add('ranking-expanded-history');
+                let days=30;const periods=panel.querySelector('.history-periods');
+                for(const b of periods.querySelectorAll('button'))b.setAttribute('aria-pressed',String(Number(b.dataset.days)===days));
+                periods.onclick=e=>{const b=e.target.closest('button[data-days]');if(!b)return;days=Number(b.dataset.days);for(const x of periods.querySelectorAll('button'))x.setAttribute('aria-pressed',String(x===b));renderHistory(panel,days)};
+                rankPanels.set(code,panel);row.after(panel);renderHistory(panel,days);
+            }
+            row.setAttribute('aria-expanded','true');
+            if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches){panel.style.setProperty('--rank-open-height',panel.offsetHeight+'px');panel.classList.add('ranking-expanding')}
+        }
+        function closeRankHistory(row=null,animate=false){
+            for(const [code,panel] of rankPanels){
+                if(row&&code!==row.dataset.rankCode)continue;
+                clearTimeout(panel.closeTimer);const target=row||panel.previousElementSibling;target?.setAttribute('aria-expanded','false');
+                const finish=()=>{panel.remove();rankPanels.delete(code)};
+                if(animate&&panel.isConnected&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const height=panel.getBoundingClientRect().height;panel.classList.remove('ranking-expanding');panel.style.setProperty('--rank-open-height',height+'px');panel.classList.add('ranking-collapsing');panel.closeTimer=setTimeout(finish,380)}else finish();
+            }
+        }
+        ranking.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='ranking-more'){rankLimit+=20;renderRanking(true);return}if(b.dataset.rankCode){if(b.getAttribute('aria-expanded')==='true')closeRankHistory(b,true);else openRankHistory(b,true);return}if(b.dataset.rankEdition){closeRankHistory();rankLimit=20;rankEdition=b.dataset.rankEdition;rankSort='price'}else if(b.dataset.rankSort){closeRankHistory();rankLimit=20;rankSort=b.dataset.rankSort}else return;renderRanking();const list=$('ranking-list');list.classList.remove('ranking-enter');void list.offsetWidth;list.classList.add('ranking-enter')});
         init().then(()=>{rankLoaded=true;if(rankView==='ranking')renderRanking();else if(routeParams.get('card')&&['beta','retail'].includes(routeParams.get('edition'))){$('query').value='';chooseEdition(routeParams.get('edition'));chooseSection('main');$('query').value=routeParams.get('card');show(routeParams.get('card'),true)}});
         loadDailyRate().then(renderRanking);
     </script>
@@ -2372,7 +2428,7 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 (()=>{const dialog=document.getElementById('draw-dialog'),stage=document.getElementById('pack-stage'),wrapper=document.getElementById('pack-wrapper'),results=document.getElementById('pack-results'),grid=document.getElementById('pack-grid'),progress=document.getElementById('pack-progress'),instruction=document.getElementById('pack-instruction'),summary=document.getElementById('pack-summary');let pack=[],timer=null,edition='beta',recorded=false,revealTimers=[],revealRun=0,revealingAll=false,testRarity='';const testSelect=document.getElementById('pack-test-mode');const devMode=false;testSelect.closest('.pack-test-control').hidden=!devMode;if(devMode)dialog.classList.add('pack-dev-mode');const back='https://beyondtcg.co.uk/cdn/shop/files/B098_back.webp?width=900',legendBack='/legend-back.webp',isLegend=code=>{const n=Number(String(code).replace(/^B/i,'').replace(/[AB]$/i,''));return (n>=1&&n<=5)||(n>=36&&n<=40)||(n>=71&&n<=75)||(n>=106&&n<=110)||(n>=141&&n<=158)||n===168||n===169},art={beta:'https://images.ctfassets.net/udihssg1zwbu/6ac4CbcC9gZqe8nv23hsAS/e6e196a4c287c4fff1a5530323bcb2a4/Beta_Booster_Pack.webp',retail:'https://images.ctfassets.net/udihssg1zwbu/2A5q9Be7J8g9O7t7BCmai4/ecd31d261ab12fbebb67b6beb5232117/Retail_Booster_Pack.webp'};
 const statsNode=document.getElementById('pack-stats');const storageKey='cyberdex-pack-stats-v1';let saved={};try{saved=JSON.parse(localStorage.getItem(storageKey)||'{}')||{}}catch{};function stats(){return saved[edition]??=( {packs:0,cards:{},hits:0} )}function renderStats(){const st=stats(),pool=buildPool(),count=Object.keys(st.cards).length;statsNode.textContent=edition.toUpperCase()+' · 已完成 '+st.packs+' 包 · 收藏 '+count+' / '+(pool.length||'—')+' · Iconic '+st.hits+' 張'}function record(){if(recorded||testRarity)return;recorded=true;const st=stats();st.packs++;for(const x of pack){st.cards[x.code]=(st.cards[x.code]||0)+1;if(x.entry.rarity.startsWith('Iconic'))st.hits++}try{localStorage.setItem(storageKey,JSON.stringify(saved))}catch{}renderStats()}
 function selectEdition(value){edition=value;wrapper.style.setProperty('--pack-mask',`url("${art[value]}")`);wrapper.querySelectorAll('.pack-intact,.pack-top img,.pack-body img').forEach(img=>img.src=art[value]);stage.querySelectorAll('[data-pack-edition]').forEach(b=>{const on=b.dataset.packEdition===value;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on))});renderStats()}
-function cancelReveal(){revealRun++;revealTimers.forEach(clearTimeout);revealTimers=[];revealingAll=false}function reset(){stage.classList.remove('pack-selected');clearTimeout(timer);cancelReveal();recorded=false;testRarity='';testSelect.disabled=false;testSelect.closest('.pack-test-control').hidden=!devMode;dialog.classList.toggle('pack-dev-mode',devMode);dialog.classList.remove('picker-leaving');document.getElementById('pack-reveal-all').disabled=false;document.getElementById('pack-reveal-all').innerHTML='全部翻開 <span class="dex-arrow dex-arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M8 6h10v10"/></svg></span>';wrapper.classList.remove('torn','dragging','v3-approach','v3-ready');dialog.classList.remove('v3-opening-active');wrapper.style.removeProperty('--tear-x');wrapper.style.removeProperty('--tear-start');wrapper.disabled=false;stage.hidden=false;results.hidden=true;summary.hidden=true;grid.replaceChildren();results.querySelector('.pack-god-banner')?.remove();instruction.textContent='';pack=[];renderStats()}
+function cancelReveal(){revealRun++;revealTimers.forEach(clearTimeout);revealTimers=[];revealingAll=false}function reset(){clearTear();stage.classList.remove('pack-selected');clearTimeout(timer);cancelReveal();recorded=false;testRarity='';testSelect.disabled=false;testSelect.closest('.pack-test-control').hidden=!devMode;dialog.classList.toggle('pack-dev-mode',devMode);dialog.classList.remove('picker-leaving');document.getElementById('pack-reveal-all').disabled=false;document.getElementById('pack-reveal-all').innerHTML='全部翻開 <span class="dex-arrow dex-arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M8 6h10v10"/></svg></span>';wrapper.classList.remove('torn','dragging','v3-approach','v3-ready');dialog.classList.remove('v3-opening-active');wrapper.style.removeProperty('--tear-x');wrapper.style.removeProperty('--tear-start');wrapper.disabled=false;stage.hidden=false;results.hidden=true;summary.hidden=true;grid.replaceChildren();results.querySelector('.pack-god-banner')?.remove();instruction.textContent='';pack=[];renderStats()}
 function buildPool(){return Object.entries(edition==='beta'?catalog:retailCards).flatMap(([code,entry])=>{if(!/^(B)?\d{3}[AB]?$/.test(code)||entry.set||entry.rarity==='Nova Rare')return [];const img=edition==='beta'?cardImages[code]:(retailIconicVerified[code]||retailImages[code]);return [{code,entry,img,price:(edition==='beta'?prices:retailPrices)[code]?.usd}]})}
 function pick(pool,rarities,count){const candidates=pool.filter(x=>rarities.includes(x.entry.rarity));if(candidates.length<count)throw Error('卡池資料不足');const out=[];for(let i=0;i<count;i++)out.push(candidates.splice(Math.floor(Math.random()*candidates.length),1)[0]);return out}
 function makePack(){const pool=buildPool();if(testRarity==='God Pack'||(!testRarity&&Math.random()<1/10000))return [...pick(pool,['Iconic Legend'],6),...pick(pool,['Iconic Other'],4),...pick(pool,['Iconic Secret'],2)];const out=[...pick(pool,['Common'],7),...pick(pool,['Uncommon'],3)];if(testRarity==='Basic')return [...out,...pick(pool,['Rare'],2)];if(testRarity){const rarities=testRarity==='Iconic'?['Iconic Legend','Iconic Other']:[testRarity];const hit=pick(pool,rarities,1)[0];return [...out,...pick(pool.filter(x=>x.code!==hit.code),['Rare'],1),hit]}const slot=p=>1-Math.sqrt(1-p),isr=slot(1/400);const special=[['Epic',slot(1/4)],['Secret',slot(1/24)],['Iconic Secret',isr],['Iconic',slot(1/18)-isr]];let hits=[];for(let i=0;i<2;i++){let r=Math.random(),type='Rare';for(const [name,p] of special){r-=p;if(r<0){type=name;break}}let rarities=type==='Iconic'?['Iconic Legend','Iconic Other']:[type];hits.push(...pick(pool.filter(x=>!hits.some(y=>y.code===x.code)),rarities,1))}return [...out,...hits]}
@@ -2416,14 +2472,15 @@ grid.addEventListener('pointermove',e=>{const tile=e.target.closest('.pack-tile'
 grid.addEventListener('pointerleave',()=>{if(hoveredCard)resetHoverTilt(hoveredCard);hoveredCard=null});
 let tearStart=null,suppressClick=false;
 stage.querySelector('.pack-art').addEventListener('pointerdown',e=>{if(!stage.classList.contains('pack-selected')||wrapper.disabled||e.isPrimary===false||(e.pointerType==='mouse'&&e.button!==0))return;tearStart={id:e.pointerId,x:e.clientX,y:e.clientY};suppressClick=false;if(wrapper.contains(e.target)){try{wrapper.setPointerCapture(e.pointerId)}catch{}}});
-function tearThreshold(){return Math.min(65,wrapper.clientWidth*.22)}
-function clearTear(){tearStart=null;wrapper.classList.remove('dragging');wrapper.style.removeProperty('--tear-x')}
-function completeTear(dx){suppressClick=true;wrapper.style.setProperty('--tear-start',Math.min(dx,100)+'px');clearTear();openBooster()}
-window.addEventListener('pointermove',e=>{if(!tearStart||e.pointerId!==tearStart.id||wrapper.disabled)return;const dx=e.clientX-tearStart.x,dy=e.clientY-tearStart.y;if(dx>5&&dx>Math.abs(dy)*1.15){if(dx>=tearThreshold())completeTear(dx)}});
-function finishTear(e,cancelled=false){if(!tearStart||e.pointerId!==tearStart.id)return;const dx=e.clientX-tearStart.x,dy=e.clientY-tearStart.y;suppressClick=cancelled||Math.abs(dx)>8||Math.abs(dy)>8;if(!cancelled&&dx>=tearThreshold()&&dx>Math.abs(dy)*1.15){completeTear(dx);return}clearTear()}
+function tearThreshold(){const desired=wrapper.clientWidth*.85;return Math.max(35,Math.min(desired,tearStart?innerWidth-tearStart.x-8:desired))}
+function dragProgress(dx){return Math.max(0,Math.min(.85,dx/tearThreshold()*.85))}
+function clearTear(){tearStart=null;wrapper.classList.remove('dragging');wrapper.style.removeProperty('--tear-x');stopFoil()}
+function completeTear(dx){const progress=dragProgress(dx);suppressClick=true;clearTear();openBooster(progress)}
+window.addEventListener('pointermove',e=>{if(!tearStart||e.pointerId!==tearStart.id||wrapper.disabled)return;const dx=e.clientX-tearStart.x,dy=e.clientY-tearStart.y;if((dx>5&&dx>Math.abs(dy)*1.15)||wrapper.classList.contains('dragging')){if(dx>=tearThreshold())completeTear(dx);else if(!matchMedia('(prefers-reduced-motion: reduce)').matches){wrapper.classList.add('dragging');startFoil(dragProgress(dx),true)}}});
+function finishTear(e,cancelled=false){if(!tearStart||e.pointerId!==tearStart.id)return;const dx=e.clientX-tearStart.x,dy=e.clientY-tearStart.y;suppressClick=cancelled||wrapper.classList.contains('dragging')||Math.abs(dx)>8||Math.abs(dy)>8;if(!cancelled&&dx>=tearThreshold()&&dx>Math.abs(dy)*1.15){completeTear(dx);return}clearTear()}
 window.addEventListener('pointerup',e=>finishTear(e));window.addEventListener('pointercancel',e=>finishTear(e,true));wrapper.addEventListener('lostpointercapture',e=>finishTear(e,true));
 let wheelTear=0,wheelTimer=null;
-stage.addEventListener('wheel',e=>{if(wrapper.disabled||!stage.classList.contains('pack-selected')||Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;e.preventDefault();const dx=Math.abs(e.deltaX)*(e.deltaMode===1?16:1);wheelTear+=dx;clearTimeout(wheelTimer);if(wheelTear>=tearThreshold()){completeTear(wheelTear);wheelTear=0}else wheelTimer=setTimeout(()=>{wheelTear=0;clearTear()},180)},{passive:false});
+stage.addEventListener('wheel',e=>{if(wrapper.disabled||!stage.classList.contains('pack-selected')||Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;e.preventDefault();const dx=Math.abs(e.deltaX)*(e.deltaMode===1?16:1);wheelTear+=dx;clearTimeout(wheelTimer);if(wheelTear>=tearThreshold()){completeTear(wheelTear);wheelTear=0}else{if(!matchMedia('(prefers-reduced-motion: reduce)').matches){wrapper.classList.add('dragging');startFoil(dragProgress(wheelTear),true)}wheelTimer=setTimeout(()=>{wheelTear=0;clearTear()},180)}},{passive:false});
 wrapper.addEventListener('click',e=>{if(suppressClick&&e.detail!==0){e.preventDefault();e.stopImmediatePropagation();suppressClick=false}},true);
 const hint=wrapper.querySelector('.pack-gesture-hint');hint.replaceChildren(document.createTextNode('向右滑動或點擊卡包開啟'));const arrow=document.createElement('span');arrow.className='pack-swipe-arrow';arrow.textContent='→';arrow.setAttribute('aria-hidden','true');hint.append(arrow);
 const pickerHint=picker.querySelector('.slider-pack-hint');pickerHint.textContent='點擊開啟卡包';pickerHint.setAttribute('aria-hidden','true');picker.querySelector('.slider-art').append(pickerHint);tilt.setAttribute('aria-label','點擊開啟卡包');
@@ -2432,9 +2489,10 @@ const v3Unpeeled=document.createElement('img');v3Unpeeled.className='v3-unpeeled
 const v3Foil=document.createElement('canvas');v3Foil.className='v3-foil-canvas';v3Foil.setAttribute('aria-hidden','true');wrapper.append(v3Foil);
 const v3Shell=document.createElement('span');v3Shell.className='v3-shell';v3Shell.setAttribute('aria-hidden','true');v3Shell.append(wrapper.querySelector('.pack-top'),wrapper.querySelector('.pack-body'),v3Unpeeled,v3Foil);wrapper.append(v3Shell);
 const v3Stack=document.createElement('span');v3Stack.className='v3-stack';v3Stack.setAttribute('aria-hidden','true');const v3Face=document.createElement('span');v3Face.append(wrapper.querySelector('.pack-emerging img').cloneNode(true));v3Stack.append(v3Face);wrapper.append(v3Stack);
-let v3FoilFrame=0;
-function stopFoil(){cancelAnimationFrame(v3FoilFrame);v3FoilFrame=0;wrapper.classList.remove('v3-mesh')}
-function startFoil(){
+let v3FoilFrame=0,foilPreview=null;
+function stopFoil(){cancelAnimationFrame(v3FoilFrame);v3FoilFrame=0;foilPreview=null;wrapper.classList.remove('v3-mesh')}
+function startFoil(initial=0,manual=false){
+  if(manual&&foilPreview){foilPreview(initial,0);return}
   const image=wrapper.querySelector('.pack-intact'),w=wrapper.clientWidth,h=wrapper.clientHeight,ctx=v3Foil.getContext('2d');
   if(!ctx||!image.complete||!image.naturalWidth||!w||!h)return;
   const dpr=Math.min(devicePixelRatio||1,2),cw=w*2,ch=h*.9,ox=w*.5,oy=h*.45;
@@ -2444,8 +2502,8 @@ function startFoil(){
   const edge=x=>{const u=Math.max(0,Math.min(20,x/w*20)),i=Math.min(19,Math.floor(u));return h*(seam[i]+(seam[i+1]-seam[i])*(u-i))/100};
   const radius=w*.13,slices=64,start=performance.now();
   wrapper.classList.add('v3-mesh');
-  function draw(now){
-    const elapsed=Math.max(0,now-start),p=Math.min(1,elapsed/500),front=w*(p*p*(3-2*p)),release=Math.max(0,Math.min(1,(elapsed-500)/140));
+  function paint(p,release){
+    const front=w*p;
     ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,cw,ch);ctx.translate(ox,oy);ctx.globalAlpha=1-release;
     // The still-attached section never moves. Only the already-torn foil bends around the moving fold.
     ctx.save();ctx.beginPath();ctx.moveTo(front,0);ctx.lineTo(w,0);ctx.lineTo(w,edge(w));for(let i=20;i>=0;i--){const x=w*i/20;if(x>front)ctx.lineTo(x,edge(x))}ctx.lineTo(front,edge(front));ctx.closePath();ctx.clip();ctx.drawImage(image,ix,iy,iw,ih);ctx.restore();
@@ -2458,12 +2516,14 @@ function startFoil(){
       ctx.save();ctx.transform(dx,dy,0,1,A.x-dx*a,A.y-dy*a);ctx.beginPath();ctx.moveTo(l,0);ctx.lineTo(r,0);ctx.lineTo(r,edge(r));ctx.lineTo(l,edge(l));ctx.closePath();ctx.clip();ctx.drawImage(image,ix,iy,iw,ih);ctx.restore();
     }
     ctx.globalAlpha=1;
-    if(elapsed<640)v3FoilFrame=requestAnimationFrame(draw);else{ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,v3Foil.width,v3Foil.height);v3FoilFrame=0}
   }
+  if(manual){foilPreview=paint;paint(initial,0);return}
+  const travel=500*(1-initial);
+  function draw(now){const elapsed=Math.max(0,now-start),p=Math.min(1,elapsed/Math.max(1,travel)),progress=initial+(1-initial)*(initial?p:p*p*(3-2*p)),release=Math.max(0,Math.min(1,(elapsed-travel)/140));paint(progress,release);if(elapsed<travel+140)v3FoilFrame=requestAnimationFrame(draw);else{ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,v3Foil.width,v3Foil.height);v3FoilFrame=0}}
   draw(start);
 }
 function packFlash(cls){const flash=document.createElement('span');flash.className=cls;flash.setAttribute('aria-hidden','true');dialog.append(flash);setTimeout(()=>flash.remove(),1200)}function finishOpening(){clearTimeout(timer);stopFoil();dialog.classList.remove('v3-opening-active');wrapper.classList.remove('v3-approach','v3-ready');backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');display()}
-function openBooster(){if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(!reduced){const r=wrapper.getBoundingClientRect(),bottom=document.body.getBoundingClientRect().bottom,drop=Math.max(0,bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];dialog.classList.add('v3-opening-active');wrapper.classList.add('v3-approach');startFoil();wrapper.classList.add('torn');timer=setTimeout(finishOpening,1680)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,0)}}
+function openBooster(progress=0){if(typeof progress!=='number')progress=0;if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;testRarity=devMode?testSelect.value:'';try{pack=makePack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(!reduced){const r=wrapper.getBoundingClientRect(),bottom=document.body.getBoundingClientRect().bottom,drop=Math.max(0,bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];dialog.classList.add('v3-opening-active');wrapper.classList.add('v3-approach');startFoil(progress);wrapper.classList.add('torn');timer=setTimeout(finishOpening,1680)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,0)}}
 wrapper.onclick=openBooster;
 stage.querySelectorAll('[data-pack-edition]').forEach(b=>b.onclick=()=>{if(!wrapper.disabled)selectEdition(b.dataset.packEdition)});if(document.documentElement.classList.contains('pack-view')){document.title='CyberDEX — 開啟卡包';reset();selectEdition(activeEdition)};
 document.getElementById('draw-again').onclick=()=>{const previousTest=testRarity;let next;try{next=makePack()}catch(e){return}reset();testRarity=previousTest;pack=next;wrapper.disabled=true;testSelect.disabled=true;display()};
