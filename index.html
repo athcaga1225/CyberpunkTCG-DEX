@@ -645,6 +645,7 @@
         /* Search-first sequence: no top divider; separate series/edition below. */
         .collection-search {border-top:0;border-bottom:1px solid #333d44;padding:18px 0 16px}
         .collection-grid {margin:18px 0 17px}
+        @media(min-width:761px){.collection-grid{column-gap:15px;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)}.collection-grid>.collection-field:nth-child(2){padding-left:17px;min-width:0}}
                 /* 2077 cyberware-inspired dark UI: restrained crimson, cyan highlights, no yellow. */
         :root {background:#0b0d10;color:#d8e0e3}
         /* Background atmosphere study: glow + subtle edge light + scanline grain + vignette.
