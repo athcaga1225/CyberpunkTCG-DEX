@@ -1519,6 +1519,13 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 .collection-nav .edition-options .edition-btn:not(.active):hover{background:#0d1419;color:#d4dfe2;border-bottom-color:transparent}
 .collection-nav .edition-options .edition-btn span{display:none}
 .collection-nav .edition-options .edition-btn:focus-visible{outline:2px solid #fcee09;outline-offset:-3px;z-index:1}
+
+/* Edition selectors: individual outline buttons */
+.collection-nav .edition-options,.ranking-tools .ranking-editions{gap:6px;border:0;background:transparent}
+.collection-nav .edition-options .edition-btn,.collection-nav .edition-options .edition-btn+.edition-btn,.ranking-tools .ranking-editions button,.ranking-tools .ranking-editions button+button{border:1px solid #424b54;background:#0d1419;color:#aab8bf;transition:color .2s,border-color .2s}
+.collection-nav .edition-options .edition-btn.active,.collection-nav .edition-options .edition-btn.active:hover,.collection-nav .edition-options .edition-btn.active:active,.ranking-tools .ranking-editions button[aria-pressed=true]{border-color:#fcee09;background:#0d1419;color:#fcee09}
+.collection-nav .edition-options .edition-btn:not(.active):hover,.ranking-tools .ranking-editions button[aria-pressed=false]:hover{border-color:#69767b;background:#0d1419;color:#d4dfe2}
+
 .collection-select-wrap.custom-series::after{display:none}
 .custom-series #collection-select{display:none}
 .series-trigger{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:46px;padding:12px 14px;border:1px solid #424b54;border-radius:0;background:#0d1419;color:#e2e8e9;font:inherit;font-size:16px;font-weight:500;text-align:left;cursor:pointer;box-sizing:border-box}
