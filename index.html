@@ -560,7 +560,7 @@
         .history-periods button{border-radius:0;padding:7px 9px;background:#10171a;border:1px solid #4b5b5e;color:#b9c9c9;font:11px ui-monospace,monospace}
         .history-periods button[aria-pressed="true"]{color:#111713;background:#c5003c;border-color:#c5003c}
         .history-graph{min-height:155px;position:relative;margin-top:12px}
-        .history-graph:empty{display:none}
+        .history-graph:empty,#history-note:empty,[data-history-note]:empty{display:none}
         .history-graph:has(.empty-history){min-height:0}
         /* Safari: prevent long-press selecting chart labels or SVG paths. */
         .history-graph, .history-graph svg, .history-graph svg text {
@@ -2223,7 +2223,7 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
             $('tcg').href = 'https://www.tcgplayer.com/search/all/product?q=' + encodeURIComponent("Cyberpunk TCG " + (activeSection === "starter" ? (activeStarter === "heist" ? "The Heist Beta starter " : "Embracing Power Beta starter ") : "Welcome to Night City " + (activeEdition === "retail" ? "Retail " : "Beta ")) + code + " " + entry.name);
             $('cataloglink').href = activeEdition === "retail" ? (entry.sourceUrl || 'https://cyberpunktcg.com/cards') : activeSection === "starter" ? entry.sourceUrl : setUrl;
             displayArt(code, entry);
-            if (activeEdition === "retail") { $('history-periods').closest('.history-head')?.setAttribute("hidden",""); $('history-graph').replaceChildren(); $('history-summary').textContent = '尚無歷史走勢'; $('history-note').textContent = 'RETAIL 價格走勢尚未建立；價格與 Beta 分開記錄。'; if (!p || !Number.isFinite(p.usd)) $('pricenote').textContent = 'RETAIL 尚無已核實市場參考價；不沿用 Beta 報價，也不以預售掛牌價冒充成交價。'; } else { $('history-periods').closest('.history-head')?.removeAttribute("hidden"); renderHistory(); }
+            if (activeEdition === "retail") { $('history-periods').closest('.history-head')?.setAttribute("hidden",""); $('history-graph').replaceChildren(); $('history-summary').textContent = '尚無歷史走勢'; $('history-note').textContent = ''; if (!p || !Number.isFinite(p.usd)) $('pricenote').textContent = 'RETAIL 尚無已核實市場參考價；不沿用 Beta 報價，也不以預售掛牌價冒充成交價。'; } else { $('history-periods').closest('.history-head')?.removeAttribute("hidden"); renderHistory(); }
             if (changedCard && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                 const result = $('result');
                 result.classList.remove('card-refresh');
