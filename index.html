@@ -1868,6 +1868,14 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 /* Keep intact booster stationary until swipe threshold is reached. */
 #draw-dialog #pack-wrapper:not(.torn) .pack-intact{transform:none;pointer-events:none;user-select:none;-webkit-user-drag:none}
 #draw-dialog #pack-wrapper:not(.torn){user-select:none;-webkit-user-select:none}
+/* Remove browser focus rings; preserve designed control borders. */
+:where(button,a,input,select,textarea,[tabindex]):focus{outline:none!important}
+#draw-dialog .pack-odds button{padding-inline:10px;appearance:none;-webkit-appearance:none}
+#draw-dialog .pack-odds button:focus,#draw-dialog .pack-odds button:focus-visible{outline:none;box-shadow:none}
+#ranking-list.ranking-enter{animation:rankingListEnter .36s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rankingListEnter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){#ranking-list.ranking-enter{animation:none}}
+
 /* Stable irregular ranking glow */
 :root.ranking-view{background-image:var(--dex-grain),var(--ranking-ambient,radial-gradient(ellipse 680px 400px at 8% 300px,rgba(48,100,210,.10),transparent 75%));background-size:auto;background-repeat:repeat;background-attachment:scroll}
 </style>
@@ -2347,7 +2355,7 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
         let rankOpen=null,rankCloseTimer=0;const rankHistory=$('history-panel');
         function openRankHistory(row,animate=false){rankOpen=row.dataset.rankCode;rankHistory.dataset.rankCode=rankOpen;rankHistory.classList.add('ranking-expanded-history');clearTimeout(rankCloseTimer);rankHistory.classList.remove('ranking-expanding','ranking-collapsing');row.after(rankHistory);row.setAttribute('aria-expanded','true');renderHistory();if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches){rankHistory.style.setProperty('--rank-open-height',rankHistory.offsetHeight+'px');rankHistory.classList.add('ranking-expanding')}}
         function closeRankHistory(animate=false,after=()=>{}){clearTimeout(rankCloseTimer);ranking.querySelectorAll('.ranking-row[aria-expanded=true]').forEach(b=>b.setAttribute('aria-expanded','false'));rankOpen=null;const finish=()=>{rankHistory.classList.remove('ranking-expanding','ranking-collapsing');rankHistory.remove();after()};if(animate&&rankHistory.isConnected&&!rankHistory.classList.contains('ranking-collapsing')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const height=rankHistory.getBoundingClientRect().height;rankHistory.classList.remove('ranking-expanding');rankHistory.style.setProperty('--rank-open-height',height+'px');rankHistory.classList.add('ranking-collapsing');rankCloseTimer=setTimeout(finish,380)}else finish()}
-        ranking.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='ranking-more'){rankLimit+=20;renderRanking(true);return}if(b.dataset.rankCode){const code=b.dataset.rankCode,same=rankOpen===code;closeRankHistory(true,()=>{if(!same){const row=[...ranking.querySelectorAll('.ranking-row')].find(x=>x.dataset.rankCode===code);if(row)openRankHistory(row,true)}});return}if(b.dataset.rankEdition){closeRankHistory();rankLimit=20;rankEdition=b.dataset.rankEdition;rankSort='price'}else if(b.dataset.rankSort){closeRankHistory();rankLimit=20;rankSort=b.dataset.rankSort}else return;renderRanking()});
+        ranking.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='ranking-more'){rankLimit+=20;renderRanking(true);return}if(b.dataset.rankCode){const code=b.dataset.rankCode,same=rankOpen===code;closeRankHistory(true,()=>{if(!same){const row=[...ranking.querySelectorAll('.ranking-row')].find(x=>x.dataset.rankCode===code);if(row)openRankHistory(row,true)}});return}if(b.dataset.rankEdition){closeRankHistory();rankLimit=20;rankEdition=b.dataset.rankEdition;rankSort='price'}else if(b.dataset.rankSort){closeRankHistory();rankLimit=20;rankSort=b.dataset.rankSort}else return;renderRanking();const list=$('ranking-list');list.classList.remove('ranking-enter');void list.offsetWidth;list.classList.add('ranking-enter')});
         init().then(()=>{rankLoaded=true;if(rankView==='ranking')renderRanking();else if(routeParams.get('card')&&['beta','retail'].includes(routeParams.get('edition'))){$('query').value='';chooseEdition(routeParams.get('edition'));chooseSection('main');$('query').value=routeParams.get('card');show(routeParams.get('card'),true)}});
         loadDailyRate().then(renderRanking);
     </script>
