@@ -1562,6 +1562,8 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 #draw-dialog .slider-composition>span{flex:1;min-width:0;padding:0 8px}
 #draw-dialog .slider-composition>span+span{border-left:1px solid #3b4145}
 #draw-dialog .slider-composition b small{font-size:12px;font-weight:600;margin-left:3px;letter-spacing:0}
+.collection-search .search #search.primary{box-sizing:border-box;width:var(--hero-search-width,156px);height:var(--hero-search-height,46px);min-width:0;min-height:0;max-width:100%;padding:10px 18px;justify-content:space-between;gap:8px}
+@media(max-width:680px){.collection-search .search #search.primary{padding:10px 12px}}
 .collection-search .search button.primary .dex-arrow{transform:none;align-self:center}
 .collection-search .search button.primary .dex-arrow svg{display:block;width:18px;height:18px}
 .collection-search #query[aria-invalid="true"]{border-color:#ee4053;box-shadow:0 0 0 1px #ee4053}
@@ -2017,6 +2019,8 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
     <script>
         'use strict';
         const $ = id => document.getElementById(id);
+        // Match the search button to the actual responsive hero CTA dimensions.
+        {const hero=document.querySelector('.hero-actions .hero-action[href="#browse"]'),search=$('search');if(hero&&search){const syncSearchSize=()=>{const r=hero.getBoundingClientRect();if(r.width>0&&r.height>0){search.style.setProperty('--hero-search-width',r.width+'px');search.style.setProperty('--hero-search-height',r.height+'px')}};syncSearchSize();if(typeof ResizeObserver==='function'){const observer=new ResizeObserver(syncSearchSize);observer.observe(hero)}else window.addEventListener('resize',syncSearchSize);document.fonts?.ready.then(syncSearchSize);}}
         const base = "https://www.tcgplayer.com/categories/trading-and-collectible-card-games/cyberpunk-tcg/price-guides/welcome-to-night-city-beta";
         const setUrl = "https://www.tcgplayer.com/search/cyberpunk-tcg/welcome-to-night-city-beta?page=1&productLineName=cyberpunk-tcg&setName=welcome-to-night-city-beta&view=grid";
         let activeEdition = "beta", catalog = {}, prices = {}, retailPrices = {}, retailPriceDate = "", starterPrices = {}, historyCards = {}, historyDays = 30, selected = null, rate = 32.47, priceDate = "", starterSets = {}, activeSection = "main", activeStarter = "heist";
