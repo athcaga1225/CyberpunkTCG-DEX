@@ -1829,6 +1829,7 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 #imagebox img[src*="tcgplayer-cdn.tcgplayer.com"]{clip-path:inset(.2% round 6.5% / 4.65%);-webkit-clip-path:inset(.2% round 6.5% / 4.65%)}
 #pack-zoom-image{clip-path:inset(1% round 7% / 5%);-webkit-clip-path:inset(1% round 7% / 5%)}
 #draw-dialog .pack-card .hero-front img{clip-path:inset(.2% round 5.5% / 3.93%);-webkit-clip-path:inset(.2% round 5.5% / 3.93%)}
+@media(min-width:761px){#draw-dialog .pack-card .hero-front{inset:.2%;border-radius:5.5% / 3.93%}#draw-dialog .pack-card .hero-front img{clip-path:none;-webkit-clip-path:none;transform:scale(1.004)}#draw-dialog .pack-card.revealed::after{inset:.2%;border-radius:5.5% / 3.93%}}
 
 /* Tear view: no pointer-hover movement or browser focus rectangle. */
 #draw-dialog #pack-stage.pack-selected #pack-wrapper:focus{outline:none;box-shadow:none}
