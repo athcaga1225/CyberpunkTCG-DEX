@@ -1175,7 +1175,7 @@
         #draw-dialog .pack-card.revealed[data-rarity="Rare"] .hero-front{box-shadow:none}
 #draw-dialog .pack-card.revealed[data-rarity="Epic"] .hero-front{box-shadow:0 0 3px #61bfffe6}
 #draw-dialog .pack-card.revealed[data-rarity="Iconic Legend"] .hero-front,#draw-dialog .pack-card.revealed[data-rarity="Iconic Other"] .hero-front{box-shadow:0 0 3px #fcee09bf}
-#draw-dialog .pack-card.revealed[data-rarity="Secret"] .hero-front{box-shadow:0 0 3px #f7a4ff,0 0 5px #e851ff}
+#draw-dialog .pack-card.revealed[data-rarity="Secret"] .hero-front{box-shadow:none}
 #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"] .hero-front{box-shadow:0 0 2px #fff0a8,-1px -1px 4px #ed64d9,1px 1px 5px #55dfff}
     #pack-zoom{border:0;background:transparent;color:#fff;padding:0;max-width:calc(100vw - 32px);max-height:calc(100dvh - 24px);overflow:auto;text-align:center}#pack-zoom::backdrop{background:rgba(0,0,0,.88)}#pack-zoom img{display:block;width:auto;height:auto;max-width:100%;max-height:min(76dvh,780px);object-fit:contain;margin:auto}#pack-zoom-close{display:block;margin:0 0 8px auto;background:transparent;border:0;color:#fcee09;font-size:32px;line-height:1;cursor:pointer;padding:4px 10px}#pack-zoom-close:focus{outline:none;box-shadow:none}#pack-zoom-caption{margin:12px 0 4px;color:#ddd;font-size:14px}html:has(#pack-zoom[open]){overflow:hidden}
 /* Pack tear and deal: separate seal, rising card, then staggered grid. */
@@ -1603,7 +1603,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 #draw-dialog #pack-wrapper.dragging:not(.torn) .pack-intact{transform:none}
 #draw-dialog .pack-card.revealed[data-rarity="Rare"]::after{content:none;animation:none}
 #draw-dialog .pack-card.revealed[data-rarity="Epic"] .hero-front{animation:none}
-#draw-dialog .pack-card.revealed[data-rarity="Secret"] .hero-front{animation:dexSecretGlitch .44s .25s ease-out both}
+#draw-dialog .pack-card.revealed[data-rarity="Secret"] .hero-front{animation:none}
 #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"] .hero-front{animation:dexSecretHit .95s .25s ease-out both}
 
 #draw-dialog .pack-god-banner{color:#fcee09;font-weight:800;letter-spacing:.18em;text-align:center;padding:12px 0}
