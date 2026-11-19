@@ -1103,7 +1103,7 @@
         #draw-dialog .pack-card.revealed[data-rarity="Secret"]{--hit:#f6a1ff;--hit-opacity:.92;--hit-duration:1.15s}
         #draw-dialog .pack-card.revealed[data-rarity^="Iconic"]{--hit:#ffe65c;--hit-opacity:.48;--hit-duration:.85s}
         #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"]{--hit:#fff;--hit-opacity:.85;--hit-duration:1.35s}
-        #draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"]):not([data-rarity="Epic"])::after{content:"";position:absolute;inset:0;border-radius:3% / 2.14%;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 18%,var(--hit,#fcee09) 49%,transparent 80%);background-size:250% 100%;mix-blend-mode:screen;animation:packRaritySweep var(--hit-duration,.6s) .26s ease-out both}
+        #draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"])::after{content:"";position:absolute;inset:0;border-radius:3% / 2.14%;pointer-events:none;opacity:0;background:linear-gradient(115deg,transparent 18%,var(--hit,#fcee09) 49%,transparent 80%);background-size:250% 100%;mix-blend-mode:screen;animation:packRaritySweep var(--hit-duration,.6s) .26s ease-out both}
         #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"]::after{background-image:linear-gradient(115deg,transparent 12%,#ff4ad5 35%,#fff7a6 48%,#5deaff 58%,transparent 83%)}
         @keyframes packRaritySweep{0%{opacity:0;background-position:100% 0}25%{opacity:var(--hit-opacity,.4)}100%{opacity:0;background-position:0 0}}
         @media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed::after{animation:none!important;opacity:0}}
@@ -1424,7 +1424,7 @@ header a.brand:focus-visible{outline:2px solid #101010;outline-offset:4px}
 @keyframes packCardTurn{from{transform:rotateY(180deg)}to{transform:rotateY(0)}}
 #draw-dialog .pack-card.revealed+.pack-card-label{animation:packLabelIn .26s .13s ease-out both}
 @keyframes packLabelIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-#draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"]):not([data-rarity="Epic"])::after{animation-delay:.13s}
+#draw-dialog .pack-card.revealed:not([data-rarity="Common"]):not([data-rarity="Uncommon"]):not([data-rarity="Rare"])::after{animation-delay:.13s}
 #draw-dialog .slider-art>.slider-pack-hint{position:absolute;top:50%;left:50%;z-index:10;width:auto;height:auto;display:flex;align-items:center;justify-content:center;gap:10px;transform:translate(-50%,-50%);padding:0;border:0;border-radius:0;background:transparent;color:#fff;box-shadow:none;text-shadow:0 1px 3px #0007;animation:none;opacity:1;font:500 clamp(18px,2vw,24px) var(--dex-font);letter-spacing:.04em;white-space:nowrap;pointer-events:none}
 #draw-dialog .slider-art>.slider-pack-hint::before,#draw-dialog .slider-art>.slider-pack-hint::after{display:none;content:none}
 #draw-dialog .slider-art>.slider-pack-hint{animation:packHintFade 2.5s 1.08s ease-in-out infinite both}
