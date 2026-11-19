@@ -1833,6 +1833,14 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 /* Hide source-image corner halos without scaling or changing card artwork. */
 #imagebox img{clip-path:inset(.2% round 6% / 4.3%);-webkit-clip-path:inset(.2% round 6% / 4.3%)}
 #imagebox img[src*="tcgplayer-cdn.tcgplayer.com"]{clip-path:inset(.2% round 6.5% / 4.65%);-webkit-clip-path:inset(.2% round 6.5% / 4.65%)}
+
+@media (hover:hover) and (pointer:fine) and (min-width:761px) and (prefers-reduced-motion:no-preference){
+  #result #imagebox:has(img)::after{content:"";position:absolute;inset:0;pointer-events:none;clip-path:inset(.2% round 6% / 4.3%);-webkit-clip-path:inset(.2% round 6% / 4.3%);background:linear-gradient(135deg,transparent 36%,rgba(255,255,255,.12) 50%,transparent 64%);background-size:250% 250%;background-position:100% 100%;opacity:0}
+  #result #imagebox:has(img[src*="tcgplayer-cdn.tcgplayer.com"])::after{clip-path:inset(.2% round 6.5% / 4.65%);-webkit-clip-path:inset(.2% round 6.5% / 4.65%)}
+  #result #imagebox:has(img):hover::after{animation:dexDetailSweep .75s ease-out both}
+  @keyframes dexDetailSweep{0%{background-position:100% 100%;opacity:0}15%{opacity:1}85%{opacity:1}100%{background-position:0 0;opacity:0}}
+}
+
 #pack-zoom-image{clip-path:inset(1% round 7% / 5%);-webkit-clip-path:inset(1% round 7% / 5%)}
 #draw-dialog .pack-card .hero-front img{clip-path:inset(.2% round 5.5% / 3.93%);-webkit-clip-path:inset(.2% round 5.5% / 3.93%)}
 #draw-dialog .pack-card .hero-front{inset:.2%;border-radius:5.5% / 3.93%}#draw-dialog .pack-card .hero-front img{clip-path:none;-webkit-clip-path:none;transform:scale(1.004)}#draw-dialog .pack-card.revealed::after{inset:.2%;border-radius:5.5% / 3.93%}
