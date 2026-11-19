@@ -1188,15 +1188,17 @@
 @keyframes packShellDrop{0%,25%{transform:translateY(0);opacity:1}100%{transform:translateY(70px) rotate(-4deg);opacity:0}}
 @keyframes packCardLift{0%{opacity:0;transform:translateY(26%) scale(.92)}15%{opacity:1}75%{opacity:1;transform:translateY(-16%) scale(1.04)}100%{opacity:1;transform:translateY(-12%) scale(1.02)}}
 @keyframes packSeam{0%{transform:scaleX(0);opacity:0}30%{opacity:1}85%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
-#draw-dialog .pack-tile{--deal-y:-56px;animation:packGridArrival .68s var(--delay) cubic-bezier(.16,.8,.22,1) backwards}
+#draw-dialog .pack-tile{animation:packGridArrival .64s var(--delay) cubic-bezier(.25,.65,.35,1) backwards}
 #draw-dialog .pack-card{animation:none;touch-action:manipulation;-webkit-perspective:850px;perspective:850px}
 #draw-dialog .pack-card .hero-flip{pointer-events:none;-webkit-transform-style:preserve-3d;transform-style:preserve-3d;-webkit-transform:rotateY(180deg);transform:rotateY(180deg)}
 #draw-dialog .pack-card.revealed .hero-flip{-webkit-transform:rotateY(0deg);transform:rotateY(0deg)}
 #draw-dialog .pack-card .hero-face,#draw-dialog .pack-card img{pointer-events:none;-webkit-user-select:none;user-select:none}
 @media(prefers-reduced-motion:reduce){#draw-dialog .pack-tile{animation:none}}
-@keyframes packGridArrival{from{opacity:0;transform:translateY(var(--deal-y))}35%{opacity:1}to{opacity:1;transform:translateY(0)}}
-@media(min-width:761px){#draw-dialog .pack-tile:nth-child(n+7){--deal-y:56px}}
-@media(max-width:760px){#draw-dialog .pack-tile:nth-child(n+4):nth-child(-n+6),#draw-dialog .pack-tile:nth-child(n+10){--deal-y:42px}#draw-dialog .pack-tile:nth-child(-n+3),#draw-dialog .pack-tile:nth-child(n+7):nth-child(-n+9){--deal-y:-42px}}
+@keyframes packGridArrival{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+#draw-dialog .pack-tile{position:relative}
+#draw-dialog .pack-tile::before{content:"";position:absolute;z-index:5;left:0;right:0;top:0;height:2px;background:#8deaff;box-shadow:0 0 8px #42d9ff;pointer-events:none;animation:packDealScan .64s var(--delay) cubic-bezier(.25,.65,.35,1) both}
+@keyframes packDealScan{0%{top:0;opacity:0}12%{opacity:.85}85%{opacity:.65}100%{top:100%;opacity:0}}
+@media(prefers-reduced-motion:reduce){#draw-dialog .pack-tile::before{display:none}}
 #draw-dialog .pack-card[data-legend="true"] .hero-back{background:#08090b}
 #draw-dialog .pack-card[data-legend="true"] .hero-back img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;transform:none;filter:none}
 @media(prefers-reduced-motion:reduce){#draw-dialog #pack-wrapper.torn .pack-top,#draw-dialog #pack-wrapper.torn .pack-body,#draw-dialog #pack-wrapper.torn .pack-emerging,#draw-dialog #pack-wrapper.torn::after,#draw-dialog .pack-card{animation:none!important}}
