@@ -1617,18 +1617,18 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
 @keyframes dexGodFlash{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed::after,#draw-dialog .pack-card.revealed .hero-front{animation:none!important}#draw-dialog .pack-god-flash{display:none}#pack-zoom .dex-zoom-face::after{display:none}}
 /* V3 continuous opening choreography */
-#draw-dialog #pack-wrapper.v3-approach.torn .v3-shell::after{content:"";position:absolute;left:0;right:0;top:18%;height:2px;pointer-events:none;background:linear-gradient(90deg,transparent,#fff 80%,#fff);box-shadow:0 0 6px #fff9;transform-origin:left;animation:dexSealLight .48s ease-out both}
+#draw-dialog #pack-wrapper.v3-approach.torn .v3-shell::after{display:none}
 @keyframes dexSealLight{0%{clip-path:inset(0 100% 0 0);opacity:0}15%{opacity:.8}75%{clip-path:inset(0 5% 0 0);opacity:.65}100%{clip-path:inset(0 0 0 100%);opacity:0}}
 @media(prefers-reduced-motion:reduce){#draw-dialog #pack-wrapper.v3-approach.torn .v3-shell::after{display:none}}
 /* V3 shared cinematic opening: physical tear, then drop. */
 #draw-dialog .v3-stack{display:none}
 #draw-dialog .v3-shell{display:contents}
 #draw-dialog #pack-wrapper.dragging.v3-mesh:not(.torn) .pack-intact{display:none}
-#draw-dialog #pack-wrapper.dragging.v3-mesh:not(.torn) .v3-shell{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;filter:drop-shadow(0 0 9px #ffffff45) drop-shadow(0 7px 10px #0006)}
+#draw-dialog #pack-wrapper.dragging.v3-mesh:not(.torn) .v3-shell{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;filter:drop-shadow(0 7px 10px #0006)}
 #draw-dialog #pack-wrapper.dragging.v3-mesh:not(.torn) .pack-body{display:block;clip-path:polygon(0 18%,5% 18.2%,10% 17.7%,15% 18.3%,20% 17.8%,25% 18.2%,30% 17.7%,35% 18.2%,40% 17.8%,45% 18.3%,50% 17.7%,55% 18.2%,60% 17.8%,65% 18.3%,70% 17.7%,75% 18.2%,80% 17.8%,85% 18.3%,90% 17.7%,95% 18.2%,100% 18%,100% 100%,0 100%)}
 #draw-dialog #pack-wrapper.dragging.v3-mesh:not(.torn) .v3-foil-canvas{display:block}
 @media(prefers-reduced-motion:no-preference){
-  #draw-dialog #pack-wrapper.v3-approach.torn .v3-shell{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;filter:drop-shadow(0 0 9px #ffffff45) drop-shadow(0 0 20px #ffffff13) drop-shadow(0 7px 10px #0006)}
+  #draw-dialog #pack-wrapper.v3-approach.torn .v3-shell{display:block;position:absolute;inset:0;z-index:1;pointer-events:none;filter:drop-shadow(0 7px 10px #0006)}
   html.pack-opening #draw-dialog.v3-opening-active #pack-stage.pack-selected{overflow:visible}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper{transform:none;transform-origin:center;transition:none}
   html.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper.v3-approach.torn{animation:v3PackApproach .78s .62s cubic-bezier(.35,.02,.19,1) both}
