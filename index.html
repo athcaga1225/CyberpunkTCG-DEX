@@ -573,8 +573,8 @@
         .history-tooltip[hidden]{display:none}
         .history-graph svg{width:100%;height:auto;display:block;max-height:260px}
         .history-graph .empty-history{padding:32px 12px;border:1px dashed #4d5c5e;color:#aab9bc;text-align:center;font-size:12px;line-height:1.7}
-        #history-summary{color:#c8d4d4;font-size:12px}
-        #history-note{margin-top:8px}
+        :is(#history-summary,[data-history-summary]){color:#c8d4d4;font-size:12px}
+        :is(#history-note,[data-history-note]){margin-top:8px}
         @media(max-width:600px){.history-head{display:block}.history-periods{margin-top:10px}.history-periods button{font-size:10px;padding:7px 9px}}
         /* Safari double-tap zoom prevention; pinch-to-zoom remains available. */
         html { touch-action: manipulation; }
@@ -689,7 +689,7 @@
         /* All four section headings share a single cyan typography system. */
         .collection-heading,
         #result .section-heading,
-        #history-panel .history-head h2,
+        :is(#history-panel,.ranking-expanded-history) .history-head h2,
         .source-disclosure {
             font-family:"Noto Sans TC","PingFang TC",sans-serif;
             font-size:13px;
@@ -726,7 +726,7 @@
         .history-tooltip {transition:none;will-change:left}
         .history-tooltip strong {color:#29ffff}
         .divider {background:#354048}
-        #history-summary {color:#d0dce0}
+        :is(#history-summary,[data-history-summary]) {color:#d0dce0}
         .note {color:#a0b1b8}
         .collection-search .search button {color:#f7edef}
         .history-graph svg path[stroke="#e5e9ec"] {stroke:#e5e9ec}
@@ -869,7 +869,7 @@
         #browse{scroll-margin-top:20px}
         .collection-nav,.panel{background:#202226;border-color:#373b3e;border-left:2px solid #fcee09;box-shadow:none}
         .collection-nav::before,.panel::before{background:linear-gradient(45deg,transparent calc(50% - 1px),#fcee09 50%,transparent calc(50% + 1px))}
-        .collection-heading,#result .section-heading,#history-panel .history-head h2,.source-disclosure,.card-match-head{color:#fcee09}
+        .collection-heading,#result .section-heading,:is(#history-panel,.ranking-expanded-history) .history-head h2,.source-disclosure,.card-match-head{color:#fcee09}
         .collection-dot{background:#fcee09;box-shadow:none}
         .collection-search .search button.primary,.edition-options .edition-btn.active,.history-periods button[aria-pressed="true"],.primary,.settab[aria-selected="true"]{background:#fcee09;color:#151515;border-color:#fcee09}
         .edition-options .edition-btn.active:hover,.edition-options .edition-btn.active:active,.collection-search .search button.primary:hover,.primary:hover{background:#f2e526;color:#151515;border-color:#fcee09}
@@ -1505,7 +1505,7 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 #draw-dialog #pack-wrapper.torn .pack-intact{display:none}
 #draw-dialog .slider-edition{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700}
 #draw-dialog .slider-info h3{margin-bottom:clamp(30px,3vw,44px)}
-.collection-heading,#result .section-heading,#history-panel .history-head h2{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700;color:var(--dex-yellow)}
+.collection-heading,#result .section-heading,:is(#history-panel,.ranking-expanded-history) .history-head h2{font-family:var(--dex-font);font-size:var(--dex-size-section);font-weight:700;color:var(--dex-yellow)}
 .collection-nav .edition-options{gap:0;border:1px solid #424b54;background:#0d1419}
 .collection-nav .edition-options .edition-btn{font-size:14px;position:relative;justify-content:center;min-height:46px;border:0;border-bottom:3px solid transparent;background:transparent;color:#aab8bf;box-shadow:none;transition:background-color .2s,color .2s,border-color .2s}
 .collection-nav .edition-options .edition-btn + .edition-btn{border-left:1px solid #424b54}
@@ -2261,16 +2261,16 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
                 info.textContent = "每日參考匯率載入失敗，目前使用備援參考值 32.47（非當日報價）。";
             }
         }
-        function renderHistory(){
-            const root=$('history-graph'),summary=$('history-summary'),note=$('history-note');
+        function renderHistory(panel=$('history-panel'),days=historyDays){
+            const root=panel.querySelector('.history-graph'),summary=panel.querySelector('[data-history-summary],#history-summary'),note=panel.querySelector('[data-history-note],#history-note');
             root.replaceChildren();
-            const rankingCode=root.closest('#market-ranking')?$('history-panel').dataset.rankCode:null,historyCode=rankingCode||selected;
+            const rankingCode=panel.dataset.rankCode||null,historyCode=rankingCode||selected;
             if((!rankingCode&&activeSection!=="main")||!historyCode||!historyCode.startsWith("B")){
                 summary.textContent="尚無歷史走勢";note.textContent="目前僅 Beta 主系列建立逐日市場參考價格走勢。";return;
             }
             const all=(historyCards[historyCode]||[]).filter(p=>p.date>="2026-09-10"&&Number.isFinite(p.usd)).slice().sort((a,b)=>a.date.localeCompare(b.date));
             const today=new Date().toISOString().slice(0,10);
-            const threshold=historyDays?new Date(Date.now()-historyDays*86400000).toISOString().slice(0,10):"2026-09-10";
+            const threshold=days?new Date(Date.now()-days*86400000).toISOString().slice(0,10):"2026-09-10";
             const points=all.filter(p=>p.date>=threshold&&p.date<=today);
             note.textContent="ValueMyCard / TCGplayer 市場參考價（USD），非逐筆成交價；缺少資料的日期不補值。統一起算日：2026/09/10。";
             // The summary always compares the latest two weeks, independent of the chart's visible range.
@@ -2351,11 +2351,32 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
         const menuToggle=document.querySelector('.dex-menu-toggle'),mainNav=$('dex-nav');function setMenu(open){mainNav.classList.toggle('is-open',open);menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'關閉主選單':'開啟主選單')}menuToggle.onclick=()=>setMenu(menuToggle.getAttribute('aria-expanded')!=='true');mainNav.addEventListener('click',e=>{if(e.target.closest('a'))setMenu(false)});document.addEventListener('pointerdown',e=>{if(!menuToggle.contains(e.target)&&!mainNav.contains(e.target))setMenu(false)});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuToggle.getAttribute('aria-expanded')==='true'){setMenu(false);menuToggle.focus()}});matchMedia('(max-width:760px)').addEventListener('change',()=>setMenu(false));
         const ranking=$('market-ranking');if(rankView==='ranking'){ranking.hidden=false;document.title='CyberDEX — 價格排行'}
         function rankChange(code,p){if(rankEdition!=='beta')return null;const end=Date.parse(p.observedDate),target=end-30*86400000;if(!Number.isFinite(end))return null;const history=(historyCards[code]||[]).filter(x=>Number.isFinite(x.usd)&&x.usd>0&&Math.abs(Date.parse(x.date)-target)<=7*86400000).sort((a,b)=>Math.abs(Date.parse(a.date)-target)-Math.abs(Date.parse(b.date)-target));return history.length?(p.usd/history[0].usd-1)*100:null}
-        let rankLimit=20;function renderRanking(append=false){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=sorted.length+' 張有報價卡牌'+(!hasHistory?' · 暫無足夠歷史資料':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list'),more=$('ranking-more'),visible=rankSort==='price'?sorted.slice(0,rankLimit):sorted;more.hidden=rankSort!=='price'||visible.length>=sorted.length;const start=append?list.querySelectorAll('.ranking-row').length:0;if(!append){rankHistory.remove();list.replaceChildren()}if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();visible.slice(start).forEach(({code,p,entry,change},index)=>{const i=index+start;const a=document.createElement('button');a.type='button';a.className='ranking-row';a.dataset.rankCode=code;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','history-panel');const pos=document.createElement('span');pos.className='ranking-position';pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';name.textContent=entry.name;const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';value.textContent=fmtUSD(p.usd);const twd=document.createElement('small');twd.textContent=currency(p.usd);value.append(twd);if(change!==null){const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=(change>0?'+':'')+change.toFixed(1)+'%';value.append(delta)}a.append(pos,img,name,value);frag.append(a)});list.append(frag);if(!append&&rankOpen){const row=[...list.querySelectorAll('.ranking-row')].find(b=>b.dataset.rankCode===rankOpen);if(row)openRankHistory(row);else rankOpen=null}}
-        let rankOpen=null,rankCloseTimer=0;const rankHistory=$('history-panel');
-        function openRankHistory(row,animate=false){rankOpen=row.dataset.rankCode;rankHistory.dataset.rankCode=rankOpen;rankHistory.classList.add('ranking-expanded-history');clearTimeout(rankCloseTimer);rankHistory.classList.remove('ranking-expanding','ranking-collapsing');row.after(rankHistory);row.setAttribute('aria-expanded','true');renderHistory();if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches){rankHistory.style.setProperty('--rank-open-height',rankHistory.offsetHeight+'px');rankHistory.classList.add('ranking-expanding')}}
-        function closeRankHistory(animate=false,after=()=>{}){clearTimeout(rankCloseTimer);ranking.querySelectorAll('.ranking-row[aria-expanded=true]').forEach(b=>b.setAttribute('aria-expanded','false'));rankOpen=null;const finish=()=>{rankHistory.classList.remove('ranking-expanding','ranking-collapsing');rankHistory.remove();after()};if(animate&&rankHistory.isConnected&&!rankHistory.classList.contains('ranking-collapsing')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const height=rankHistory.getBoundingClientRect().height;rankHistory.classList.remove('ranking-expanding');rankHistory.style.setProperty('--rank-open-height',height+'px');rankHistory.classList.add('ranking-collapsing');rankCloseTimer=setTimeout(finish,380)}else finish()}
-        ranking.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='ranking-more'){rankLimit+=20;renderRanking(true);return}if(b.dataset.rankCode){const code=b.dataset.rankCode,same=rankOpen===code;closeRankHistory(true,()=>{if(!same){const row=[...ranking.querySelectorAll('.ranking-row')].find(x=>x.dataset.rankCode===code);if(row)openRankHistory(row,true)}});return}if(b.dataset.rankEdition){closeRankHistory();rankLimit=20;rankEdition=b.dataset.rankEdition;rankSort='price'}else if(b.dataset.rankSort){closeRankHistory();rankLimit=20;rankSort=b.dataset.rankSort}else return;renderRanking();const list=$('ranking-list');list.classList.remove('ranking-enter');void list.offsetWidth;list.classList.add('ranking-enter')});
+        let rankLimit=20;function renderRanking(append=false){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=sorted.length+' 張有報價卡牌'+(!hasHistory?' · 暫無足夠歷史資料':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list'),more=$('ranking-more'),visible=rankSort==='price'?sorted.slice(0,rankLimit):sorted;more.hidden=rankSort!=='price'||visible.length>=sorted.length;const start=append?list.querySelectorAll('.ranking-row').length:0;if(!append){closeRankHistory();list.replaceChildren()}if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();visible.slice(start).forEach(({code,p,entry,change},index)=>{const i=index+start;const a=document.createElement('button');a.type='button';a.className='ranking-row';a.dataset.rankCode=code;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','rank-history-'+code);const pos=document.createElement('span');pos.className='ranking-position';pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';name.textContent=entry.name;const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';value.textContent=fmtUSD(p.usd);const twd=document.createElement('small');twd.textContent=currency(p.usd);value.append(twd);if(change!==null){const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=(change>0?'+':'')+change.toFixed(1)+'%';value.append(delta)}a.append(pos,img,name,value);frag.append(a)});list.append(frag);}
+        const rankPanels=new Map();
+        function openRankHistory(row,animate=false){
+            const code=row.dataset.rankCode;let panel=rankPanels.get(code);
+            if(panel){clearTimeout(panel.closeTimer);panel.classList.remove('ranking-collapsing','ranking-expanding')}
+            else{
+                panel=$('history-panel').cloneNode(true);panel.id='rank-history-'+code;panel.dataset.rankCode=code;
+                panel.querySelectorAll('[id]').forEach(el=>{el.setAttribute('data-'+el.id,'');el.removeAttribute('id')});
+                panel.querySelector('.history-head').removeAttribute('hidden');panel.classList.add('ranking-expanded-history');
+                let days=30;const periods=panel.querySelector('.history-periods');
+                for(const b of periods.querySelectorAll('button'))b.setAttribute('aria-pressed',String(Number(b.dataset.days)===days));
+                periods.onclick=e=>{const b=e.target.closest('button[data-days]');if(!b)return;days=Number(b.dataset.days);for(const x of periods.querySelectorAll('button'))x.setAttribute('aria-pressed',String(x===b));renderHistory(panel,days)};
+                rankPanels.set(code,panel);row.after(panel);renderHistory(panel,days);
+            }
+            row.setAttribute('aria-expanded','true');
+            if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches){panel.style.setProperty('--rank-open-height',panel.offsetHeight+'px');panel.classList.add('ranking-expanding')}
+        }
+        function closeRankHistory(row=null,animate=false){
+            for(const [code,panel] of rankPanels){
+                if(row&&code!==row.dataset.rankCode)continue;
+                clearTimeout(panel.closeTimer);const target=row||panel.previousElementSibling;target?.setAttribute('aria-expanded','false');
+                const finish=()=>{panel.remove();rankPanels.delete(code)};
+                if(animate&&panel.isConnected&&!matchMedia('(prefers-reduced-motion: reduce)').matches){const height=panel.getBoundingClientRect().height;panel.classList.remove('ranking-expanding');panel.style.setProperty('--rank-open-height',height+'px');panel.classList.add('ranking-collapsing');panel.closeTimer=setTimeout(finish,380)}else finish();
+            }
+        }
+        ranking.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='ranking-more'){rankLimit+=20;renderRanking(true);return}if(b.dataset.rankCode){if(b.getAttribute('aria-expanded')==='true')closeRankHistory(b,true);else openRankHistory(b,true);return}if(b.dataset.rankEdition){closeRankHistory();rankLimit=20;rankEdition=b.dataset.rankEdition;rankSort='price'}else if(b.dataset.rankSort){closeRankHistory();rankLimit=20;rankSort=b.dataset.rankSort}else return;renderRanking();const list=$('ranking-list');list.classList.remove('ranking-enter');void list.offsetWidth;list.classList.add('ranking-enter')});
         init().then(()=>{rankLoaded=true;if(rankView==='ranking')renderRanking();else if(routeParams.get('card')&&['beta','retail'].includes(routeParams.get('edition'))){$('query').value='';chooseEdition(routeParams.get('edition'));chooseSection('main');$('query').value=routeParams.get('card');show(routeParams.get('card'),true)}});
         loadDailyRate().then(renderRanking);
     </script>
