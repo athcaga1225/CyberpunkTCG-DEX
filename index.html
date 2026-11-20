@@ -1915,6 +1915,7 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 /* V2 usability refinements; preserve the existing visual system. */
 :where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:2px solid #fcee09!important;outline-offset:3px}
 header :where(button,a):focus-visible,.hero-art :where(button,a):focus-visible{outline-color:#101010!important}
+#query:focus,#query:focus-visible{outline:none!important;border-color:#424b54!important;box-shadow:none!important}
 .card-match-rarity{display:block;color:#aab8bf;font-size:12px;font-weight:400;margin-top:3px}
 #market-ranking .ranking-row{position:relative;padding-right:42px}
 #market-ranking .ranking-row::after{content:"";position:absolute;right:16px;top:50%;width:8px;height:8px;border-right:1.5px solid #aab8bf;border-bottom:1.5px solid #aab8bf;transform:translateY(-70%) rotate(45deg);transition:transform .25s ease}
