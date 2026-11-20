@@ -1916,6 +1916,9 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 :where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:2px solid #fcee09!important;outline-offset:3px}
 header :where(button,a):focus-visible,.hero-art :where(button,a):focus-visible{outline-color:#101010!important}
 body>header .dex-nav a:focus-visible{outline-color:#fcee09!important;outline-offset:-2px}
+.series-menu button:focus-visible{outline:2px solid #fcee09!important;outline-offset:-3px}
+#market-ranking .ranking-row:focus-visible{outline-offset:-3px}
+@media(max-width:760px){.ranking-tools button,.series-menu button{min-height:44px}}
 #draw-dialog .slider-nav button:focus-visible{outline-color:#101010!important}
 #result #name:focus{outline:none!important}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
@@ -1979,7 +1982,7 @@ body>header .dex-nav a:focus-visible{outline-color:#fcee09!important;outline-off
                 <div class="row space" style="margin-top:12px;flex-wrap:wrap">
                     <div class="small" id="loadstate" role="status" aria-live="polite">載入資料中…</div>
                 </div>
-                <div id="card-match-list" class="card-match-list" hidden aria-label="符合的卡片"></div>
+                <div id="card-match-list" class="card-match-list" hidden role="group" aria-label="符合的卡片"></div>
             </div>
             <div class="collection-grid">
                 <div class="collection-field">
@@ -2122,7 +2125,7 @@ body>header .dex-nav a:focus-visible{outline-color:#fcee09!important;outline-off
         seriesMenu.id='series-menu';seriesMenu.className='series-menu';seriesMenu.setAttribute('role','listbox');seriesMenu.setAttribute('aria-label','卡牌系列');seriesMenu.hidden=true;
         seriesWrap.append(seriesTrigger);document.body.append(seriesMenu);seriesWrap.classList.add('custom-series');document.querySelector('label[for="collection-select"]').htmlFor='series-trigger';
         function closeSeries(focus=false){seriesMenu.hidden=true;seriesTrigger.setAttribute('aria-expanded','false');if(focus)seriesTrigger.focus({preventScroll:true})}
-        function syncSeries(){closeSeries();seriesText.textContent=seriesSelect.selectedOptions[0]?.textContent||'';seriesMenu.replaceChildren();for(const option of seriesSelect.options){const item=document.createElement('button');item.type='button';item.tabIndex=-1;item.setAttribute('role','option');item.setAttribute('aria-selected',String(option.selected));item.textContent=option.textContent;item.onclick=()=>{seriesSelect.value=option.value;seriesSelect.dispatchEvent(new Event('change',{bubbles:true}));closeSeries(true)};seriesMenu.append(item)}}
+        function syncSeries(){closeSeries();seriesText.textContent=seriesSelect.selectedOptions[0]?.textContent||'';seriesTrigger.setAttribute('aria-label','選擇卡牌系列：'+seriesText.textContent);seriesMenu.replaceChildren();for(const option of seriesSelect.options){const item=document.createElement('button');item.type='button';item.tabIndex=-1;item.setAttribute('role','option');item.setAttribute('aria-selected',String(option.selected));item.textContent=option.textContent;item.onclick=()=>{seriesSelect.value=option.value;seriesSelect.dispatchEvent(new Event('change',{bubbles:true}));closeSeries(true)};seriesMenu.append(item)}}
         function openSeries(){const r=seriesTrigger.getBoundingClientRect(),below=window.innerHeight-r.bottom-8,above=r.top-8,need=seriesMenu.children.length*48+14,up=below<need&&above>below;seriesMenu.style.left=r.left+'px';seriesMenu.style.width=r.width+'px';seriesMenu.style.maxHeight=Math.max(48,up?above:below)+'px';seriesMenu.style.top=up?'auto':(r.bottom+5)+'px';seriesMenu.style.bottom=up?(window.innerHeight-r.top+5)+'px':'auto';seriesMenu.hidden=false;seriesTrigger.setAttribute('aria-expanded','true');seriesMenu.querySelector('[aria-selected="true"]')?.focus({preventScroll:true})}
         seriesTrigger.onclick=()=>seriesMenu.hidden?openSeries():closeSeries(true);seriesTrigger.addEventListener('keydown',e=>{if(['ArrowDown','ArrowUp'].includes(e.key)){e.preventDefault();openSeries()}});
         seriesMenu.addEventListener('keydown',e=>{const items=[...seriesMenu.children],i=items.indexOf(document.activeElement);if(e.key==='Escape'){e.preventDefault();closeSeries(true)}else if(e.key==='Tab'){closeSeries(true)}else if(['ArrowDown','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();items[e.key==='Home'?0:e.key==='End'?items.length-1:(i+(e.key==='ArrowDown'?1:-1)+items.length)%items.length]?.focus()}});
@@ -2301,8 +2304,14 @@ body>header .dex-nav a:focus-visible{outline-color:#fcee09!important;outline-off
             }
             if (scroll) $('result').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth', block: 'start' });
         }
-        $('search').onclick = () => show($('query').value, true);
-        $('query').onkeydown = e => { if (e.key === "Enter") show($('query').value, true) };
+        function submitCardSearch(keyboard=false){
+            show($('query').value,true);
+            if(!keyboard)return;
+            if($('result').classList.contains('open'))$('name').focus({preventScroll:true});
+            else if(!$('card-match-list').hidden)$('card-match-list').querySelector('button')?.focus({preventScroll:true});
+        }
+        $('search').onclick = e => submitCardSearch(e.detail===0);
+        $('query').onkeydown = e => { if(e.key==='Enter'&&!e.isComposing){e.preventDefault();submitCardSearch(true)} };
         function refreshTwdOnly() {
             if (!selected) return;
             const price = activeEdition === "retail" ? retailPrices[selected] : activeSection === "main" ? prices[selected] : starterPrices[activeStarter]?.prices?.[selected];
@@ -2390,6 +2399,8 @@ body>header .dex-nav a:focus-visible{outline-color:#fcee09!important;outline-off
             keyboardHelp.className=announcement.className='history-sr-only';keyboardHelp.id=panel.id+'-keyboard-help';keyboardHelp.textContent='使用左右方向鍵查看報價，Home 或 End 跳至首筆或末筆。';announcement.setAttribute('role','status');
             svg.setAttribute('aria-describedby',keyboardHelp.id);
             tooltip.append(dateLabel,priceLabel);root.append(svg,tooltip,keyboardHelp,announcement);
+            let keyboardPoint=restoreDate?points.findIndex(p=>p.date===restoreDate):-1;
+            if(keyboardPoint<0)keyboardPoint=points.length-1;
             const activate=(event)=>{
                 // Convert screen coordinates through the SVG transform so the
                 // viewBox stays aligned even when max-height letterboxes the chart.
@@ -2403,6 +2414,7 @@ body>header .dex-nav a:focus-visible{outline-color:#fcee09!important;outline-off
                 for(let i=1;i<points.length;i++)if(Math.abs(x(times[i])-mouseX)<Math.abs(x(times[nearest])-mouseX))nearest=i;
                 const p=points[nearest],cx=x(times[nearest]);
                 svg.dataset.selectedDate=p.date;
+                keyboardPoint=nearest;
                 // The guide follows the pointer continuously while the value
                 // remains the nearest real recorded price (no invented prices).
                 const guideX=Math.max(left,Math.min(W-right,mouseX));
@@ -2415,14 +2427,12 @@ body>header .dex-nav a:focus-visible{outline-color:#fcee09!important;outline-off
                 const screenX=marker.matrixTransform(matrix).x-root.getBoundingClientRect().left;
                 tooltip.style.left=Math.max(0,Math.min(graphWidth-tipWidth,screenX-tipWidth/2))+"px";
             };
-            const hide=()=>{guide.setAttribute("visibility","hidden");tooltip.hidden=true};
+            const hide=()=>{guide.setAttribute("visibility","hidden");tooltip.hidden=true;delete svg.dataset.selectedDate};
             svg.addEventListener("pointermove",activate);
             svg.addEventListener("pointerdown",activate);
             svg.addEventListener("pointerleave",hide);
             svg.addEventListener("pointercancel",hide);
             svg.setAttribute('tabindex','0');
-            let keyboardPoint=restoreDate?points.findIndex(p=>p.date===restoreDate):-1;
-            if(keyboardPoint<0)keyboardPoint=points.length-1;
             const showKeyboardPoint=()=>{const matrix=svg.getScreenCTM();if(!matrix)return;const cursor=svg.createSVGPoint();cursor.x=x(times[keyboardPoint]);cursor.y=top;const screen=cursor.matrixTransform(matrix);activate({clientX:screen.x,clientY:screen.y});announcement.textContent=points[keyboardPoint].date+' US$'+points[keyboardPoint].usd.toFixed(2)};
             svg.addEventListener('focus',()=>{if(svg.matches(':focus-visible'))showKeyboardPoint()});
             svg.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();keyboardPoint=event.key==='Home'?0:event.key==='End'?points.length-1:Math.max(0,Math.min(points.length-1,keyboardPoint+(event.key==='ArrowRight'?1:-1)));showKeyboardPoint()});
@@ -2439,7 +2449,7 @@ body>header .dex-nav a:focus-visible{outline-color:#fcee09!important;outline-off
         let rankEdition=['beta','retail'].includes(routeParams.get('edition'))?routeParams.get('edition'):activeEdition,rankSort='price',rankLoaded=false;
         function rankingUrl(view,extras={}){const p=new URLSearchParams(extras);if(view!=='home')p.set('view',view);if(rankDev)p.set('dev','1');return './'+(p.size?'?'+p:'')}
         document.querySelectorAll('.dex-nav a').forEach(a=>{a.href=rankingUrl(a.dataset.view);if(a.dataset.view===rankView)a.setAttribute('aria-current','page')});
-        const menuToggle=document.querySelector('.dex-menu-toggle'),mainNav=$('dex-nav');function setMenu(open){mainNav.classList.toggle('is-open',open);menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'關閉主選單':'開啟主選單')}menuToggle.onclick=()=>setMenu(menuToggle.getAttribute('aria-expanded')!=='true');mainNav.addEventListener('click',e=>{if(e.target.closest('a'))setMenu(false)});document.addEventListener('pointerdown',e=>{if(!menuToggle.contains(e.target)&&!mainNav.contains(e.target))setMenu(false)});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuToggle.getAttribute('aria-expanded')==='true'){setMenu(false);menuToggle.focus()}});matchMedia('(max-width:760px)').addEventListener('change',()=>setMenu(false));
+        const menuToggle=document.querySelector('.dex-menu-toggle'),mainNav=$('dex-nav');mainNav.inert=true;function setMenu(open){mainNav.inert=!open;mainNav.classList.toggle('is-open',open);menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'關閉主選單':'開啟主選單')}menuToggle.onclick=()=>setMenu(menuToggle.getAttribute('aria-expanded')!=='true');mainNav.addEventListener('click',e=>{if(e.target.closest('a'))setMenu(false)});document.addEventListener('pointerdown',e=>{if(!menuToggle.contains(e.target)&&!mainNav.contains(e.target))setMenu(false)});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuToggle.getAttribute('aria-expanded')==='true'){setMenu(false);menuToggle.focus()}});matchMedia('(max-width:760px)').addEventListener('change',()=>setMenu(false));
         const ranking=$('market-ranking');if(rankView==='ranking'){ranking.hidden=false;document.title='CyberDEX — 價格排行'}
         function rankChange(code,p){if(rankEdition!=='beta')return null;const end=Date.parse(p.observedDate),target=end-30*86400000;if(!Number.isFinite(end))return null;const history=(historyCards[code]||[]).filter(x=>Number.isFinite(x.usd)&&x.usd>0&&Math.abs(Date.parse(x.date)-target)<=7*86400000).sort((a,b)=>Math.abs(Date.parse(a.date)-target)-Math.abs(Date.parse(b.date)-target));return history.length?(p.usd/history[0].usd-1)*100:null}
         let rankLimit=20;function renderRanking(append=false){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=sorted.length+' 張有報價卡牌'+(!hasHistory?' · 歷史資料不足，暫不提供30日漲跌幅排序':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list'),more=$('ranking-more'),visible=rankSort==='price'?sorted.slice(0,rankLimit):sorted;more.hidden=rankSort!=='price'||visible.length>=sorted.length;const start=append?list.querySelectorAll('.ranking-row').length:0;if(!append){closeRankHistory();list.replaceChildren()}if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();visible.slice(start).forEach(({code,p,entry,change},index)=>{const i=index+start;const a=document.createElement('button');a.type='button';a.className='ranking-row';a.dataset.rankCode=code;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','rank-history-'+code);const pos=document.createElement('span');pos.className='ranking-position';pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';name.textContent=entry.name;const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';value.textContent=fmtUSD(p.usd);const twd=document.createElement('small');twd.textContent=currency(p.usd);value.append(twd);if(change!==null){const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=(change>0?'+':'')+change.toFixed(1)+'%';value.append(delta)}a.append(pos,img,name,value);frag.append(a)});list.append(frag);}
