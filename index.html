@@ -1915,6 +1915,10 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 /* V2 usability refinements; preserve the existing visual system. */
 :where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:2px solid #fcee09!important;outline-offset:3px}
 header :where(button,a):focus-visible,.hero-art :where(button,a):focus-visible{outline-color:#101010!important}
+body>header .dex-nav a:focus-visible{outline-color:#fcee09!important;outline-offset:-2px}
+#draw-dialog .slider-nav button:focus-visible{outline-color:#101010!important}
+#result #name:focus{outline:none!important}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
 #query:focus,#query:focus-visible{outline:none!important;border-color:#fcee09!important;box-shadow:none!important}
 .card-match-rarity{display:block;color:#aab8bf;font-size:12px;font-weight:400;margin-top:3px}
 #market-ranking .ranking-row{position:relative;padding-right:42px}
@@ -2184,7 +2188,7 @@ header :where(button,a):focus-visible,.hero-art :where(button,a):focus-visible{o
             const head = document.createElement('div');
             head.className = 'card-match-head';
             const label = document.createElement('span');
-            label.textContent = '符合的卡片 / MATCHING CARDS';
+            label.textContent = activeEdition.toUpperCase()+' · 符合的卡片 / MATCHING CARDS';
             const count = document.createElement('span');
             count.textContent = matches.length + ' 張';
             head.append(label, count);
@@ -2211,8 +2215,10 @@ header :where(button,a):focus-visible,.hero-art :where(button,a):focus-visible{o
                 arrow.textContent = '›';
                 button.append(meta, name, arrow);
                 button.addEventListener('click', () => {
+                    const keyboard=document.activeElement===button&&button.matches(':focus-visible');
                     clearCardMatches();
                     show(id, true);
+                    if(keyboard&&$('result').classList.contains('open'))$('name').focus({preventScroll:true});
                 });
                 list.append(button);
             }
@@ -2258,7 +2264,7 @@ header :where(button,a):focus-visible,.hero-art :where(button,a):focus-visible{o
                 if (matches.length > 1) {
                     $('result').classList.remove('open'); selected = null;
                     showCardMatches(matches);
-                    $('loadstate').textContent = "請從下方選擇卡片。";
+                    $('loadstate').textContent = "找到 "+matches.length+" 張卡片，請從下方選擇。";
                     return;
                 }
                 $('result').classList.remove('open'); selected = null;
@@ -2268,7 +2274,7 @@ header :where(button,a):focus-visible,.hero-art :where(button,a):focus-visible{o
             const changedCard = selected !== code || !$('result').classList.contains('open');
             selected = code; $('loadstate').textContent = collectionStatusText();
             $('result').classList.add('open'); $('number').textContent = (activeSection === "starter" ? (entry.setCode + " · ") : "") + code;
-            $('name').textContent = entry.name;
+            $('name').textContent = entry.name; $('name').setAttribute('tabindex','-1');
             $('variant').textContent = activeSection === "starter" ? (activeStarter === "heist" ? "THE HEIST · BETA" : "EMBRACING POWER · BETA") : (entry.set ? "BOX TOPPER" : "Welcome to Night City · " + activeEdition.toUpperCase());
             const rn = $('rarityinfo'); rn.replaceChildren();
             const line = document.createElement('div'); line.className = 'rarityline';
@@ -2327,7 +2333,7 @@ header :where(button,a):focus-visible,.hero-art :where(button,a):focus-visible{o
                 info.textContent = "每日參考匯率載入失敗，目前使用備援參考值 32.47（非當日報價）。";
             }
         }
-        function renderHistory(panel=$('history-panel'),days=historyDays,animate=true){
+        function renderHistory(panel=$('history-panel'),days=historyDays,animate=true,restoreDate=null){
             const root=panel.querySelector('.history-graph'),summary=panel.querySelector('[data-history-summary],#history-summary'),note=panel.querySelector('[data-history-note],#history-note');
             root.classList.toggle('history-resizing',!animate);
             root.replaceChildren();
@@ -2396,6 +2402,7 @@ header :where(button,a):focus-visible,.hero-art :where(button,a):focus-visible{o
                 let nearest=0;
                 for(let i=1;i<points.length;i++)if(Math.abs(x(times[i])-mouseX)<Math.abs(x(times[nearest])-mouseX))nearest=i;
                 const p=points[nearest],cx=x(times[nearest]);
+                svg.dataset.selectedDate=p.date;
                 // The guide follows the pointer continuously while the value
                 // remains the nearest real recorded price (no invented prices).
                 const guideX=Math.max(left,Math.min(W-right,mouseX));
@@ -2414,15 +2421,17 @@ header :where(button,a):focus-visible,.hero-art :where(button,a):focus-visible{o
             svg.addEventListener("pointerleave",hide);
             svg.addEventListener("pointercancel",hide);
             svg.setAttribute('tabindex','0');
-            let keyboardPoint=points.length-1;
+            let keyboardPoint=restoreDate?points.findIndex(p=>p.date===restoreDate):-1;
+            if(keyboardPoint<0)keyboardPoint=points.length-1;
             const showKeyboardPoint=()=>{const matrix=svg.getScreenCTM();if(!matrix)return;const cursor=svg.createSVGPoint();cursor.x=x(times[keyboardPoint]);cursor.y=top;const screen=cursor.matrixTransform(matrix);activate({clientX:screen.x,clientY:screen.y});announcement.textContent=points[keyboardPoint].date+' US$'+points[keyboardPoint].usd.toFixed(2)};
             svg.addEventListener('focus',()=>{if(svg.matches(':focus-visible'))showKeyboardPoint()});
             svg.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();keyboardPoint=event.key==='Home'?0:event.key==='End'?points.length-1:Math.max(0,Math.min(points.length-1,keyboardPoint+(event.key==='ArrowRight'?1:-1)));showKeyboardPoint()});
             svg.addEventListener('blur',hide);
+            if(restoreDate)showKeyboardPoint();
         }
         $('history-periods').onclick=e=>{const button=e.target.closest('button[data-days]');if(!button)return;historyDays=Number(button.dataset.days);for(const b of $('history-periods').querySelectorAll('button'))b.setAttribute("aria-pressed",String(b===button));renderHistory()};
 
-        async function init() { const results = await Promise.allSettled([fetch("./card-catalog.json?v=5", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() }), fetch("./prices.json?v=5", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() }), fetch("./card-images.json?v=3", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() }), fetch("./starter-catalog.json?v=2", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() }), fetch("./price-history.json?v=1", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() }), fetch("./starter-prices.json?v=1", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() }), fetch("./retail-prices.json?v=1", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() })]); if (results[0].status === "fulfilled") catalog = results[0].value.cards || {}; if (results[1].status === "fulfilled") { prices = results[1].value.prices || {}; priceDate = results[1].value.observedDate || "未註明" } if (results[2].status === "fulfilled") cardImages = results[2].value.images || {}; if (results[3].status === "fulfilled") starterSets = results[3].value.sets || {}; if(results[4].status==="fulfilled") historyCards=results[4].value.cards||{}; if(results[5].status==="fulfilled") starterPrices=results[5].value.sets||{}; if(results[6].status==="fulfilled") { retailPrices=Object.fromEntries(Object.entries(results[6].value.prices||{}).filter(([code,p])=>/^\d{3}[AB]?$/.test(code)&&Number.isFinite(p?.usd)&&p.usd>=0&&p.observedDate&&p.sourceUrl)); retailPriceDate=results[6].value.observedDate||""; } $('loadstate').textContent = Object.keys(catalog).length === 178 ? "已載入 Beta 主系列 172 張卡＋Box Topper 6 張卡。" : "卡表資料未完整載入，請重新整理。"; restoreCollection(); if (location.hash) { const hash = decodeURIComponent(location.hash.slice(1)); const match = hash.match(/^(heist|power)-(B\d{3})$/i); if (match) { chooseSection('starter', match[1].toLowerCase()); show(match[2], false) } else if (catalog[normalize(hash)]) show(hash, false) } }
+        async function init() { const results = await Promise.allSettled([fetch("./card-catalog.json?v=5", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() }), fetch("./prices.json?v=5", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() }), fetch("./card-images.json?v=3", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() }), rankView==='home'?fetch("./starter-catalog.json?v=2", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() }):Promise.resolve({sets:{}}), rankView!=='pack'?fetch("./price-history.json?v=1", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() }):Promise.resolve({cards:{}}), rankView==='home'?fetch("./starter-prices.json?v=1", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() }):Promise.resolve({sets:{}}), fetch("./retail-prices.json?v=1", { cache: "no-cache" }).then(r => { if (!r.ok) throw Error(r.status); return r.json() })]); if (results[0].status === "fulfilled") catalog = results[0].value.cards || {}; if (results[1].status === "fulfilled") { prices = results[1].value.prices || {}; priceDate = results[1].value.observedDate || "未註明" } if (results[2].status === "fulfilled") cardImages = results[2].value.images || {}; if (results[3].status === "fulfilled") starterSets = results[3].value.sets || {}; if(results[4].status==="fulfilled") historyCards=results[4].value.cards||{}; if(results[5].status==="fulfilled") starterPrices=results[5].value.sets||{}; if(results[6].status==="fulfilled") { retailPrices=Object.fromEntries(Object.entries(results[6].value.prices||{}).filter(([code,p])=>/^\d{3}[AB]?$/.test(code)&&Number.isFinite(p?.usd)&&p.usd>=0&&p.observedDate&&p.sourceUrl)); retailPriceDate=results[6].value.observedDate||""; } $('loadstate').textContent = Object.keys(catalog).length === 178 ? "已載入 Beta 主系列 172 張卡＋Box Topper 6 張卡。" : "卡表資料未完整載入，請重新整理。"; if(rankView==='home')restoreCollection(); if (rankView==='home'&&location.hash) { const hash = decodeURIComponent(location.hash.slice(1)); const match = hash.match(/^(heist|power)-(B\d{3})$/i); if (match) { chooseSection('starter', match[1].toLowerCase()); show(match[2], false) } else if (catalog[normalize(hash)]) show(hash, false) } }
         // Apply saved selection synchronously before displaying navigation; no BETA -> RETAIL flash.
         restoreCollection();
         document.querySelector('.collection-nav').style.visibility = 'visible';
@@ -2433,7 +2442,7 @@ header :where(button,a):focus-visible,.hero-art :where(button,a):focus-visible{o
         const menuToggle=document.querySelector('.dex-menu-toggle'),mainNav=$('dex-nav');function setMenu(open){mainNav.classList.toggle('is-open',open);menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'關閉主選單':'開啟主選單')}menuToggle.onclick=()=>setMenu(menuToggle.getAttribute('aria-expanded')!=='true');mainNav.addEventListener('click',e=>{if(e.target.closest('a'))setMenu(false)});document.addEventListener('pointerdown',e=>{if(!menuToggle.contains(e.target)&&!mainNav.contains(e.target))setMenu(false)});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuToggle.getAttribute('aria-expanded')==='true'){setMenu(false);menuToggle.focus()}});matchMedia('(max-width:760px)').addEventListener('change',()=>setMenu(false));
         const ranking=$('market-ranking');if(rankView==='ranking'){ranking.hidden=false;document.title='CyberDEX — 價格排行'}
         function rankChange(code,p){if(rankEdition!=='beta')return null;const end=Date.parse(p.observedDate),target=end-30*86400000;if(!Number.isFinite(end))return null;const history=(historyCards[code]||[]).filter(x=>Number.isFinite(x.usd)&&x.usd>0&&Math.abs(Date.parse(x.date)-target)<=7*86400000).sort((a,b)=>Math.abs(Date.parse(a.date)-target)-Math.abs(Date.parse(b.date)-target));return history.length?(p.usd/history[0].usd-1)*100:null}
-        let rankLimit=20;function renderRanking(append=false){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=sorted.length+' 張有報價卡牌'+(!hasHistory?' · 暫無足夠歷史資料':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list'),more=$('ranking-more'),visible=rankSort==='price'?sorted.slice(0,rankLimit):sorted;more.hidden=rankSort!=='price'||visible.length>=sorted.length;const start=append?list.querySelectorAll('.ranking-row').length:0;if(!append){closeRankHistory();list.replaceChildren()}if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();visible.slice(start).forEach(({code,p,entry,change},index)=>{const i=index+start;const a=document.createElement('button');a.type='button';a.className='ranking-row';a.dataset.rankCode=code;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','rank-history-'+code);const pos=document.createElement('span');pos.className='ranking-position';pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';name.textContent=entry.name;const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';value.textContent=fmtUSD(p.usd);const twd=document.createElement('small');twd.textContent=currency(p.usd);value.append(twd);if(change!==null){const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=(change>0?'+':'')+change.toFixed(1)+'%';value.append(delta)}a.append(pos,img,name,value);frag.append(a)});list.append(frag);}
+        let rankLimit=20;function renderRanking(append=false){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=sorted.length+' 張有報價卡牌'+(!hasHistory?' · 歷史資料不足，暫不提供30日漲跌幅排序':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list'),more=$('ranking-more'),visible=rankSort==='price'?sorted.slice(0,rankLimit):sorted;more.hidden=rankSort!=='price'||visible.length>=sorted.length;const start=append?list.querySelectorAll('.ranking-row').length:0;if(!append){closeRankHistory();list.replaceChildren()}if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();visible.slice(start).forEach(({code,p,entry,change},index)=>{const i=index+start;const a=document.createElement('button');a.type='button';a.className='ranking-row';a.dataset.rankCode=code;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','rank-history-'+code);const pos=document.createElement('span');pos.className='ranking-position';pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';name.textContent=entry.name;const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';value.textContent=fmtUSD(p.usd);const twd=document.createElement('small');twd.textContent=currency(p.usd);value.append(twd);if(change!==null){const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=(change>0?'+':'')+change.toFixed(1)+'%';value.append(delta)}a.append(pos,img,name,value);frag.append(a)});list.append(frag);}
         const rankPanels=new Map();
         // Rebuild only when the chart coordinate system actually changes on resize.
         let historyResizeTimer;
@@ -2445,7 +2454,7 @@ header :where(button,a):focus-visible,.hero-art :where(button,a):focus-visible{o
                 if(svg.viewBox.baseVal.width===width)continue;
                 const focused=document.activeElement===svg;
                 const days=Number(panel.querySelector('.history-periods button[aria-pressed=true]')?.dataset.days??30);
-                renderHistory(panel,days,false);
+                renderHistory(panel,days,false,svg.dataset.selectedDate||null);
                 if(focused)root.querySelector('svg')?.focus({preventScroll:true});
             }
         },120)});
