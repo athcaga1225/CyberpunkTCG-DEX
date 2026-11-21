@@ -1177,7 +1177,7 @@
 #draw-dialog .pack-card.revealed[data-rarity="Iconic Legend"] .hero-front,#draw-dialog .pack-card.revealed[data-rarity="Iconic Other"] .hero-front{box-shadow:0 0 3px #fcee09bf}
 #draw-dialog .pack-card.revealed[data-rarity="Secret"] .hero-front{box-shadow:0 0 3px #61bfffe6}
 #draw-dialog .pack-card.revealed[data-rarity="Iconic Secret"] .hero-front{box-shadow:0 0 2px #fff0a8,-1px -1px 4px #ed64d9,1px 1px 5px #55dfff}
-    #pack-zoom{border:0;background:transparent;color:#fff;padding:0;max-width:calc(100vw - 32px);max-height:calc(100dvh - 24px);overflow:auto;text-align:center}#pack-zoom::backdrop{background:rgba(0,0,0,.88)}#pack-zoom img{display:block;width:auto;height:auto;max-width:100%;max-height:min(76dvh,780px);object-fit:contain;margin:auto}#pack-zoom-close{display:block;margin:0 0 8px auto;background:transparent;border:0;color:#fcee09;font-size:32px;line-height:1;cursor:pointer;padding:4px 10px}#pack-zoom-close:focus{outline:none;box-shadow:none}#pack-zoom-close:focus-visible{outline:2px solid #fcee09!important;outline-offset:-3px}#pack-zoom-caption:focus{outline:none!important}#pack-zoom-caption{margin:12px 0 4px;color:#ddd;font-size:14px}html:has(#pack-zoom[open]){overflow:hidden}
+    #pack-zoom{border:0;background:transparent;color:#fff;padding:0;max-width:calc(100vw - 32px);max-height:calc(100dvh - 24px);overflow:auto;text-align:center}#pack-zoom::backdrop{background:rgba(0,0,0,.88)}#pack-zoom img{display:block;width:auto;height:auto;max-width:100%;max-height:min(76dvh,780px);object-fit:contain;margin:auto}#pack-zoom-close{display:block;margin:0 0 8px auto;background:transparent;border:0;color:#fcee09;font-size:32px;line-height:1;cursor:pointer;padding:4px 10px}#pack-zoom-close:focus{outline:none;box-shadow:none}#pack-zoom-close:focus-visible{outline:none!important;box-shadow:none!important;color:#fff}#pack-zoom-caption:focus{outline:none!important}#pack-zoom-caption{margin:12px 0 4px;color:#ddd;font-size:14px}html:has(#pack-zoom[open]){overflow:hidden}
 /* Pack tear and deal: separate seal, rising card, then staggered grid. */
 #draw-dialog #pack-wrapper{touch-action:pan-y}
 #draw-dialog #pack-wrapper.torn .pack-top{animation:packSealPull .56s cubic-bezier(.22,.72,.35,1) forwards}
@@ -1916,6 +1916,9 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 :where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:2px solid #fcee09!important;outline-offset:3px}
 header :where(button,a):focus-visible,.hero-art :where(button,a):focus-visible{outline-color:#101010!important}
 body>header .dex-nav a:focus-visible{outline-color:#fcee09!important;outline-offset:-2px}
+#pack-zoom-close,#pack-odds-modal .pack-odds-head button,body>header .dex-menu-toggle[aria-expanded=true]{outline:none!important;box-shadow:none!important}
+#pack-odds-modal .pack-odds-head button:focus-visible{color:#fcee09}
+body>header .dex-menu-toggle[aria-expanded=true]:focus-visible{color:#414000}
 .series-menu button:focus-visible{outline:2px solid #fcee09!important;outline-offset:-3px}
 #market-ranking .ranking-row:focus-visible{outline-offset:-3px}
 @media(max-width:760px){.ranking-tools button,.series-menu button{min-height:44px}}
