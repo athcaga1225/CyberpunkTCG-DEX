@@ -1442,7 +1442,7 @@ html.pack-view.pack-opening body{position:fixed;inset:0;min-height:0;display:fle
 html.pack-view.pack-opening body>header{flex:0 0 auto}
 html.pack-view.pack-opening #draw-dialog{display:flex;flex:1 1 auto;flex-direction:column;min-height:0;height:auto;padding:18px 0 max(18px,env(safe-area-inset-bottom,0px));box-sizing:border-box}
 html.pack-view.pack-opening #draw-dialog .draw-head{flex:0 0 auto}
-html.pack-view.pack-opening #draw-dialog #pack-stage.pack-selected{flex:1 1 auto;min-height:0;padding:28px 0;box-sizing:border-box}
+html.pack-view.pack-opening #draw-dialog #pack-stage.pack-selected{flex:1 1 auto;min-height:0;padding:28px 0;box-sizing:border-box;overflow:visible}
 html.pack-view.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper{width:min(clamp(255px,34vw,390px),max(90px,calc((100dvh - 190px)/1.53)))}
 html.pack-view.pack-opening #draw-dialog .pack-gesture-hint{max-width:none;white-space:nowrap}
 @media(max-width:760px){html.pack-view.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper{width:min(clamp(245px,72vw,310px),max(90px,calc((100dvh - 190px)/1.53)))}}
@@ -1647,7 +1647,7 @@ html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;anim
   #draw-dialog #pack-wrapper.v3-approach.torn::after{display:none}
 }
 .v3-unpeeled{display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:3;pointer-events:none}
-.v3-foil-canvas{display:none;position:absolute;left:-50%;top:-45%;width:200%;height:90%;z-index:4;pointer-events:none}
+.v3-foil-canvas{display:none;position:absolute;left:-50%;top:-65%;width:200%;height:110%;z-index:4;pointer-events:none}
 @keyframes v3PackApproach{0%{transform:none}100%{transform:translateY(var(--v3-drop,25vh))}}
 @keyframes v3Unpeeled{0%{clip-path:polygon(100% 0,0% 0,0% 18%,12% 17%,25% 19%,40% 17%,54% 19%,68% 17%,84% 19%,100% 18%)}25%{clip-path:polygon(100% 0,24% 0,24% 18%,33% 17%,43% 19%,54% 17%,65% 19%,76% 17%,88% 19%,100% 18%)}55%{clip-path:polygon(100% 0,58% 0,58% 18%,63% 17%,68% 19%,75% 17%,81% 19%,87% 17%,94% 19%,100% 18%)}100%{clip-path:polygon(100% 0,100% 0,100% 18%,100% 17%,100% 19%,100% 17%,100% 19%,100% 17%,100% 19%,100% 18%)}}
 @keyframes v3SealTear{0%{clip-path:polygon(1% 0,0% 0,0% 18%,0% 18%,1% 18%,1% 17%,1% 19%,1% 18%,1% 18%);transform:none}25%{clip-path:polygon(24% 0,0% 0,0% 18%,6% 17%,10% 19%,14% 17%,18% 19%,22% 17%,24% 18%);transform:translate(3px,-4px) rotate(5deg) skewY(3deg)}55%{clip-path:polygon(58% 0,0% 0,0% 18%,12% 17%,25% 19%,40% 17%,47% 19%,54% 17%,58% 18%);transform:translate(8px,-12px) rotate(13deg) skewY(6deg)}85%{clip-path:polygon(100% 0,0% 0,0% 18%,16% 17%,32% 19%,48% 17%,66% 19%,83% 17%,100% 18%);transform:translate(48px,-35px) rotate(23deg);opacity:1}100%{clip-path:polygon(100% 0,0% 0,0% 18%,16% 17%,32% 19%,48% 17%,66% 19%,83% 17%,100% 18%);transform:translate(160px,-90px) rotate(32deg);opacity:0}}
@@ -2576,7 +2576,7 @@ function startFoil(initial=0,manual=false){
   if(manual&&foilPreview){foilPreview(initial,0);return}
   const image=wrapper.querySelector('.pack-intact'),w=wrapper.clientWidth,h=wrapper.clientHeight,ctx=v3Foil.getContext('2d');
   if(!ctx||!image.complete||!image.naturalWidth||!w||!h)return;
-  const dpr=Math.min(devicePixelRatio||1,2),cw=w*2,ch=h*.9,ox=w*.5,oy=h*.45;
+  const dpr=Math.min(devicePixelRatio||1,2),cw=w*2,ch=h*1.1,ox=w*.5,oy=h*.65;
   v3Foil.width=Math.round(cw*dpr);v3Foil.height=Math.round(ch*dpr);
   const fit=Math.min(w/image.naturalWidth,h/image.naturalHeight),iw=image.naturalWidth*fit,ih=image.naturalHeight*fit,ix=(w-iw)/2,iy=(h-ih)/2;
   const seam=[18,18.2,17.7,18.3,17.8,18.2,17.7,18.2,17.8,18.3,17.7,18.2,17.8,18.3,17.7,18.2,17.8,18.3,17.7,18.2,18];
