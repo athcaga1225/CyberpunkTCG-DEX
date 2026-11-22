@@ -1962,6 +1962,12 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
 @media(prefers-reduced-motion:reduce){
   :is(.collection-nav .edition-options .edition-btn,.ranking-tools button,.history-periods button,#draw-dialog [data-pack-edition],.settab,.series-trigger,.hero-action,#search.primary,#ranking-more,#draw-dialog .pack-controls button,#draw-dialog .slider-open,#draw-dialog .pack-odds button){transition:none!important;scale:none!important}
 }
+
+/* Mobile card zoom: bias the entire dialog upward while keeping short screens usable. */
+@media(max-width:760px){
+  #pack-zoom{inset-block-start:0;inset-block-end:clamp(40px,10dvh,88px);margin:auto;max-height:calc(100dvh - clamp(40px,10dvh,88px) - 24px)}
+  #pack-zoom img{max-height:min(76dvh,calc(100dvh - clamp(40px,10dvh,88px) - 106px),780px)}
+}
 </style>
 </head>
 
