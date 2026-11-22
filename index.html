@@ -2081,6 +2081,13 @@ html.keyboard-focus :is(header .brand,header .dex-menu-toggle,.hero-slider-contr
 html:not(.keyboard-focus) #query:focus{border-color:#424b54!important}
 html:not(.keyboard-focus) .series-trigger:focus{outline:none!important}
 #market-ranking .ranking-expanded-history{background:var(--dex-surface,#181a1f);border-bottom-color:var(--dex-rule,#303238)}
+
+#browser-detail-dialog[open]{display:flex;flex-direction:column;overflow:hidden}
+#browser-detail-dialog .browser-dialog-head{position:relative;flex:0 0 auto;top:auto}
+#browser-detail-scroll{flex:0 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#494b50 transparent}
+#browser-detail-scroll::-webkit-scrollbar{width:5px}
+#browser-detail-scroll::-webkit-scrollbar-track{background:transparent}
+#browser-detail-scroll::-webkit-scrollbar-thumb{background:#494b50;border-radius:8px}
 </style>
 </head>
 
@@ -2189,7 +2196,7 @@ html:not(.keyboard-focus) .series-trigger:focus{outline:none!important}
                     target="_blank" rel="noopener noreferrer">查看 Beta 卡片圖鑑</a></div>
         </section>
 
-    <dialog id="browser-detail-dialog" aria-labelledby="name"><div class="browser-dialog-head"><button type="button" id="browser-detail-close" aria-label="關閉卡牌價格"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div></dialog>
+    <dialog id="browser-detail-dialog" aria-labelledby="name"><div class="browser-dialog-head"><button type="button" id="browser-detail-close" aria-label="關閉卡牌價格"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div><div id="browser-detail-scroll"></div></dialog>
     <section id="card-browser" aria-labelledby="browser-title"><div class="browser-head"><h2 id="browser-title">CARD DATABASE / 卡牌圖鑑</h2><span id="browser-total"></span></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="low">價格低 → 高</option><option value="code">卡號</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
         <footer>CyberDEX 是非官方收藏工具。與 Cyberpunk TCG、TCGplayer 無關；卡圖版權歸原權利人所有。價格不能作為保證成交報價。</footer>
 </main>
@@ -2494,11 +2501,11 @@ html:not(.keyboard-focus) .series-trigger:focus{outline:none!important}
             if(browserDetailDialog.open)return;
             const result=$('result');
             browserDetailPrevious={code:result.classList.contains('open')?selected:null,query:$('query').value,tile,days:historyDays};
-            browserDetailDialog.append(result);
+            $('browser-detail-scroll').append(result);
             browserDetailDialog.showModal();
             show(code,false);
             $('query').value=browserDetailPrevious.query;
-            browserDetailDialog.scrollTop=0;
+            $('browser-detail-scroll').scrollTop=0;
             $('browser-detail-close').focus({preventScroll:true});
         }
         $('browser-detail-close').onclick=()=>browserDetailDialog.close();
