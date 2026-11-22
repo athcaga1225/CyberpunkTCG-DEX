@@ -2506,7 +2506,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
             input.placeholder = retail ? "001、157、Judy" : "157、B157、Judy";
             input.removeAttribute("inputmode");
             input.setAttribute("aria-label", retail ? "輸入 RETAIL 卡號或卡名" : "輸入 BETA 卡號或卡名");
-            document.querySelector('.collection-search-head .collection-step-label').textContent='搜尋卡片 · '+(retail?'RETAIL':'BETA');
+            document.querySelector('.collection-search-head .collection-step-label').textContent='搜尋卡片';
         }
 
         function renderBrowser(reset=true,append=false){
