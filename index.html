@@ -2151,6 +2151,22 @@ html body #browser-detail-dialog #browser-detail-close,html body #pack-zoom-clos
 #browser-grid .browser-card>.browser-price{margin-top:auto}
 #browser-grid .browser-card>small{margin-top:auto}
 }
+
+/* Catalog controls remain reachable while browsing. */
+.browser-toolbar{position:sticky;top:var(--dex-sticky-top,70px);z-index:28;background:#0e0e0e;padding:12px 0;border-bottom:1px solid var(--dex-rule);transition:top .2s ease}
+html:has(body>header.scroll-header-hidden) .browser-toolbar{top:0}
+#browser-rarities button{min-height:36px}
+.ranking-subtitle-text{display:block;color:var(--dex-subtle);font-size:.87em;font-weight:500;margin-top:2px}
+#ranking-to-top{z-index:35}
+#browser-detail-dialog[open]{animation:detailEnter .2s ease-out both}
+#browser-detail-dialog[open].detail-closing{animation:detailExit .16s ease-in both}
+#browser-detail-dialog[open]::backdrop{animation:detailBackdrop .2s ease-out both}
+#browser-detail-dialog[open].detail-closing::backdrop{animation:detailBackdrop .16s ease-in reverse both}
+@keyframes detailEnter{from{opacity:0;translate:0 10px}to{opacity:1;translate:0 0}}
+@keyframes detailExit{from{opacity:1;translate:0 0}to{opacity:0;translate:0 8px}}
+@keyframes detailBackdrop{from{opacity:0}to{opacity:1}}
+@media(max-width:760px){.browser-toolbar{gap:8px;padding:8px 0}.browser-toolbar #browser-rarities{flex:1 1 100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:2px 0}.browser-toolbar #browser-rarities::-webkit-scrollbar{display:none}.browser-toolbar #browser-rarities button{white-space:nowrap;flex:none;min-height:36px}.browser-sort{margin-left:auto}#browser-detail-dialog{max-height:calc(100dvh - 16px)}#browser-grid .browser-price{min-width:0}#browser-grid .browser-price strong{white-space:nowrap}}
+@media(prefers-reduced-motion:reduce){.browser-toolbar{transition:none}#browser-detail-dialog[open],#browser-detail-dialog[open]::backdrop{animation:none}}
 </style>
 </head>
 
@@ -2487,7 +2503,7 @@ html body #browser-detail-dialog #browser-detail-close,html body #pack-zoom-clos
             field.setAttribute('aria-invalid',String(invalid));
             field.setAttribute('aria-describedby','loadstate');
             status.classList.toggle('search-error',invalid);
-            if(invalid) status.textContent=message;
+            if(invalid) status.textContent=message+' 可嘗試其他卡號或英文名稱。';
         }
         $('query').addEventListener('input', () => {clearCardMatches();if($('query').getAttribute('aria-invalid')==='true'){$('loadstate').textContent=collectionStatusText();setSearchError('')}});
         function animateMarketAmount(node,target,previous,format){
@@ -2573,11 +2589,13 @@ html body #browser-detail-dialog #browser-detail-close,html body #pack-zoom-clos
             $('browser-detail-scroll').scrollTop=0;
             $('browser-detail-close').focus({preventScroll:true});
         }
-        $('browser-detail-close').onclick=()=>browserDetailDialog.close();
+        let detailClosing=false;function closeBrowserDetail(){if(detailClosing||!browserDetailDialog.open)return;if(matchMedia('(prefers-reduced-motion: reduce)').matches){browserDetailDialog.close();return}detailClosing=true;browserDetailDialog.classList.add('detail-closing');setTimeout(()=>{browserDetailDialog.close();browserDetailDialog.classList.remove('detail-closing');detailClosing=false},160)}
+        $('browser-detail-close').onclick=closeBrowserDetail;
+        browserDetailDialog.addEventListener('cancel',e=>{e.preventDefault();closeBrowserDetail()});
         browserDetailDialog.addEventListener('click',e=>{
             if(e.target!==browserDetailDialog)return;
             const r=browserDetailDialog.getBoundingClientRect();
-            if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)browserDetailDialog.close();
+            if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeBrowserDetail();
         });
         browserDetailDialog.addEventListener('close',()=>{
             const previous=browserDetailPrevious;
@@ -2757,7 +2775,7 @@ html body #browser-detail-dialog #browser-detail-close,html body #pack-zoom-clos
         const menuToggle=document.querySelector('.dex-menu-toggle'),mainNav=$('dex-nav');mainNav.inert=true;function setMenu(open){mainNav.inert=!open;mainNav.classList.toggle('is-open',open);menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'關閉主選單':'開啟主選單')}menuToggle.onclick=()=>setMenu(menuToggle.getAttribute('aria-expanded')!=='true');mainNav.addEventListener('click',e=>{if(e.target.closest('a'))setMenu(false)});document.addEventListener('pointerdown',e=>{if(!menuToggle.contains(e.target)&&!mainNav.contains(e.target))setMenu(false)});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuToggle.getAttribute('aria-expanded')==='true'){setMenu(false);menuToggle.focus()}});matchMedia('(max-width:760px)').addEventListener('change',()=>setMenu(false));
         const ranking=$('market-ranking');if(rankView==='ranking'){ranking.hidden=false;document.title='CyberDEX — 價格排行'}
         function rankChange(code,p){if(rankEdition!=='beta')return null;const end=Date.parse(p.observedDate),target=end-30*86400000;if(!Number.isFinite(end))return null;const history=(historyCards[code]||[]).filter(x=>Number.isFinite(x.usd)&&x.usd>0&&Math.abs(Date.parse(x.date)-target)<=7*86400000).sort((a,b)=>Math.abs(Date.parse(a.date)-target)-Math.abs(Date.parse(b.date)-target));return history.length?(p.usd/history[0].usd-1)*100:null}
-        let rankLimit=20;function renderRanking(append=false){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=sorted.length+' 張有報價卡牌'+(!hasHistory?' · 歷史資料不足，暫不提供30日漲跌幅排序':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list'),more=$('ranking-more'),visible=rankSort==='price'?sorted.slice(0,rankLimit):sorted;more.hidden=rankSort!=='price'||visible.length>=sorted.length;const start=append?list.querySelectorAll('.ranking-row').length:0;if(!append){closeRankHistory();list.replaceChildren()}if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();visible.slice(start).forEach(({code,p,entry,change},index)=>{const i=index+start;const a=document.createElement('button');a.type='button';a.className='ranking-row';a.dataset.rankCode=code;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','rank-history-'+code);const pos=document.createElement('span');pos.className='ranking-position'+(i<3?' top-three':'');pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;img.decoding='async';if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';name.textContent=entry.name;const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';setUsdText(value,fmtUSD(p.usd));const twd=document.createElement('small');twd.dataset.usd=String(p.usd);twd.textContent=currency(p.usd);value.append(twd);const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=change===null?'—':(change>0?'+':'')+change.toFixed(1)+'%';delta.setAttribute('aria-label','30 日變動 '+delta.textContent);a.append(pos,img,name,delta,value);frag.append(a)});list.append(frag);}
+        let rankLimit=20;function renderRanking(append=false){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=sorted.length+' 張有報價卡牌'+(!hasHistory?' · 歷史資料不足，暫不提供30日漲跌幅排序':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list'),more=$('ranking-more'),visible=rankSort==='price'?sorted.slice(0,rankLimit):sorted;more.hidden=rankSort!=='price'||visible.length>=sorted.length;const start=append?list.querySelectorAll('.ranking-row').length:0;if(!append){closeRankHistory();list.replaceChildren()}if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();visible.slice(start).forEach(({code,p,entry,change},index)=>{const i=index+start;const a=document.createElement('button');a.type='button';a.className='ranking-row';a.dataset.rankCode=code;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','rank-history-'+code);const pos=document.createElement('span');pos.className='ranking-position'+(i<3?' top-three':'');pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;img.decoding='async';if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';const [mainName,...subName]=entry.name.split(':');name.textContent=mainName;const sub=subName.join(':').trim();if(sub){const subtitle=document.createElement('span');subtitle.className='ranking-subtitle-text';subtitle.textContent=sub;name.append(subtitle)}const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';setUsdText(value,fmtUSD(p.usd));const twd=document.createElement('small');twd.dataset.usd=String(p.usd);twd.textContent=currency(p.usd);value.append(twd);const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=change===null?'—':(change>0?'+':'')+change.toFixed(1)+'%';delta.setAttribute('aria-label','30 日變動 '+delta.textContent);a.append(pos,img,name,delta,value);frag.append(a)});list.append(frag);}
         const rankPanels=new Map();
         // Rebuild only when the chart coordinate system actually changes on resize.
         let historyResizeTimer;
@@ -3037,9 +3055,10 @@ refreshRankingGlow();
 </script>
 <script>
 (()=>{
- if(!document.documentElement.classList.contains('ranking-view'))return;
+ if(document.documentElement.classList.contains('pack-view'))return;
  const button=document.getElementById('ranking-to-top');
  if(!button)return;
+ document.body.append(button);
  let pending=0;
  function update(){
   pending=0;
@@ -3057,6 +3076,7 @@ refreshRankingGlow();
 <script>
 (()=>{const root=document.documentElement;document.addEventListener('pointerdown',()=>root.classList.remove('keyboard-focus'),true);document.addEventListener('keydown',e=>{if(e.key==='Tab'||e.key.startsWith('Arrow'))root.classList.add('keyboard-focus')},true)})();
 </script>
+<script>(()=>{const h=document.querySelector('body>header');if(!h)return;const sync=()=>document.documentElement.style.setProperty('--dex-sticky-top',h.offsetHeight+'px');sync();if(window.ResizeObserver)new ResizeObserver(sync).observe(h);window.addEventListener('resize',sync)})();</script>
 </body>
 
 </html>
