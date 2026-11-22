@@ -2012,15 +2012,11 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
 #market-ranking .ranking-row{grid-template-columns:44px 64px minmax(0,1fr) 98px minmax(100px,auto)}
 .ranking-position{color:#aeb4b6}.ranking-position.top-three{color:#fcee09}
 .ranking-change{text-align:right;font-weight:600}
-#draw-dialog .pack-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;text-align:left;margin:12px auto;color:#f4f4f4}
-.pack-stats>div{display:grid;gap:4px;min-width:0}.pack-cycle{grid-column:1/-1}.pack-cycle-bar{display:grid;grid-template-columns:repeat(18,1fr);gap:3px}
-.pack-cycle-bar span{height:6px;background:#36383a}.pack-cycle-bar .filled{background:#fcee09}
 @media(max-width:900px){#browser-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:560px){#browser-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}.browser-head{gap:7px}.browser-toolbar{gap:10px}.browser-card strong{font-size:13px}.history-stats{grid-template-columns:repeat(2,minmax(0,1fr))}#market-ranking .ranking-row{grid-template-columns:22px 44px minmax(0,1fr) auto;gap:8px}#market-ranking .ranking-change{grid-column:4;grid-row:2;font-size:12px}#market-ranking .ranking-price{grid-column:4;grid-row:1}#market-ranking .ranking-position,#market-ranking .ranking-image,#market-ranking .ranking-name{grid-row:1 / span 2}.ranking-metrics{font-size:12px}}
 
 /* Visual system: editorial hierarchy, fine rules, chamfered surfaces. */
 :root{--dex-numeric:"Rajdhani","Barlow Condensed",system-ui,sans-serif;--dex-rule:#303238;--dex-surface:#181a1f;--dex-subtle:#979ba4}
-#market-ranking{width:min(1392px,calc(100% - 2 * var(--page-heading-side)))}
 #card-browser{margin:40px 0 40px;padding-top:24px;border-top:1px solid var(--dex-rule)}
 .browser-art{border-radius:5% / 3.6%;clip-path:none;overflow:hidden;background:#181a1d}
 .browser-card{gap:4px}.browser-card strong{font:700 clamp(17px,1.7vw,22px)/1.1 var(--dex-numeric)}
@@ -2049,8 +2045,23 @@ html:has(#browser-detail-dialog[open]){overflow:hidden}
 .history-periods{gap:0;background:#111215;padding:4px}.history-periods button{border:0;background:transparent;color:var(--dex-subtle);font:600 15px var(--dex-numeric)}.history-periods button[aria-pressed=true]{background:#25272c;color:#fcee09}
 .ranking-metrics{display:flex;justify-content:flex-end;gap:28px;margin:20px 0}.ranking-metrics>div{display:grid;gap:3px}.ranking-metrics small{color:var(--dex-subtle);font-size:12px}.ranking-metrics strong{font:700 clamp(25px,3vw,40px)/1 var(--dex-numeric);color:#fcee09}
 #market-ranking .ranking-row{border-bottom-color:var(--dex-rule);padding-block:18px}.ranking-list{border-top-color:var(--dex-rule)}.ranking-position{font:700 32px var(--dex-numeric)}.ranking-price{font:700 25px var(--dex-numeric)}.ranking-price small{font:600 14px var(--dex-numeric)}.ranking-change{font:700 20px var(--dex-numeric)}
-#draw-dialog .pack-stats{border-top:1px solid var(--dex-rule);padding:15px 0;gap:16px}.pack-stats strong{font:700 28px var(--dex-numeric)}
 @media(max-width:560px){#browser-grid{gap:24px 12px}.browser-card strong{font-size:20px}.browser-card small{flex-wrap:wrap}.browser-subtitle{font-size:14px}.browser-price{gap:4px}.browser-price strong{font-size:23px}.browser-price span{font-size:12px}#browser-total{font-size:14px}#market-ranking .ranking-row{padding-block:12px}.ranking-position{font-size:25px}.ranking-price{font-size:21px}.history-stats>div:nth-child(2){border-right:0}.history-stats>div:nth-child(-n+2){border-bottom:1px solid var(--dex-rule)}}
+html.pack-view{--dex-black:#181a1e}
+html.pack-view body>header{position:relative;transform:none!important;pointer-events:auto!important}
+#result #twd{display:flex;align-items:baseline;gap:.16em}
+#result #twd > span:not(.twd-prefix){position:static}
+#result #twd .twd-prefix{font-size:.8em}
+#browser-detail-dialog #browser-detail-close:focus,#browser-detail-dialog #browser-detail-close:focus-visible{outline:none!important;box-shadow:none!important}
+#browser-detail-close:focus-visible{color:#fff!important}
+#browser-sort{appearance:none;padding-right:34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23c2c4c5' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center}
+.browser-enter{animation:browserEnter .38s ease-out var(--browser-delay,0ms) both}
+@keyframes browserEnter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.browser-enter{animation:none}}
+.history-head h2{color:#efefef;font-size:20px}
+#history-summary:empty,[data-history-summary]:empty{display:none}
+.history-tooltip{background:#101114;border:0;border-left:3px solid #fcee09;box-shadow:none;font:600 13px var(--dex-numeric);color:#efefef}
+.history-tooltip strong{color:#efefef;font-size:14px;margin-top:2px}
+.history-graph svg line[stroke="#c5003c"]{stroke:#777}
 </style>
 </head>
 
@@ -2257,7 +2268,7 @@ html:has(#browser-detail-dialog[open]){overflow:hidden}
             document.querySelector('.collection-search-head .collection-step-label').textContent='01 / SEARCH · 搜尋卡片 · '+(retail?'RETAIL':'BETA');
         }
 
-        function renderBrowser(reset=true){
+        function renderBrowser(reset=true,append=false){
             const grid=$('browser-grid'),root=$('card-browser');if(!grid||!root||document.documentElement.matches('.ranking-view,.pack-view'))return;
             const entries=Object.entries(currentCatalog()),market=activeEdition==='retail'?retailPrices:activeSection==='starter'?(starterPrices[activeStarter]?.prices||{}):prices;
             const identity=activeEdition+':'+activeSection+':'+activeStarter;
@@ -2278,9 +2289,9 @@ html:has(#browser-detail-dialog[open]){overflow:hidden}
                 return a.localeCompare(b,undefined,{numeric:true});
             });
             $('browser-count').textContent=rows.length+' 張卡牌 · 點擊查看詳細資訊';
-            grid.replaceChildren();const limit=Number(root.dataset.limit)||24;
-            for(const [code,entry] of rows.slice(0,limit)){
-                const tile=document.createElement('button');tile.type='button';tile.className='browser-card';tile.dataset.rarity=entry.rarity;
+            const start=append&&!reset?grid.children.length:0;if(!start)grid.replaceChildren();const limit=Number(root.dataset.limit)||24;
+            for(const [index,[code,entry]] of rows.slice(start,limit).entries()){
+                const tile=document.createElement('button');tile.type='button';tile.className='browser-card';tile.dataset.rarity=entry.rarity;if(append){tile.classList.add("browser-enter");tile.style.setProperty("--browser-delay",Math.min(index,23)*35+"ms")}
                 const art=document.createElement('span');art.className='browser-art';const record=activeEdition==='retail'?(retailIconicVerified[code]||retailImages[code]):activeSection==='starter'?{url:entry.imageUrl}:cardImages[code];
                 if(record?.url){const img=document.createElement('img');img.src=record.url;img.alt='';img.loading='lazy';img.decoding='async';img.onerror=()=>{if(record.fallbackUrl&&img.src!==record.fallbackUrl){img.src=record.fallbackUrl;return}img.remove();art.textContent='卡圖待補'};art.append(img)}else art.textContent='卡圖待補';
                 const title=document.createElement('strong'),meta=document.createElement('small'),price=document.createElement('span');const [primary,...secondary]=entry.name.split(':');title.textContent=primary;const subtitle=document.createElement('span');subtitle.className='browser-subtitle';subtitle.textContent=secondary.join(':').trim()||' ';const codeLabel=document.createElement('span'),rarity=document.createElement('span');codeLabel.textContent=code;rarity.className='browser-rarity';rarity.textContent=entry.rarity;meta.append(codeLabel,rarity);price.className='browser-price';if(Number.isFinite(market[code]?.usd)){const amount=document.createElement('strong'),nt=document.createElement('span');const prefix=document.createElement('span');prefix.className='browser-currency-prefix';prefix.textContent='US$';amount.append(prefix,document.createTextNode(fmtUSD(market[code].usd).replace(/^US\$|^\$/,'')));nt.textContent=currency(market[code].usd);price.append(amount,nt)}else price.textContent='尚無報價';
@@ -2289,7 +2300,7 @@ html:has(#browser-detail-dialog[open]){overflow:hidden}
             $('browser-more').hidden=rows.length<=limit;
         }
         $('browser-sort').addEventListener('change',()=>renderBrowser());
-        $('browser-more').addEventListener('click',()=>{const root=$('card-browser');root.dataset.limit=String((Number(root.dataset.limit)||24)+24);renderBrowser(false)});
+        $('browser-more').addEventListener('click',()=>{const root=$('card-browser');root.dataset.limit=String((Number(root.dataset.limit)||24)+24);renderBrowser(false,true)});
         function chooseEdition(edition) {
             clearCardMatches();
             if (activeEdition !== edition) $('query').value = "";
@@ -2565,7 +2576,7 @@ html:has(#browser-detail-dialog[open]){overflow:hidden}
             for(const [label,value,cls] of [['區間變動',rangePct===null?'—':(rangePct>=0?'+':'')+rangePct.toFixed(1)+'%',rangePct>0?'up':rangePct<0?'down':''],['區間最高',fmtUSD(Math.max(...points.map(p=>p.usd)))],['區間最低',fmtUSD(Math.min(...points.map(p=>p.usd)))],['區間平均',fmtUSD(points.reduce((a,p)=>a+p.usd,0)/points.length)]]){
                 const cell=document.createElement('div'),caption=document.createElement('small'),amount=document.createElement('strong');caption.textContent=label;amount.textContent=value;if(cls)amount.className=cls;cell.append(caption,amount);stats.append(cell);
             }
-            root.after(stats);note.textContent+=' 本區間 '+points.length+' 筆觀測；虛線表示缺少日期，非估價。';
+            summary.textContent='';root.after(note,stats);note.textContent=first.date.replaceAll('-','/')+' – '+last.date.replaceAll('-','/')+'，共 '+points.length+' 筆紀錄。虛線表示缺少資料的區段，未做補值。';
             const mobile=matchMedia('(max-width:760px)').matches;
             const W=mobile?Math.max(1,Math.floor(root.clientWidth||320)):640,H=230;
             const NS="http://www.w3.org/2000/svg",svg=document.createElementNS(NS,"svg");svg.setAttribute("viewBox",`0 0 ${W} ${H}`);svg.setAttribute("role","img");svg.setAttribute("aria-label","歷史市場參考價格曲線，"+points.length+" 筆資料");
@@ -2575,20 +2586,20 @@ html:has(#browser-detail-dialog[open]){overflow:hidden}
             const x=t=>left+(t-tmin)/Math.max(1,tmax-tmin)*(W-left-right);
             const y=v=>top+(max-v)/(max-min)*(H-top-bottom);
             const el=(name,attrs,text)=>{const n=document.createElementNS(NS,name);for(const [k,v] of Object.entries(attrs||{}))n.setAttribute(k,String(v));if(text!==undefined)n.textContent=text;svg.append(n);return n};
-            for(let i=0;i<4;i++){const v=min+(max-min)*i/3,Y=y(v);el("line",{x1:left,y1:Y,x2:W-right,y2:Y,stroke:"#30343a","stroke-width":.85});el("text",{x:0,y:Y+4,fill:"#aab9bc","font-size":12},v.toFixed(v>=100?0:2))}
+            for(let i=0;i<3;i++){const v=min+(max-min)*i/2,Y=y(v);el("line",{x1:left,y1:Y,x2:W-right,y2:Y,stroke:"#30343a","stroke-width":.85});el("text",{x:0,y:Y+4,fill:"#aab9bc","font-size":12},"$"+v.toFixed(v>=100?0:2))}
             const chartColor=last.usd<first.usd?"#ff465d":last.usd>first.usd?"#41d9ca":"#fcee09";
             const gradientId='history-fill-'+panel.id;
             const defs=el("defs"),gradient=document.createElementNS(NS,"linearGradient");gradient.id=gradientId;gradient.setAttribute("x1","0");gradient.setAttribute("x2","0");gradient.setAttribute("y1",String(top));gradient.setAttribute("y2",String(H-bottom));gradient.setAttribute("gradientUnits","userSpaceOnUse");
             for(const [offset,opacity] of [["0%",".28"],["100%","0"]]){const stop=document.createElementNS(NS,"stop");stop.setAttribute("offset",offset);stop.setAttribute("stop-color",chartColor);stop.setAttribute("stop-opacity",opacity);gradient.append(stop)}defs.append(gradient);
             for(let i=1;i<points.length;i++){
                 const missing=times[i]-times[i-1]>86400000,x1=x(times[i-1]),x2=x(times[i]),y1=y(points[i-1].usd),y2=y(points[i].usd);
-                if(!missing)el("path",{d:"M"+x1+","+y1+" L"+x2+","+y2+" L"+x2+","+(H-bottom)+" L"+x1+","+(H-bottom)+" Z",fill:"url(#"+gradientId+")"});
-                el("line",{x1,y1,x2,y2,stroke:chartColor,"stroke-opacity":missing?.5:1,"stroke-width":missing?1.6:2.7,"stroke-dasharray":missing?"4 6":"none","stroke-linecap":"round"});
+                el("path",{d:"M"+x1+","+y1+" L"+x2+","+y2+" L"+x2+","+(H-bottom)+" L"+x1+","+(H-bottom)+" Z",fill:"url(#"+gradientId+")","fill-opacity":missing?.55:1});
+                el("line",{x1,y1,x2,y2,stroke:chartColor,"stroke-opacity":missing?.5:1,"stroke-width":missing?1.3:2,"stroke-dasharray":missing?"4 6":"none","stroke-linecap":"round"});
             }
-            points.forEach((p,i)=>{const dot=el("circle",{cx:x(times[i]),cy:y(p.usd),r:1.8,fill:chartColor});dot.style.setProperty("--point-delay",(0.45+0.45*i/Math.max(1,points.length-1))+"s")});
-            for(const p of [first,last]){const T=Date.parse(p.date+"T00:00:00Z");el("text",{x:x(T),y:H-10,fill:"#aab9bc","font-size":12,"text-anchor":p===first?"start":"end"},p.date.slice(5))}
+
+            for(const [i,T] of [tmin,(tmin+tmax)/2,tmax].entries()){const date=new Date(T);el("text",{x:x(T),y:H-10,fill:"#979ba4","font-size":12,"text-anchor":i===0?"start":i===2?"end":"middle"},(date.getUTCMonth()+1)+"/"+date.getUTCDate())}
             const guide=el("line",{x1:0,y1:top,x2:0,y2:H-bottom,stroke:"#c5003c","stroke-width":1,"stroke-dasharray":"4 4",visibility:"hidden"});
-            const hit=el("rect",{x:left,y:top,width:W-left-right,height:H-top-bottom,fill:"transparent"});
+            const markerDot=el("circle",{cx:0,cy:0,r:4,fill:chartColor,stroke:"#131418","stroke-width":1.5,visibility:"hidden"});const hit=el("rect",{x:left,y:top,width:W-left-right,height:H-top-bottom,fill:"transparent"});
             const tooltip=document.createElement("div");tooltip.className="history-tooltip";tooltip.hidden=true;
             const dateLabel=document.createElement("span"),priceLabel=document.createElement("strong");
             const keyboardHelp=document.createElement('span'),announcement=document.createElement('span');
@@ -2613,17 +2624,17 @@ html:has(#browser-detail-dialog[open]){overflow:hidden}
                 keyboardPoint=nearest;
                 // The guide follows the pointer continuously while the value
                 // remains the nearest real recorded price (no invented prices).
-                const guideX=Math.max(left,Math.min(W-right,mouseX));
+                const guideX=cx;markerDot.setAttribute("cx",cx);markerDot.setAttribute("cy",y(p.usd));markerDot.setAttribute("visibility","visible");
                 guide.setAttribute("x1",guideX);guide.setAttribute("x2",guideX);
                 guide.setAttribute("visibility","visible");
-                dateLabel.textContent=p.date;priceLabel.textContent="US$"+p.usd.toFixed(2);
+                dateLabel.textContent=p.date.replaceAll("-","/");priceLabel.textContent="$"+p.usd.toFixed(2)+"　NT$"+Math.round(p.usd*rate).toLocaleString("zh-TW");
                 tooltip.hidden=false;
                 const tipWidth=tooltip.offsetWidth,graphWidth=root.clientWidth;
                 const marker=svg.createSVGPoint();marker.x=guideX;marker.y=top;
                 const screenX=marker.matrixTransform(matrix).x-root.getBoundingClientRect().left;
                 tooltip.style.left=Math.max(0,Math.min(graphWidth-tipWidth,screenX-tipWidth/2))+"px";
             };
-            const hide=()=>{guide.setAttribute("visibility","hidden");tooltip.hidden=true;delete svg.dataset.selectedDate};
+            const hide=()=>{guide.setAttribute("visibility","hidden");markerDot.setAttribute("visibility","hidden");tooltip.hidden=true;delete svg.dataset.selectedDate};
             svg.addEventListener("pointermove",activate);
             svg.addEventListener("pointerdown",activate);
             svg.addEventListener("pointerleave",event=>{if(event.pointerType!=="touch")hide()});
@@ -2697,12 +2708,12 @@ html:has(#browser-detail-dialog[open]){overflow:hidden}
 <section id="draw-dialog" aria-labelledby="draw-title">
 <div class="draw-head"><h2 id="draw-title">PACK OPENING <span> / 開啟卡包</span></h2></div>
 <div id="pack-stage"><section class="pack-picker pack-slider" aria-label="選擇卡包"><div class="slider-info"><p class="slider-eyebrow">NIGHT CITY / CYBERDEX</p><h3 id="picker-name">PACK OPENING</h3><p class="picker-subtitle">模擬開包</p><p class="picker-series">Welcome to Night City</p><p class="slider-edition" id="picker-edition">BETA BOOSTER PACK</p><p class="slider-description" id="picker-description">Cyberpunk 2077 卡牌遊戲 Beta 版本補充包。</p><div class="slider-composition"><span><b>7<small>張</small></b> COMMON</span><span><b>3<small>張</small></b> UNCOMMON</span><span><b>2<small>張以上</small></b> RARE+</span></div></div><div class="slider-visual"><div class="slider-art"><div class="slider-art-index" aria-hidden="true">01 / BOOSTER</div><div class="slider-pack-hit"><span class="slider-pack-hint">點擊卡包 <span aria-hidden="true">↗</span></span><button type="button" class="slider-tilt" aria-label="選擇並開啟卡包"><img id="picker-image" alt="Beta 卡包" draggable="false"></button></div></div><div class="slider-nav"><span id="picker-page" aria-live="polite">01 / 02</span><button type="button" class="slider-prev" aria-label="上一個卡包"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15.5 5 8.5 12l7 7"/></svg></button><button type="button" class="slider-next" aria-label="下一個卡包"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8.5 5 15.5 12l-7 7"/></svg></button></div></div></section><div class="pack-copy"><button type="button" class="picker-back">‹ 返回選擇卡包</button><p class="pack-kicker"><span class="hero-mark" aria-hidden="true"></span> Welcome to Night City</p><h3>選擇卡包 <span class="pack-count-label">12 CARDS</span></h3><div class="pack-editions"><button type="button" class="edition-btn active" data-pack-edition="beta" aria-pressed="true">BETA <span>●</span></button><button type="button" class="edition-btn" data-pack-edition="retail" aria-pressed="false">RETAIL <span>●</span></button></div><label class="pack-test-control" hidden>DEV TEST <select id="pack-test-mode"><option value="">正常抽卡</option><option value="Basic">Common / Uncommon / Rare</option><option value="Epic">Epic</option><option value="Secret">Secret</option><option value="Iconic Legend">Iconic Legend</option><option value="Iconic Other">Iconic Other</option><option value="Iconic Secret">Iconic Secret</option><option value="God Pack">God Pack</option></select></label><p class="pack-config">7 COMMON / 3 UNCOMMON / 2 RARE+</p><p id="pack-instruction" role="status"></p></div><div class="pack-art"><div class="pack-city" aria-hidden="true"></div><button id="pack-wrapper" type="button" aria-label="撕開卡包"><img class="pack-intact" alt="" draggable="false"><span class="pack-emerging" aria-hidden="true"><img src="https://beyondtcg.co.uk/cdn/shop/files/B098_back.webp?width=900" alt="" draggable="false"></span><span class="pack-top"><img alt="" draggable="false"></span><span class="pack-body"><img alt="" draggable="false"></span><span class="pack-gesture-hint"><span class="pack-hint-desktop">點擊開啟</span><span class="pack-hint-mobile">向右滑動開啟 <span aria-hidden="true">→</span></span></span></button></div></div>
-<div id="pack-results" hidden><div id="pack-session-results" class="pack-stats" aria-live="polite"></div><p id="pack-progress" aria-live="polite"></p><div id="pack-grid"></div><div id="pack-summary" hidden aria-live="polite"></div><div class="pack-controls"><button type="button" id="pack-reveal-all">全部翻開 <span class="dex-arrow dex-arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M8 6h10v10"/></svg></span></button><button type="button" id="draw-again">再開一包 <span class="dex-arrow dex-arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M8 6h10v10"/></svg></span></button></div></div>
-<div id="pack-stats" class="pack-stats" aria-live="polite"></div></section>
+<div id="pack-results" hidden><p id="pack-progress" aria-live="polite"></p><div id="pack-grid"></div><div id="pack-summary" hidden aria-live="polite"></div><div class="pack-controls"><button type="button" id="pack-reveal-all">全部翻開 <span class="dex-arrow dex-arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M8 6h10v10"/></svg></span></button><button type="button" id="draw-again">再開一包 <span class="dex-arrow dex-arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M8 6h10v10"/></svg></span></button></div></div>
+<div hidden id="pack-stats" class="pack-stats" aria-live="polite"></div></section>
 <dialog id="pack-zoom" aria-label="卡牌放大"><button type="button" id="pack-zoom-close" aria-label="關閉放大">×</button><img id="pack-zoom-image" alt=""><p id="pack-zoom-caption" tabindex="-1"></p></dialog>
 <script>
 (()=>{const dialog=document.getElementById('draw-dialog'),stage=document.getElementById('pack-stage'),wrapper=document.getElementById('pack-wrapper'),results=document.getElementById('pack-results'),grid=document.getElementById('pack-grid'),progress=document.getElementById('pack-progress'),instruction=document.getElementById('pack-instruction'),summary=document.getElementById('pack-summary');let pack=[],timer=null,edition='beta',recorded=false,revealTimers=[],revealRun=0,revealingAll=false,testRarity='';const testSelect=document.getElementById('pack-test-mode');const devMode=false;testSelect.closest('.pack-test-control').hidden=!devMode;if(devMode)dialog.classList.add('pack-dev-mode');const back='https://beyondtcg.co.uk/cdn/shop/files/B098_back.webp?width=900',legendBack='/legend-back.webp',isLegend=code=>{const n=Number(String(code).replace(/^B/i,'').replace(/[AB]$/i,''));return (n>=1&&n<=5)||(n>=36&&n<=40)||(n>=71&&n<=75)||(n>=106&&n<=110)||(n>=141&&n<=158)||n===168||n===169},art={beta:'https://images.ctfassets.net/udihssg1zwbu/6ac4CbcC9gZqe8nv23hsAS/e6e196a4c287c4fff1a5530323bcb2a4/Beta_Booster_Pack.webp',retail:'https://images.ctfassets.net/udihssg1zwbu/2A5q9Be7J8g9O7t7BCmai4/ecd31d261ab12fbebb67b6beb5232117/Retail_Booster_Pack.webp'};
-const statsNode=document.getElementById('pack-stats');const sessions={beta:{packs:0,hits:0,total:0,known:0},retail:{packs:0,hits:0,total:0,known:0}};const storageKey='cyberdex-pack-stats-v1';let saved={};try{saved=JSON.parse(localStorage.getItem(storageKey)||'{}')||{}}catch{};function stats(){return saved[edition]??=( {packs:0,cards:{},hits:0} )}function renderStats(){const st=sessions[edition];for(const node of [statsNode,document.getElementById('pack-session-results')]){node.replaceChildren();for(const [label,value] of [['本次已完成',st.packs+' 包'],['Iconic 抽中',st.hits+' 張'],['累計參考價值（已報價 '+st.known+' 張）',st.known?fmtUSD(st.total):'—']]){const cell=document.createElement('div'),cap=document.createElement('small'),val=document.createElement('strong');cap.textContent=label;val.textContent=value;cell.append(cap,val);node.append(cell)}const cycle=document.createElement('div');cycle.className='pack-cycle';const cap=document.createElement('small');cap.textContent='連續未抽中 Iconic '+Math.min(17,iconicMisses)+' / 18（模擬保底）';const bar=document.createElement('div');bar.className='pack-cycle-bar';bar.setAttribute('aria-hidden','true');for(let i=0;i<18;i++){const seg=document.createElement('span');if(i<iconicMisses)seg.className='filled';bar.append(seg)}cycle.append(cap,bar);node.append(cycle)}}function record(){if(recorded||testRarity)return;recorded=true;const session=sessions[edition];session.packs++;session.hits+=pack.filter(x=>x.entry.rarity.startsWith('Iconic')).length;for(const x of pack){if(Number.isFinite(x.price)){session.total+=x.price;session.known++}}const st=stats();st.packs++;for(const x of pack){st.cards[x.code]=(st.cards[x.code]||0)+1;if(x.entry.rarity.startsWith('Iconic'))st.hits++}try{localStorage.setItem(storageKey,JSON.stringify(saved))}catch{}renderStats()}
+const statsNode=document.getElementById('pack-stats');const storageKey='cyberdex-pack-stats-v1';let saved={};try{saved=JSON.parse(localStorage.getItem(storageKey)||'{}')||{}}catch{};function stats(){return saved[edition]??=( {packs:0,cards:{},hits:0} )}function renderStats(){const st=stats(),pool=buildPool(),count=Object.keys(st.cards).length;statsNode.textContent=edition.toUpperCase()+' · 已完成 '+st.packs+' 包 · 收藏 '+count+' / '+(pool.length||'—')+' · Iconic '+st.hits+' 張'}function record(){if(recorded||testRarity)return;recorded=true;const st=stats();st.packs++;for(const x of pack){st.cards[x.code]=(st.cards[x.code]||0)+1;if(x.entry.rarity.startsWith('Iconic'))st.hits++}try{localStorage.setItem(storageKey,JSON.stringify(saved))}catch{}renderStats()}
 function selectEdition(value){if(edition!==value)iconicMisses=0;edition=value;wrapper.style.setProperty('--pack-mask',`url("${art[value]}")`);wrapper.querySelectorAll('.pack-intact,.pack-top img,.pack-body img').forEach(img=>img.src=art[value]);stage.querySelectorAll('[data-pack-edition]').forEach(b=>{const on=b.dataset.packEdition===value;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on))});renderStats()}
 function cancelReveal(){revealRun++;revealTimers.forEach(clearTimeout);revealTimers=[];revealingAll=false}function reset(){clearTear();stage.classList.remove('pack-selected');clearTimeout(timer);cancelReveal();recorded=false;testRarity='';testSelect.disabled=false;testSelect.closest('.pack-test-control').hidden=!devMode;dialog.classList.toggle('pack-dev-mode',devMode);dialog.classList.remove('picker-leaving');document.getElementById('pack-reveal-all').disabled=false;document.getElementById('pack-reveal-all').innerHTML='全部翻開 <span class="dex-arrow dex-arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M8 6h10v10"/></svg></span>';wrapper.classList.remove('torn','dragging','v3-approach','v3-ready');dialog.classList.remove('v3-opening-active');wrapper.style.removeProperty('--tear-x');wrapper.style.removeProperty('--tear-start');wrapper.disabled=false;stage.hidden=false;results.hidden=true;summary.hidden=true;grid.replaceChildren();results.querySelector('.pack-god-banner')?.remove();instruction.textContent='';pack=[];renderStats()}
 function buildPool(){return Object.entries(edition==='beta'?catalog:retailCards).flatMap(([code,entry])=>{if(!/^(B)?\d{3}[AB]?$/.test(code)||entry.set||entry.rarity==='Nova Rare')return [];const img=edition==='beta'?cardImages[code]:(retailIconicVerified[code]||retailImages[code]);return [{code,entry,img,price:(edition==='beta'?prices:retailPrices)[code]?.usd}]})}
