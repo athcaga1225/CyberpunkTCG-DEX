@@ -4,7 +4,7 @@
   "observedDate": "2026-11-20",
   "priceType": "market_reference",
   "currency": "USD",
-  "notes": "172 Retail-specific USD TCGplayer US market reference prices checked against ValueMyCard Retail listing pages 1–3 (source labeled Updated 20 Nov 2026; retrieved 22 Nov 2026). Printing is Foil or Normal as shown. These are market references, not completed sales; never substitute Beta.",
+  "notes": "172 Retail-specific USD TCGplayer US market reference prices checked against ValueMyCard Retail listing pages 1–3 (source labeled Updated 20 Nov 2026; retrieved 22 Nov 2026). Printing is Foil or Normal as shown. These are market references, not completed sales; never substitute Beta. Includes six separately sourced Retail Box Toppers (T001–T006).",
   "prices": {
     "100": {
       "usd": 0.21,
@@ -1380,6 +1380,54 @@
       "observedDate": "2026-11-20",
       "sourceName": "ValueMyCard / TCGplayer US market reference",
       "sourceUrl": "https://valuemycard.com/expansions/cyberpunk-tcg/24855-welcome-to-night-city-retail",
+      "priceType": "market_reference"
+    },
+    "T001": {
+      "usd": 3.36,
+      "printing": "Foil",
+      "observedDate": "2026-11-20",
+      "sourceName": "ValueMyCard / TCGplayer US market reference",
+      "sourceUrl": "https://valuemycard.com/expansions/cyberpunk-tcg/24857-box-toppers-retail",
+      "priceType": "market_reference"
+    },
+    "T002": {
+      "usd": 9.79,
+      "printing": "Foil",
+      "observedDate": "2026-11-20",
+      "sourceName": "ValueMyCard / TCGplayer US market reference",
+      "sourceUrl": "https://valuemycard.com/expansions/cyberpunk-tcg/24857-box-toppers-retail",
+      "priceType": "market_reference"
+    },
+    "T003": {
+      "usd": 3.43,
+      "printing": "Foil",
+      "observedDate": "2026-11-20",
+      "sourceName": "ValueMyCard / TCGplayer US market reference",
+      "sourceUrl": "https://valuemycard.com/expansions/cyberpunk-tcg/24857-box-toppers-retail",
+      "priceType": "market_reference"
+    },
+    "T004": {
+      "usd": 3.96,
+      "printing": "Foil",
+      "observedDate": "2026-11-20",
+      "sourceName": "ValueMyCard / TCGplayer US market reference",
+      "sourceUrl": "https://valuemycard.com/expansions/cyberpunk-tcg/24857-box-toppers-retail",
+      "priceType": "market_reference"
+    },
+    "T005": {
+      "usd": 12.49,
+      "printing": "Foil",
+      "observedDate": "2026-11-20",
+      "sourceName": "ValueMyCard / TCGplayer US market reference",
+      "sourceUrl": "https://valuemycard.com/expansions/cyberpunk-tcg/24857-box-toppers-retail",
+      "priceType": "market_reference"
+    },
+    "T006": {
+      "usd": 8.95,
+      "printing": "Foil",
+      "observedDate": "2026-11-20",
+      "sourceName": "ValueMyCard / TCGplayer US market reference",
+      "sourceUrl": "https://valuemycard.com/expansions/cyberpunk-tcg/24857-box-toppers-retail",
       "priceType": "market_reference"
     }
   }
