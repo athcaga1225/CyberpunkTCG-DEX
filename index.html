@@ -2088,6 +2088,12 @@ html:not(.keyboard-focus) .series-trigger:focus{outline:none!important}
 #browser-detail-scroll::-webkit-scrollbar{width:5px}
 #browser-detail-scroll::-webkit-scrollbar-track{background:transparent}
 #browser-detail-scroll::-webkit-scrollbar-thumb{background:#494b50;border-radius:8px}
+
+/* Eliminate focus frames on catalog tiles, including focus restoration after dialogs. */
+html body #browser-grid .browser-card:is(:focus,:focus-visible,:active){outline:none!important;box-shadow:none!important;border:0!important}
+html.keyboard-focus body #browser-grid .browser-card:focus-visible .browser-art{filter:brightness(1.18)}
+html body #market-ranking .ranking-row:is(:focus,:focus-visible,:active){outline:none!important;box-shadow:none!important}
+html.keyboard-focus body #market-ranking .ranking-row:focus-visible{background:#ffffff0b}
 </style>
 </head>
 
