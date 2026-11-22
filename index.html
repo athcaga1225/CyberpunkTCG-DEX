@@ -2820,7 +2820,18 @@ html.keyboard-focus #browser-rarities:focus-within{mask-image:none}
             if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)reveal.setAttribute('class','history-line-reveal');
             const coords=points.map((p,i)=>x(times[i])+","+y(p.usd));
             const linePath="M"+coords.join(" L");
-            series.append(el("path",{d:linePath+" L"+x(tmax)+","+(H-bottom)+" L"+x(tmin)+","+(H-bottom)+" Z",fill:"url(#"+gradientId+")","fill-opacity":.8}));
+            const areaPath=linePath+" L"+x(tmax)+","+(H-bottom)+" L"+x(tmin)+","+(H-bottom)+" Z";
+            // A continuous base avoids hairline seams between adjacent SVG polygons.
+            series.append(el("path",{d:areaPath,fill:"url(#"+gradientId+")","fill-opacity":.55}));
+            const areaClip=document.createElementNS(NS,"clipPath");areaClip.id="history-area-"+panel.id;
+            const areaShape=document.createElementNS(NS,"path");areaShape.setAttribute("d",areaPath);areaClip.append(areaShape);defs.append(areaClip);
+            const emphasis=el("g",{"clip-path":"url(#"+areaClip.id+")"});series.append(emphasis);
+            let startRun=null;
+            for(let i=1;i<=points.length;i++){
+                const recorded=i<points.length&&times[i]-times[i-1]<=86400000;
+                if(recorded){if(startRun===null)startRun=i-1}
+                else if(startRun!==null){const x1=x(times[startRun]),x2=x(times[i-1]);emphasis.append(el("rect",{x:x1,y:top,width:x2-x1,height:H-bottom-top,fill:"url(#"+gradientId+")","fill-opacity":.55}));startRun=null}
+            }
             series.append(el("path",{d:linePath,fill:"none",stroke:chartColor,"stroke-opacity":.65,"stroke-width":1.5,"stroke-dasharray":"1.5 3","stroke-linecap":"round","stroke-linejoin":"round"}));
             let run=[];
             const drawRun=()=>{if(run.length>1)series.append(el("path",{d:"M"+run.join(" L"),fill:"none",stroke:chartColor,"stroke-width":2,"stroke-linecap":"round","stroke-linejoin":"round"}));run=[]};
