@@ -2245,6 +2245,17 @@ html.keyboard-focus #browser-rarities:focus-within{mask-image:none}
 
 #browser-detail-dialog #result #usd,#browser-detail-dialog #result #usd>span{color:#fcee09!important}
 #browser-detail-dialog #result #twd,#browser-detail-dialog #result #twd>span{color:#f4f4f4!important}
+
+.browser-editions{display:none}
+@media(max-width:760px){
+.browser-toolbar{align-items:center}
+.browser-editions{display:inline-flex;flex:none;align-items:stretch}
+.browser-editions button{min-height:44px;padding:0 11px;border:1px solid #424b54;background:#0d1419;color:#aab8bf;font:700 12px var(--dex-font);white-space:nowrap;cursor:pointer}
+.browser-editions button+button{margin-left:-1px}
+.browser-editions button[aria-pressed=true]{position:relative;z-index:1;border-color:#fcee09;color:#fcee09}
+.browser-sort{margin-left:auto;white-space:nowrap;gap:6px}
+}
+@media(max-width:360px){.browser-editions button{padding-inline:8px;font-size:11px}.browser-sort{gap:4px}.browser-sort select{padding-left:8px;padding-right:27px;background-position:right 9px center}}
 </style>
 </head>
 
@@ -2353,7 +2364,7 @@ html.keyboard-focus #browser-rarities:focus-within{mask-image:none}
                         </select>
                     </div>
                 </div>
-            </div></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="low">價格低 → 高</option><option value="code">卡號</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
+            </div></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"></div><div class="browser-editions" role="group" aria-label="圖鑑版本"><button type="button" data-browser-edition="beta" aria-pressed="true">BETA</button><button type="button" data-browser-edition="retail" aria-pressed="false">RETAIL</button></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="low">價格低 → 高</option><option value="code">卡號</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
         <footer>CyberDEX 是非官方收藏工具。與 Cyberpunk TCG、TCGplayer 無關；卡圖版權歸原權利人所有。價格不能作為保證成交報價。</footer>
 </main>
     <script>
@@ -2525,6 +2536,7 @@ html.keyboard-focus #browser-rarities:focus-within{mask-image:none}
                 btn.classList.toggle("active", active);
                 btn.setAttribute("aria-pressed", String(active));
             }
+            document.querySelectorAll('[data-browser-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.browserEdition===activeEdition)));
             saveCollection();
             $('result').classList.remove('open'); selected = null;
             
@@ -2536,6 +2548,7 @@ html.keyboard-focus #browser-rarities:focus-within{mask-image:none}
         $('collection-select').onchange = e => e.target.value === "main" ? chooseSection("main") : chooseSection("starter", e.target.value);
         $('edition-beta').onclick = () => chooseEdition("beta");
         $('edition-retail').onclick = () => chooseEdition("retail");
+        document.querySelectorAll('[data-browser-edition]').forEach(b=>b.addEventListener('click',()=>{if(activeEdition!==b.dataset.browserEdition){chooseEdition(b.dataset.browserEdition);returnToCatalogControls()}}));
                 function clearCardMatches() {
             const list = $('card-match-list');
             list.hidden = true;
