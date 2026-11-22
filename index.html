@@ -2167,6 +2167,12 @@ html:has(body>header.scroll-header-hidden) .browser-toolbar{top:0}
 @keyframes detailBackdrop{from{opacity:0}to{opacity:1}}
 @media(max-width:760px){.browser-toolbar{gap:8px;padding:8px 0}.browser-toolbar #browser-rarities{flex:1 1 100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:2px 0}.browser-toolbar #browser-rarities::-webkit-scrollbar{display:none}.browser-toolbar #browser-rarities button{white-space:nowrap;flex:none;min-height:36px}.browser-sort{margin-left:auto}#browser-detail-dialog{max-height:calc(100dvh - 16px)}#browser-grid .browser-price{min-width:0}#browser-grid .browser-price strong{white-space:nowrap}}
 @media(prefers-reduced-motion:reduce){.browser-toolbar{transition:none}#browser-detail-dialog[open],#browser-detail-dialog[open]::backdrop{animation:none}}
+#browser-rarities button{display:inline-flex;align-items:center;gap:6px;color:#aeb4bc;border-color:#34383e;background:transparent;white-space:nowrap}
+#browser-rarities button[data-rarity]:not([data-rarity=""])::before{content:"";width:8px;height:8px;background:var(--filter-color);flex:none}
+#browser-rarities button .filter-count{color:#8c919b;font-variant-numeric:tabular-nums}
+#browser-rarities button[aria-pressed=true]{border-color:var(--filter-color);color:#f4f4f4;background:color-mix(in srgb,var(--filter-color) 12%,#131518)}
+#browser-rarities button:is(:focus,:focus-visible){outline:none!important;box-shadow:none!important}
+html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:underline;text-underline-offset:4px}
 </style>
 </head>
 
@@ -2379,18 +2385,19 @@ html:has(body>header.scroll-header-hidden) .browser-toolbar{top:0}
             const grid=$('browser-grid'),root=$('card-browser');if(!grid||!root||document.documentElement.matches('.ranking-view,.pack-view'))return;
             const entries=Object.entries(currentCatalog()),market=activeEdition==='retail'?retailPrices:activeSection==='starter'?(starterPrices[activeStarter]?.prices||{}):prices;
             const identity=activeEdition+':'+activeSection+':'+activeStarter;
-            if(root.dataset.identity!==identity){root.dataset.identity=identity;root.dataset.rarity='';reset=true}
+            if(root.dataset.identity!==identity){root.dataset.identity=identity;root.dataset.rarities='[]';reset=true}
             if(reset)root.dataset.limit='24';
             const counts=new Map();entries.forEach(([,v])=>counts.set(v.rarity,(counts.get(v.rarity)||0)+1));
-            const filter=root.dataset.rarity||'',order=['Iconic Secret','Iconic Legend','Iconic Other','Secret','Epic','Rare','Uncommon','Common','Nova Rare'];
-            const filters=$('browser-rarities');filters.replaceChildren();
+            const filter=new Set(JSON.parse(root.dataset.rarities||'[]')),rarityColors={'Iconic Secret':'#ff465d','Iconic Legend':'#fcee09','Iconic Other':'#41d9ca','Secret':'#ff9c50','Epic':'#b88bfa','Rare':'#60a5fa','Uncommon':'#a9bdcb','Common':'#8c919b','Nova Rare':'#e8a8e5'},order=['Iconic Secret','Iconic Legend','Iconic Other','Secret','Epic','Rare','Uncommon','Common','Nova Rare'];
+            const filters=$('browser-rarities'),filterScroll=filters.scrollLeft;filters.replaceChildren();
             for(const rarity of ['',...new Set([...order.filter(x=>counts.has(x)),...counts.keys()])]){
-                const b=document.createElement('button');b.type='button';b.dataset.rarity=rarity;b.setAttribute('aria-pressed',String(rarity===filter));b.textContent=rarity?rarity+' '+counts.get(rarity):'全部 '+entries.length;b.onclick=()=>{root.dataset.rarity=rarity;renderBrowser();filters.querySelector('[aria-pressed=true]')?.focus({preventScroll:true})};filters.append(b);
+                const b=document.createElement('button');b.type='button';b.dataset.rarity=rarity;b.style.setProperty('--filter-color',rarityColors[rarity]||'#e0e2e5');b.setAttribute('aria-pressed',String(rarity?filter.has(rarity):!filter.size));const label=document.createElement('span'),count=document.createElement('span');label.textContent=rarity||'全部';count.className='filter-count';count.textContent=rarity?counts.get(rarity):entries.length;b.append(label,count);b.onclick=()=>{if(!rarity)filter.clear();else if(filter.has(rarity))filter.delete(rarity);else filter.add(rarity);root.dataset.rarities=JSON.stringify([...filter]);renderBrowser();[...filters.children].find(el=>el.dataset.rarity===rarity)?.focus({preventScroll:true})};filters.append(b);
             }
+            filters.scrollLeft=filterScroll;
             const priced=entries.filter(([id])=>Number.isFinite(market[id]?.usd)),total=priced.reduce((a,[id])=>a+market[id].usd,0);
             setUsdText($('browser-total'),priced.length?'已報價 '+priced.length+'/'+entries.length+' 張 · 參考總值 '+fmtUSD(total)+' / '+currency(total):'尚無市場報價');
             const mode=$('browser-sort').value;
-            const rows=entries.filter(([,e])=>!filter||e.rarity===filter).sort(([a],[b])=>{
+            const rows=entries.filter(([,e])=>!filter.size||filter.has(e.rarity)).sort(([a],[b])=>{
                 const pa=market[a]?.usd,pb=market[b]?.usd;
                 if(mode!=='code'){if(Number.isFinite(pa)!==Number.isFinite(pb))return Number.isFinite(pa)?-1:1;if(Number.isFinite(pa)&&pa!==pb)return mode==='high'?pb-pa:pa-pb}
                 return a.localeCompare(b,undefined,{numeric:true});
