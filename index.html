@@ -2140,6 +2140,17 @@ html body #browser-detail-dialog #browser-detail-close,html body #pack-zoom-clos
 @media(max-width:560px){#browser-detail-dialog,#pack-odds-modal{clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%)}}
 
 #pack-odds-modal{border:0!important;box-shadow:none!important}
+/* Grid rows share their title, subtitle, metadata and price tracks. */
+@supports(grid-template-rows:subgrid){
+#browser-grid{align-items:stretch;row-gap:4px}
+#browser-grid .browser-card{display:grid;grid-template-rows:subgrid;grid-row:span 5;row-gap:4px;align-content:start;align-items:start;padding-bottom:26px}
+#browser-grid .browser-card>.browser-art{margin-bottom:6px}
+#browser-grid .browser-card>.browser-price{align-self:start}
+}
+@supports not (grid-template-rows:subgrid){
+#browser-grid .browser-card>.browser-price{margin-top:auto}
+#browser-grid .browser-card>small{margin-top:auto}
+}
 </style>
 </head>
 
