@@ -2557,8 +2557,8 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
         }
         function collectionStatusText() {
             const qty = Object.keys(currentCatalog()).length;
-            return activeEdition === "retail" ? "Welcome to Night City Retail · " + qty + " 張卡（001～171（含 005A、005B）、T001～T006）" : activeSection === "main"
-                ? "Welcome to Night City Beta · " + qty + " 張卡（B001～B171（含 B005A、B005B）、T001～T006）"
+            return activeEdition === "retail" ? qty + " 張卡（001～171（含 005A、005B）、T001～T006）" : activeSection === "main"
+                ? qty + " 張卡（B001～B171（含 B005A、B005B）、T001～T006）"
                 : (activeStarter === "heist" ? "The Heist" : "Embracing Power") + " Beta · " + qty + " 張卡（B001～B020）";
         }
         function chooseSection(section, starter) {
