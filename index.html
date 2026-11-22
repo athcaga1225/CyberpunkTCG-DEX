@@ -2395,7 +2395,7 @@ html.pack-view body>header{position:relative;transform:none!important;pointer-ev
                     const keyboard=document.activeElement===button&&button.matches(':focus-visible');
                     clearCardMatches();
                     show(id, true);
-                    if(keyboard&&$('result').classList.contains('open'))$('name').focus({preventScroll:true});
+                    if(keyboard&&!browserDetailDialog.open&&$('result').classList.contains('open'))$('name').focus({preventScroll:true});
                 });
                 list.append(button);
             }
@@ -2447,6 +2447,7 @@ html.pack-view body>header{position:relative;transform:none!important;pointer-ev
                 $('result').classList.remove('open'); selected = null;
                 setSearchError(activeSection === "starter" ? "找不到卡片：" + code + " 不在目前選擇的初始牌組中（B001～B020）。請檢查卡號或切換系列。" : "找不到卡片。請檢查卡號、卡名或切換系列。"); return;
             }
+            if(scroll&&!browserDetailDialog.open)return openBrowserDetail(code,document.activeElement);
             $('query').value = '';
             const changedCard = selected !== code || !$('result').classList.contains('open');
             selected = code; $('loadstate').textContent = collectionStatusText();
@@ -2508,12 +2509,13 @@ html.pack-view body>header{position:relative;transform:none!important;pointer-ev
                 historyDays=previous.days;
                 if(previous.code)show(previous.code,false);
                 $('query').value=previous.query;
-                previous.tile.focus({preventScroll:true});
+                (previous.tile?.isConnected?previous.tile:$('query')).focus({preventScroll:true});
             }
         });
         function submitCardSearch(keyboard=false){
             show($('query').value,true);
             if(!keyboard)return;
+            if(browserDetailDialog.open)return;
             if($('result').classList.contains('open'))$('name').focus({preventScroll:true});
             else if(!$('card-match-list').hidden)$('card-match-list').querySelector('button')?.focus({preventScroll:true});
         }
