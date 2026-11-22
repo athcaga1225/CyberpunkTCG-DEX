@@ -2203,6 +2203,8 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
 #market-ranking .ranking-change{font-size:clamp(12px,3vw,15px)}
 }
 header .brand{font-family:"Chakra Petch",var(--dex-display);font-size:28px;font-weight:700;letter-spacing:-.025em;line-height:1}
+#browser-detail-dialog #result #usd,#browser-detail-dialog #result #twd{font-variant-numeric:tabular-nums}
+@media(max-width:760px){#browser-detail-dialog #result.card-refresh .cardgrid,#browser-detail-dialog #result.card-refresh .history-panel{animation:none!important}}
 </style>
 </head>
 
@@ -2547,7 +2549,7 @@ header .brand{font-family:"Chakra Petch",var(--dex-display);font-size:28px;font-
         function animateMarketAmount(node,target,previous,format){
             node.textContent=format(target);
             node.setAttribute('role','img');node.setAttribute('aria-label',format(target));
-            if(!Number.isFinite(previous)||previous===target||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+            if(!Number.isFinite(previous)||previous===target||matchMedia('(max-width:760px), (prefers-reduced-motion: reduce)').matches)return;
             const start=performance.now();
             function tick(now){if(!node.isConnected)return;const t=Math.min(1,(now-start)/650),ease=1-Math.pow(1-t,3);node.textContent=format(t===1?target:previous+(target-previous)*ease);if(t<1)requestAnimationFrame(tick)}
             node.textContent=format(previous);requestAnimationFrame(tick);
