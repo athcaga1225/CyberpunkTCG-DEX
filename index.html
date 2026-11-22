@@ -1988,7 +1988,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
 #browser-rarities button,.browser-sort select{border:1px solid #424b54;background:#131518;color:#c2c4c5;padding:9px 11px;font:inherit;font-size:12px;border-radius:0}
 #browser-rarities button[aria-pressed=true]{border-color:#fcee09;color:#fcee09}
 .browser-sort{display:flex;gap:7px;align-items:center;font-size:12px;color:var(--dex-muted)}
-#browser-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:22px 14px;margin:18px 0}
+#browser-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px 14px;margin:18px 0}
 .browser-card{display:flex;flex-direction:column;text-align:left;gap:5px;background:none;border:0;padding:0;color:inherit;min-width:0;font:inherit;cursor:pointer}
 .browser-art{aspect-ratio:5/7;background:#17191c;display:grid;place-items:center;width:100%;font-size:12px;color:var(--dex-muted);border-radius:5%;overflow:hidden}
 .browser-art img{width:100%;height:100%;object-fit:contain;display:block}
@@ -2030,6 +2030,14 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
 .browser-card[data-rarity="Iconic Secret"] .browser-rarity{color:#ff465d}.browser-card[data-rarity="Iconic Legend"] .browser-rarity{color:#fcee09}.browser-card[data-rarity="Iconic Other"] .browser-rarity{color:#41d9ca}
 .browser-price{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;color:#f4f4f4}.browser-price strong{font-size:clamp(20px,2vw,27px);font-variant-numeric:tabular-nums}.browser-price span{font:600 14px var(--dex-numeric);color:var(--dex-subtle)}
 #result.panel{background:var(--dex-surface);border:0;box-shadow:none;border-radius:0;clip-path:none;padding:clamp(16px,3vw,36px);margin:24px 0 32px}
+#browser-detail-dialog{width:min(980px,calc(100% - 32px));max-height:calc(100dvh - 32px);box-sizing:border-box;margin:auto;padding:0;border:0;border-radius:12px;background:var(--dex-surface,#191a1e);color:inherit;overflow:auto;overscroll-behavior:contain}
+#browser-detail-dialog::backdrop{background:rgba(0,0,0,.8)}
+html:has(#browser-detail-dialog[open]){overflow:hidden}
+#browser-detail-dialog .browser-dialog-head{position:sticky;top:0;z-index:5;display:flex;justify-content:flex-end;background:var(--dex-surface,#191a1e);padding:4px 12px}
+#browser-detail-dialog #browser-detail-close{display:grid;place-items:center;width:44px;height:44px;padding:0;margin:0;border:0;box-shadow:none;background:transparent;color:#fcee09;font:normal 34px/1 system-ui;clip-path:none;cursor:pointer}
+#browser-detail-dialog #browser-detail-close:focus-visible{outline:2px solid #fcee09;outline-offset:-3px}
+#browser-detail-dialog #result.panel{margin:0;padding-top:0}
+@media(max-width:560px){#browser-detail-dialog{width:calc(100% - 16px);max-height:calc(100dvh - 16px);border-radius:10px}}
 #result.panel::before{display:none}#result .cardtitle{font:700 clamp(30px,4vw,54px)/1.05 var(--dex-numeric);letter-spacing:-.025em;margin:12px 0}
 .detail-subtitle{display:block;font:600 clamp(17px,2.3vw,28px)/1.25 var(--dex-numeric);letter-spacing:0;margin-top:5px;color:var(--dex-subtle)}
 #result .price{font:700 clamp(38px,6vw,68px)/1 var(--dex-numeric);color:#f4f4f4;letter-spacing:-.03em}
@@ -2152,6 +2160,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
                     target="_blank" rel="noopener noreferrer">查看 Beta 卡片圖鑑</a></div>
         </section>
 
+    <dialog id="browser-detail-dialog" aria-labelledby="name"><div class="browser-dialog-head"><button type="button" id="browser-detail-close" aria-label="關閉卡牌價格">×</button></div></dialog>
     <section id="card-browser" aria-labelledby="browser-title"><div class="browser-head"><h2 id="browser-title">CARD DATABASE / 卡牌圖鑑</h2><span id="browser-total"></span></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="low">價格低 → 高</option><option value="code">卡號</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
         <footer>CyberDEX 是非官方收藏工具。與 Cyberpunk TCG、TCGplayer 無關；卡圖版權歸原權利人所有。價格不能作為保證成交報價。</footer>
 </main>
@@ -2276,7 +2285,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
                 const art=document.createElement('span');art.className='browser-art';const record=activeEdition==='retail'?(retailIconicVerified[code]||retailImages[code]):activeSection==='starter'?{url:entry.imageUrl}:cardImages[code];
                 if(record?.url){const img=document.createElement('img');img.src=record.url;img.alt='';img.loading='lazy';img.decoding='async';img.onerror=()=>{if(record.fallbackUrl&&img.src!==record.fallbackUrl){img.src=record.fallbackUrl;return}img.remove();art.textContent='卡圖待補'};art.append(img)}else art.textContent='卡圖待補';
                 const title=document.createElement('strong'),meta=document.createElement('small'),price=document.createElement('span');const [primary,...secondary]=entry.name.split(':');title.textContent=primary;const subtitle=document.createElement('span');subtitle.className='browser-subtitle';subtitle.textContent=secondary.join(':').trim()||' ';const codeLabel=document.createElement('span'),rarity=document.createElement('span');codeLabel.textContent=code;rarity.className='browser-rarity';rarity.textContent=entry.rarity;meta.append(codeLabel,rarity);price.className='browser-price';if(Number.isFinite(market[code]?.usd)){const amount=document.createElement('strong'),nt=document.createElement('span');amount.textContent=fmtUSD(market[code].usd);nt.textContent=currency(market[code].usd);price.append(amount,nt)}else price.textContent='尚無報價';
-                tile.append(art,title,subtitle,meta,price);tile.onclick=()=>{$('query').value=code;show(code,true);if($('result').classList.contains('open'))$('name').focus({preventScroll:true})};grid.append(tile)
+                tile.append(art,title,subtitle,meta,price);tile.onclick=()=>openBrowserDetail(code,tile);grid.append(tile)
             }
             $('browser-more').hidden=rows.length<=limit;
         }
@@ -2449,6 +2458,39 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
             }
             if (scroll) $('result').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth', block: 'start' });
         }
+        const browserDetailDialog=$('browser-detail-dialog'), browserDetailAnchor=document.createComment('inline card detail');
+        $('result').before(browserDetailAnchor);
+        let browserDetailPrevious=null;
+        function openBrowserDetail(code,tile){
+            if(browserDetailDialog.open)return;
+            const result=$('result');
+            browserDetailPrevious={code:result.classList.contains('open')?selected:null,query:$('query').value,tile,days:historyDays};
+            browserDetailDialog.append(result);
+            browserDetailDialog.showModal();
+            show(code,false);
+            $('query').value=browserDetailPrevious.query;
+            browserDetailDialog.scrollTop=0;
+            $('browser-detail-close').focus({preventScroll:true});
+        }
+        $('browser-detail-close').onclick=()=>browserDetailDialog.close();
+        browserDetailDialog.addEventListener('click',e=>{
+            if(e.target!==browserDetailDialog)return;
+            const r=browserDetailDialog.getBoundingClientRect();
+            if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)browserDetailDialog.close();
+        });
+        browserDetailDialog.addEventListener('close',()=>{
+            const previous=browserDetailPrevious;
+            browserDetailPrevious=null;
+            browserDetailAnchor.after($('result'));
+            $('result').classList.remove('open','card-refresh');
+            selected=null;
+            if(previous){
+                historyDays=previous.days;
+                if(previous.code)show(previous.code,false);
+                $('query').value=previous.query;
+                previous.tile.focus({preventScroll:true});
+            }
+        });
         function submitCardSearch(keyboard=false){
             show($('query').value,true);
             if(!keyboard)return;
