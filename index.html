@@ -1941,10 +1941,11 @@ body>header .dex-menu-toggle[aria-expanded=true]:focus-visible{color:#414000}
 @media(max-width:360px){#market-ranking .ranking-row{grid-template-columns:20px 36px minmax(0,1fr) auto;gap:6px}.ranking-image{width:36px}.ranking-price small{font-size:11px}.ranking-tools button{white-space:normal}.history-periods{gap:4px}.history-periods button{padding-inline:6px}}
 @media(prefers-reduced-motion:reduce){#market-ranking .ranking-row::after{transition:none}}
 
-/* Ranking-only sticky navigation: retain layout space, hide on downward scroll. */
-html.ranking-view body>header{position:sticky;top:0;z-index:40;transform:translateY(0);transition:transform .2s ease;}
-html.ranking-view body>header.ranking-header-hidden:not(:focus-within):not(:has(.dex-menu-toggle[aria-expanded=true])){transform:translateY(-101%);pointer-events:none;}
-@media(prefers-reduced-motion:reduce){html.ranking-view body>header{transition:none}}
+/* Shared sticky navigation; keep its layout space and protect non-scrolling pack stages. */
+html body>header{position:sticky;top:0;z-index:40;transform:translateY(0);transition:transform .2s ease}
+html:not(.pack-opening) body>header.scroll-header-hidden:not(:has(:focus-visible,.dex-menu-toggle[aria-expanded=true])){transform:translateY(-101%);pointer-events:none}
+html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,html.pack-opening body>header{position:relative;transform:none!important;pointer-events:auto!important}
+@media(prefers-reduced-motion:reduce){html body>header{transition:none}}
 </style>
 </head>
 
@@ -2693,28 +2694,32 @@ refreshRankingGlow();
 
 <script>
 (()=>{
- if(!document.documentElement.classList.contains('ranking-view'))return;
- const header=document.querySelector('body>header'),menu=header?.querySelector('.dex-menu-toggle');
+ const root=document.documentElement,header=document.querySelector('body>header'),menu=header?.querySelector('.dex-menu-toggle'),stage=document.getElementById('pack-stage');
  if(!header)return;
  let last=Math.max(0,scrollY),direction=0,distance=0,frame=0;
- const show=()=>header.classList.remove('ranking-header-hidden');
+ const show=()=>header.classList.remove('scroll-header-hidden');
+ const reset=()=>{show();last=Math.max(0,scrollY);direction=0;distance=0};
+ const locked=()=>root.classList.contains('pack-opening')||(root.classList.contains('pack-view')&&stage&&!stage.hidden&&!stage.classList.contains('pack-selected'));
  function check(){
   frame=0;
-  const y=Math.max(0,Math.min(scrollY,Math.max(0,document.documentElement.scrollHeight-innerHeight))),delta=y-last;
+  const y=Math.max(0,Math.min(scrollY,Math.max(0,root.scrollHeight-innerHeight))),delta=y-last;
   last=y;
-  if(y<=header.offsetHeight||menu?.getAttribute('aria-expanded')==='true'||header.contains(document.activeElement)){show();direction=0;distance=0;return}
+  if(locked()||y<=header.offsetHeight||menu?.getAttribute('aria-expanded')==='true'||header.querySelector(':focus-visible')){show();direction=0;distance=0;return}
   if(!delta)return;
   const sign=Math.sign(delta);
   if(sign!==direction){direction=sign;distance=0}
   distance+=Math.abs(delta);
-  if(direction>0&&distance>=18)header.classList.add('ranking-header-hidden');
+  if(direction>0&&distance>=18)header.classList.add('scroll-header-hidden');
   if(direction<0&&distance>=10)show();
  }
  const schedule=()=>{if(!frame)frame=requestAnimationFrame(check)};
  window.addEventListener('scroll',schedule,{passive:true});
  header.addEventListener('focusin',show);
- window.addEventListener('resize',()=>{show();last=Math.max(0,scrollY);direction=0;distance=0});
- window.addEventListener('pageshow',()=>{show();last=Math.max(0,scrollY);direction=0;distance=0});
+ window.addEventListener('resize',reset);
+ window.addEventListener('pageshow',reset);
+ const observer=new MutationObserver(reset);
+ observer.observe(root,{attributes:true,attributeFilter:['class']});
+ if(stage)observer.observe(stage,{attributes:true,attributeFilter:['class','hidden']});
 })();
 </script>
 </body>
