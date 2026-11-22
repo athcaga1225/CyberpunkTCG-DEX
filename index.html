@@ -2283,6 +2283,10 @@ body>header .dex-menu-toggle .menu-open,body>header .dex-menu-toggle[aria-expand
 body>header .dex-menu-toggle .menu-close,body>header .dex-menu-toggle[aria-expanded=true] .menu-open{opacity:0}
 }
 @media(prefers-reduced-motion:reduce){body>header .dex-menu-toggle svg{transition:none!important}}
+
+html.dex-modal-locked{overflow:hidden!important;overscroll-behavior:none;scroll-behavior:auto!important}
+html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-top,0px)!important;left:0;right:0;width:100%;overflow:hidden!important;overscroll-behavior:none}
+#browser-detail-scroll,#pack-zoom,#pack-odds-modal{overscroll-behavior:contain}
 </style>
 </head>
 
@@ -3226,6 +3230,9 @@ refreshRankingGlow();
 (()=>{const root=document.documentElement;document.addEventListener('pointerdown',()=>root.classList.remove('keyboard-focus'),true);document.addEventListener('keydown',e=>{if(e.key==='Tab'||e.key.startsWith('Arrow'))root.classList.add('keyboard-focus')},true)})();
 </script>
 <script>(()=>{const h=document.querySelector('body>header');if(!h)return;const sync=()=>document.documentElement.style.setProperty('--dex-sticky-top',h.offsetHeight+'px');sync();if(window.ResizeObserver)new ResizeObserver(sync).observe(h);window.addEventListener('resize',sync)})();</script>
+<script>
+(()=>{const root=document.documentElement;let locked=false,y=0;const selector='#browser-detail-dialog[open],#pack-zoom[open],#pack-odds-modal[open]';function sync(){const open=!!document.querySelector(selector);if(open&&!locked){y=window.scrollY;root.style.setProperty('--dex-modal-scroll-top',-y+'px');root.classList.add('dex-modal-locked');locked=true}else if(!open&&locked){locked=false;root.classList.remove('dex-modal-locked');root.style.removeProperty('--dex-modal-scroll-top');window.scrollTo({top:y,left:0,behavior:'instant'})}}new MutationObserver(sync).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:['open']});sync()})();
+</script>
 </body>
 
 </html>
