@@ -1982,6 +1982,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
 
 /* Ranking return-to-top control, with safe-area spacing on phones. */
 #ranking-to-top{touch-action:manipulation;-webkit-tap-highlight-color:transparent;position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:35;display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;background:#fcee09;color:#101010;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);cursor:pointer;opacity:0;visibility:hidden;pointer-events:none;translate:0 8px;transition:opacity .2s,translate .2s,visibility 0s linear .2s,filter .15s}
+@media(max-width:760px){#ranking-to-top{bottom:calc(56px + env(safe-area-inset-bottom,0px))}}
 #ranking-to-top.is-visible{opacity:.9;visibility:visible;pointer-events:auto;translate:0 0;transition-delay:0s}
 #ranking-to-top:focus-visible{outline:2px solid #101010;outline-offset:-4px}
 #ranking-to-top:active{opacity:1;filter:brightness(.85)}
