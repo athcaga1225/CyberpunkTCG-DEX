@@ -2293,6 +2293,8 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
 
 .history-line-pending{transform-box:fill-box;transform-origin:left center;transform:scaleX(0)}
 @media(prefers-reduced-motion:reduce){.history-line-pending{transform:none}}
+
+#browser-total{display:none!important}
 </style>
 </head>
 
@@ -2383,7 +2385,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
         </section>
 
     <dialog id="browser-detail-dialog" aria-labelledby="name"><div class="browser-dialog-head"><button type="button" id="browser-detail-close" aria-label="關閉卡牌價格"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div><div id="browser-detail-scroll"></div><div class="detail-scroll-hint" aria-hidden="true"><span>向下滑動查看更多</span><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m4 6 4 4 4-4"/></svg></div></dialog>
-    <section id="card-browser" aria-labelledby="browser-title"><div class="browser-head"><h2 id="browser-title">CARD DATABASE / 卡牌圖鑑</h2><span id="browser-total"></span></div><div class="collection-nav browser-collection" aria-label="圖鑑版本與系列"><div class="collection-grid">
+    <section id="card-browser" aria-labelledby="browser-title"><div class="browser-head"><h2 id="browser-title">CARD DATABASE / 卡牌圖鑑</h2><span id="browser-total" hidden></span></div><div class="collection-nav browser-collection" aria-label="圖鑑版本與系列"><div class="collection-grid">
                 <div class="collection-field">
                     <span class="collection-field-label">EDITION · 切換版本</span>
                     <div class="edition-options" role="group" aria-label="卡牌版本">
