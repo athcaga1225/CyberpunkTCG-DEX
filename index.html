@@ -3267,15 +3267,19 @@ refreshRankingGlow();
  window.addEventListener('scroll',schedule,{passive:true});
  window.addEventListener('resize',schedule,{passive:true});
  let touch=null,lastTouch=-Infinity,settle=0;
- const cancelSettle=()=>{clearTimeout(settle);settle=0};
+ const cancelSettle=()=>{cancelAnimationFrame(settle);settle=0};
  function goTop(){
   cancelSettle();
   if(document.activeElement===button&&!document.documentElement.classList.contains('keyboard-focus'))button.blur();
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // Stop an in-flight inertial scroll before starting the return animation.
-  window.scrollTo({top:Math.max(0,window.scrollY),behavior:'instant'});
-  window.scrollTo({top:0,behavior:reduce?'instant':'smooth'});
-  if(!reduce)settle=setTimeout(()=>{if(window.scrollY>1)window.scrollTo({top:0,behavior:'instant'});settle=0},900);
+  const start=Math.max(0,window.scrollY);
+  window.scrollTo({top:start,behavior:'instant'});
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches||start<=1){window.scrollTo({top:0,behavior:'instant'});return}
+  const duration=Math.min(1500,Math.max(1000,950+start*.12)),begin=performance.now();
+  function tick(now){const t=Math.min(1,(now-begin)/duration),ease=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+   window.scrollTo({top:Math.round(start*(1-ease)),behavior:'instant'});
+   if(t<1)settle=requestAnimationFrame(tick);else{window.scrollTo({top:0,behavior:'instant'});settle=0}
+  }
+  settle=requestAnimationFrame(tick);
  }
  button.addEventListener('touchstart',e=>{if(e.touches.length!==1)return;const t=e.touches[0];touch={id:t.identifier,x:t.clientX,y:t.clientY};if(e.cancelable)e.preventDefault()},{passive:false});
  button.addEventListener('touchend',e=>{if(!touch)return;const t=[...e.changedTouches].find(t=>t.identifier===touch.id);const start=touch;touch=null;if(!t||Math.hypot(t.clientX-start.x,t.clientY-start.y)>12)return;if(e.cancelable)e.preventDefault();lastTouch=performance.now();goTop()},{passive:false});
