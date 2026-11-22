@@ -2233,6 +2233,15 @@ html.keyboard-focus #browser-rarities:focus-within{mask-image:none}
 #browser-detail-dialog[open]{padding-bottom:16px}
 #card-browser .browser-collection{margin-top:18px}
 }
+
+@media(max-width:760px){
+#browse .browser-collection{background:transparent;border:0;border-top:1px solid var(--dex-rule);border-radius:0;box-shadow:none;clip-path:none;padding:18px 0 0;margin:18px 0 0;animation:none;visibility:visible}
+#browse .browser-collection::before{display:none}
+#browse .browser-collection .collection-grid{margin:0;grid-template-columns:1fr;gap:14px}
+#browse .collection-step-label::before{content:"01 / SEARCH · "}
+#browse .collection-field-label::before{content:"02 / "}
+#browse .collection-field>label::before{content:"03 / "}
+}
 </style>
 </head>
 
@@ -2347,6 +2356,9 @@ html.keyboard-focus #browser-rarities:focus-within{mask-image:none}
     <script>
         'use strict';
         const $ = id => document.getElementById(id);
+        {const media=matchMedia('(max-width:760px)'),controls=document.querySelector('.browser-collection'),browse=$('browse'),toolbar=document.querySelector('.browser-toolbar'),heading=browse.querySelector('.collection-heading');
+        function layoutSearch(){if(media.matches){browse.append(controls);heading.textContent='COLLECTION / 卡牌查詢'}else{toolbar.before(controls);heading.textContent='SEARCH / 卡牌查詢'}}layoutSearch();media.addEventListener('change',layoutSearch);}
+
         // Match the search button to the actual responsive hero CTA dimensions.
         {const hero=document.querySelector('.hero-actions .hero-action[href="#browse"]'),search=$('search');if(hero&&search){const syncSearchSize=()=>{const r=hero.getBoundingClientRect();if(r.width>0&&r.height>0){search.style.setProperty('--hero-search-width',r.width+'px');search.style.setProperty('--hero-search-height',r.height+'px')}};syncSearchSize();if(typeof ResizeObserver==='function'){const observer=new ResizeObserver(syncSearchSize);observer.observe(hero)}else window.addEventListener('resize',syncSearchSize);document.fonts?.ready.then(syncSearchSize);}}
         const base = "https://www.tcgplayer.com/categories/trading-and-collectible-card-games/cyberpunk-tcg/price-guides/welcome-to-night-city-beta";
