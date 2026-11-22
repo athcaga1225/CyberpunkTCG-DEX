@@ -2290,6 +2290,9 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
 
 #result .detail-title-en{white-space:nowrap}
 @media(max-width:760px){#browser-detail-dialog #result .detail-title-en{display:block}}
+
+.history-line-pending{transform-box:fill-box;transform-origin:left center;transform:scaleX(0)}
+@media(prefers-reduced-motion:reduce){.history-line-pending{transform:none}}
 </style>
 </head>
 
@@ -2793,6 +2796,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
             const root=panel.querySelector('.history-graph'),summary=panel.querySelector('[data-history-summary],#history-summary'),note=panel.querySelector('[data-history-note],#history-note');
             panel.querySelector('.history-stats')?.remove();
             root.classList.toggle('history-resizing',!animate);
+            root.historyRevealObserver?.disconnect();root.historyRevealObserver=null;
             root.replaceChildren();
             const rankingCode=panel.dataset.rankCode||null,historyCode=rankingCode||selected;
             const periods=panel.querySelector('.history-periods');
@@ -2846,7 +2850,18 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
             const clip=document.createElementNS(NS,'clipPath');clip.id=clipId;
             const reveal=document.createElementNS(NS,'rect');reveal.setAttribute('x',String(left-2));reveal.setAttribute('y','0');reveal.setAttribute('width',String(W-left-right+4));reveal.setAttribute('height',String(H));clip.append(reveal);defs.append(clip);
             const series=el('g',{'clip-path':'url(#'+clipId+')'});
-            if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)reveal.setAttribute('class','history-line-reveal');
+            if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+                reveal.setAttribute('class','history-line-pending');
+                if('IntersectionObserver' in window){
+                    const observer=new IntersectionObserver(entries=>{
+                        if(!svg.isConnected){observer.disconnect();return}
+                        if(entries.some(e=>e.isIntersecting&&e.intersectionRatio>=.35)){
+                            reveal.setAttribute('class','history-line-reveal');observer.disconnect();
+                        }
+                    },{threshold:[.35]});
+                    root.historyRevealObserver=observer;observer.observe(svg);
+                }else reveal.setAttribute('class','history-line-reveal');
+            }
             const coords=points.map((p,i)=>x(times[i])+","+y(p.usd));
             const linePath="M"+coords.join(" L");
             const areaPath=linePath+" L"+x(tmax)+","+(H-bottom)+" L"+x(tmin)+","+(H-bottom)+" Z";
@@ -2943,7 +2958,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
                 if(svg.viewBox.baseVal.width===width)continue;
                 const focused=document.activeElement===svg;
                 const days=Number(panel.querySelector('.history-periods button[aria-pressed=true]')?.dataset.days??30);
-                renderHistory(panel,days,false,svg.dataset.selectedDate||null);
+                renderHistory(panel,days,!!svg.querySelector('.history-line-pending'),svg.dataset.selectedDate||null);
                 if(focused)root.querySelector('svg')?.focus({preventScroll:true});
             }
         },120)});
