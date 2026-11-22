@@ -2020,22 +2020,8 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
 
 /* Visual system: editorial hierarchy, fine rules, chamfered surfaces. */
 :root{--dex-numeric:"Rajdhani","Barlow Condensed",system-ui,sans-serif;--dex-rule:#303238;--dex-surface:#181a1f;--dex-subtle:#979ba4}
-body>main.wrap{max-width:1440px}@media(min-width:1000px){.hero-inner{width:min(1392px,calc(100% - 48px))}body>header{padding-inline:max(24px,calc((100vw - 1392px)/2))}}#market-ranking{width:min(1392px,calc(100% - 2 * var(--page-heading-side)))}
-#browse.collection-nav{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;border-top:1px solid var(--dex-rule);margin:26px 0 12px;padding-top:22px}
-#browse .collection-nav-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin:0}
-#browser-title{font-size:clamp(18px,2vw,26px);font-weight:700;color:#fcee09;margin:0;letter-spacing:.03em}
-#browser-total{font:600 16px var(--dex-numeric);color:#e4e4e4}
-#browse .collection-search{padding:0;border:0;min-width:0;grid-row:3}
-#browse .collection-grid{margin:0;grid-row:2;column-gap:12px}
-#browse .collection-grid>.collection-field:nth-child(2){padding-left:0}
-#browse .collection-step-label,#browse .collection-field-label,#browse .collection-field>label{font-size:11px;font-weight:500;letter-spacing:.06em}
-#browse .collection-footer{border-top:1px solid var(--dex-rule);padding-top:6px;min-height:0}
-#browse .browser-toolbar{margin:0;grid-row:4;align-items:center}
-#browse .collection-search .search input{min-width:0;background:#191b20;border-color:var(--dex-rule)}
-#browser-rarities button,.browser-sort select{background:#141518;border-color:var(--dex-rule);padding:10px 12px}
-#browser-rarities button[aria-pressed=true]{background:#252526;color:#fcee09;border-color:#fcee09}
-#card-browser{margin:12px 0 40px}
-#browser-grid{gap:28px 18px}
+#market-ranking{width:min(1392px,calc(100% - 2 * var(--page-heading-side)))}
+#card-browser{margin:40px 0 40px;padding-top:24px;border-top:1px solid var(--dex-rule)}
 .browser-art{border-radius:0;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));background:#181a1d}
 .browser-card{gap:4px}.browser-card strong{font:700 clamp(17px,1.7vw,22px)/1.1 var(--dex-numeric)}
 .browser-subtitle{font:500 15px/1.3 var(--dex-numeric);color:var(--dex-subtle);min-height:1.3em;overflow-wrap:anywhere}
@@ -2056,7 +2042,6 @@ body>main.wrap{max-width:1440px}@media(min-width:1000px){.hero-inner{width:min(1
 .ranking-metrics{display:flex;justify-content:flex-end;gap:28px;margin:20px 0}.ranking-metrics>div{display:grid;gap:3px}.ranking-metrics small{color:var(--dex-subtle);font-size:12px}.ranking-metrics strong{font:700 clamp(25px,3vw,40px)/1 var(--dex-numeric);color:#fcee09}
 #market-ranking .ranking-row{border-bottom-color:var(--dex-rule);padding-block:18px}.ranking-list{border-top-color:var(--dex-rule)}.ranking-position{font:700 32px var(--dex-numeric)}.ranking-price{font:700 25px var(--dex-numeric)}.ranking-price small{font:600 14px var(--dex-numeric)}.ranking-change{font:700 20px var(--dex-numeric)}
 #draw-dialog .pack-stats{border-top:1px solid var(--dex-rule);padding:15px 0;gap:16px}.pack-stats strong{font:700 28px var(--dex-numeric)}
-@media(min-width:1000px){#browse.collection-nav{grid-template-columns:minmax(290px,1fr) minmax(0,1.65fr);column-gap:18px}#browse .collection-nav-top,#browse .browser-toolbar,#browse .collection-footer{grid-column:1/-1}#browse .collection-grid{grid-row:2;grid-column:1}#browse .collection-search{grid-row:2;grid-column:2}#browse .browser-toolbar{grid-row:3}#browse .collection-footer{grid-row:4}#browse .collection-search .search #search.primary{width:116px}}
 @media(max-width:560px){#browser-grid{gap:24px 12px}.browser-card strong{font-size:20px}.browser-card small{flex-wrap:wrap}.browser-subtitle{font-size:14px}.browser-price{gap:4px}.browser-price strong{font-size:23px}.browser-price span{font-size:12px}#browser-total{font-size:14px}#market-ranking .ranking-row{padding-block:12px}.ranking-position{font-size:25px}.ranking-price{font-size:21px}.history-stats>div:nth-child(2){border-right:0}.history-stats>div:nth-child(-n+2){border-bottom:1px solid var(--dex-rule)}}
 </style>
 </head>
@@ -2097,7 +2082,7 @@ body>main.wrap{max-width:1440px}@media(min-width:1000px){.hero-inner{width:min(1
     </section>
     <main class="wrap">
         <section id="browse" class="collection-nav" aria-label="卡牌系列與版本">
-            <div class="collection-nav-top"><h2 id="browser-title">CARD DATABASE / 卡牌圖鑑</h2><span id="browser-total"></span></div>
+            <div class="collection-nav-top"><span class="collection-heading">COLLECTION / 卡牌查詢</span></div>
             <div class="collection-search">
                 <div class="collection-search-head"><span class="collection-step-label">01 / SEARCH · 搜尋卡片</span></div>
                 <div class="search"><input id="query" autocomplete="off" placeholder="135、157、171"
@@ -2126,7 +2111,7 @@ body>main.wrap{max-width:1440px}@media(min-width:1000px){.hero-inner{width:min(1
                     </div>
                 </div>
             </div>
-            <div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="low">價格低 → 高</option><option value="code">卡號</option></select></label></div><div class="collection-footer"><span class="collection-dot"></span><span id="collection-summary">Welcome to Night City / BETA</span><span class="collection-aside">DATABASE ONLINE</span></div>
+            <div class="collection-footer"><span class="collection-dot"></span><span id="collection-summary">Welcome to Night City / BETA</span><span class="collection-aside">DATABASE ONLINE</span></div>
         </section>
         <section class="panel detail" id="result">
             <div class="row space">
@@ -2167,7 +2152,7 @@ body>main.wrap{max-width:1440px}@media(min-width:1000px){.hero-inner{width:min(1
                     target="_blank" rel="noopener noreferrer">查看 Beta 卡片圖鑑</a></div>
         </section>
 
-    <section id="card-browser" aria-labelledby="browser-title"><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
+    <section id="card-browser" aria-labelledby="browser-title"><div class="browser-head"><h2 id="browser-title">CARD DATABASE / 卡牌圖鑑</h2><span id="browser-total"></span></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="low">價格低 → 高</option><option value="code">卡號</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
         <footer>CyberDEX 是非官方收藏工具。與 Cyberpunk TCG、TCGplayer 無關；卡圖版權歸原權利人所有。價格不能作為保證成交報價。</footer>
 </main>
     <script>
