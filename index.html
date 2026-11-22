@@ -1946,6 +1946,22 @@ html body>header{position:sticky;top:0;z-index:40;transform:translateY(0);transi
 html:not(.pack-opening) body>header.scroll-header-hidden:not(:has(:focus-visible,.dex-menu-toggle[aria-expanded=true])){transform:translateY(-101%);pointer-events:none}
 html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,html.pack-opening body>header{position:relative;transform:none!important;pointer-events:auto!important}
 @media(prefers-reduced-motion:reduce){html body>header{transition:none}}
+
+/* Micro-interactions: immediate press response without changing control geometry. */
+:is(.collection-nav .edition-options .edition-btn,.ranking-tools button,.history-periods button,#draw-dialog [data-pack-edition],.settab,.series-trigger){
+  transition:background-color .18s ease,color .18s ease,border-color .18s ease,filter .14s ease;
+}
+:is(.collection-nav .edition-options .edition-btn,.ranking-tools button,.history-periods button,#draw-dialog [data-pack-edition],.settab,.series-trigger):not(:disabled):active{filter:brightness(.78)}
+:is(.hero-action,#search.primary,#ranking-more,#draw-dialog .pack-controls button,#draw-dialog .slider-open,#draw-dialog .pack-odds button){
+  transition:scale .16s cubic-bezier(.2,.75,.25,1),filter .16s ease,background-color .18s ease;
+}
+:is(.hero-action,#search.primary,#ranking-more,#draw-dialog .pack-controls button,#draw-dialog .slider-open,#draw-dialog .pack-odds button):not(:disabled):active{scale:.97;filter:brightness(.86)}
+@media(hover:hover) and (pointer:fine){
+  :is(.collection-nav .edition-options .edition-btn,.ranking-tools button,.history-periods button,#draw-dialog [data-pack-edition],.settab,.series-trigger):not(:disabled):hover{filter:brightness(1.15)}
+}
+@media(prefers-reduced-motion:reduce){
+  :is(.collection-nav .edition-options .edition-btn,.ranking-tools button,.history-periods button,#draw-dialog [data-pack-edition],.settab,.series-trigger,.hero-action,#search.primary,#ranking-more,#draw-dialog .pack-controls button,#draw-dialog .slider-open,#draw-dialog .pack-odds button){transition:none!important;scale:none!important}
+}
 </style>
 </head>
 
@@ -2720,6 +2736,24 @@ refreshRankingGlow();
  const observer=new MutationObserver(reset);
  observer.observe(root,{attributes:true,attributeFilter:['class']});
  if(stage)observer.observe(stage,{attributes:true,attributeFilter:['class','hidden']});
+})();
+</script>
+<script>
+/* Give committed selections a small confirmation pulse, including keyboard activation. */
+(()=>{
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)');
+ const controls='.edition-options .edition-btn,.ranking-tools button,.history-periods button,#draw-dialog [data-pack-edition],.settab';
+ const running=new WeakMap();
+ document.addEventListener('click',event=>{
+  if(reduce.matches||!(event.target instanceof Element))return;
+  const button=event.target.closest(controls);
+  if(!button||button.disabled||typeof button.animate!=='function')return;
+  requestAnimationFrame(()=>{
+   if(!button.isConnected||!(button.matches('.active,[aria-pressed=true],[aria-selected=true]')))return;
+   running.get(button)?.cancel();
+   running.set(button,button.animate([{filter:'brightness(1)'},{filter:'brightness(1.45)',offset:.35},{filter:'brightness(1)'}],{duration:220,easing:'ease-out'}));
+  });
+ });
 })();
 </script>
 </body>
