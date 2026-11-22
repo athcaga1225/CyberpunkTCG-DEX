@@ -11,7 +11,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4">
     <title>CyberDEX — 卡牌價格追蹤</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800;900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800;900&amp;family=Rajdhani:wght@500;600;700&amp;display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&amp;display=swap"
         rel="stylesheet">
@@ -2017,6 +2017,47 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
 .pack-cycle-bar span{height:6px;background:#36383a}.pack-cycle-bar .filled{background:#fcee09}
 @media(max-width:900px){#browser-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:560px){#browser-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}.browser-head{gap:7px}.browser-toolbar{gap:10px}.browser-card strong{font-size:13px}.history-stats{grid-template-columns:repeat(2,minmax(0,1fr))}#market-ranking .ranking-row{grid-template-columns:22px 44px minmax(0,1fr) auto;gap:8px}#market-ranking .ranking-change{grid-column:4;grid-row:2;font-size:12px}#market-ranking .ranking-price{grid-column:4;grid-row:1}#market-ranking .ranking-position,#market-ranking .ranking-image,#market-ranking .ranking-name{grid-row:1 / span 2}.ranking-metrics{font-size:12px}}
+
+/* Visual system: editorial hierarchy, fine rules, chamfered surfaces. */
+:root{--dex-numeric:"Rajdhani","Barlow Condensed",system-ui,sans-serif;--dex-rule:#303238;--dex-surface:#181a1f;--dex-subtle:#979ba4}
+body>main.wrap{max-width:1440px}@media(min-width:1000px){.hero-inner{width:min(1392px,calc(100% - 48px))}body>header{padding-inline:max(24px,calc((100vw - 1392px)/2))}}#market-ranking{width:min(1392px,calc(100% - 2 * var(--page-heading-side)))}
+#browse.collection-nav{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;border-top:1px solid var(--dex-rule);margin:26px 0 12px;padding-top:22px}
+#browse .collection-nav-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin:0}
+#browser-title{font-size:clamp(18px,2vw,26px);font-weight:700;color:#fcee09;margin:0;letter-spacing:.03em}
+#browser-total{font:600 16px var(--dex-numeric);color:#e4e4e4}
+#browse .collection-search{padding:0;border:0;min-width:0;grid-row:3}
+#browse .collection-grid{margin:0;grid-row:2;column-gap:12px}
+#browse .collection-grid>.collection-field:nth-child(2){padding-left:0}
+#browse .collection-step-label,#browse .collection-field-label,#browse .collection-field>label{font-size:11px;font-weight:500;letter-spacing:.06em}
+#browse .collection-footer{border-top:1px solid var(--dex-rule);padding-top:6px;min-height:0}
+#browse .browser-toolbar{margin:0;grid-row:4;align-items:center}
+#browse .collection-search .search input{min-width:0;background:#191b20;border-color:var(--dex-rule)}
+#browser-rarities button,.browser-sort select{background:#141518;border-color:var(--dex-rule);padding:10px 12px}
+#browser-rarities button[aria-pressed=true]{background:#252526;color:#fcee09;border-color:#fcee09}
+#card-browser{margin:12px 0 40px}
+#browser-grid{gap:28px 18px}
+.browser-art{border-radius:0;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));background:#181a1d}
+.browser-card{gap:4px}.browser-card strong{font:700 clamp(17px,1.7vw,22px)/1.1 var(--dex-numeric)}
+.browser-subtitle{font:500 15px/1.3 var(--dex-numeric);color:var(--dex-subtle);min-height:1.3em;overflow-wrap:anywhere}
+.browser-card small{display:flex;align-items:center;justify-content:space-between;gap:4px;color:var(--dex-subtle);font-size:11px}
+.browser-rarity{display:inline-flex;align-items:center;gap:5px;text-align:right}.browser-rarity::before{content:"";width:7px;height:7px;background:currentColor;flex:none}
+.browser-card[data-rarity="Iconic Secret"] .browser-rarity{color:#ff465d}.browser-card[data-rarity="Iconic Legend"] .browser-rarity{color:#fcee09}.browser-card[data-rarity="Iconic Other"] .browser-rarity{color:#41d9ca}
+.browser-price{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;color:#f4f4f4}.browser-price strong{font-size:clamp(20px,2vw,27px);font-variant-numeric:tabular-nums}.browser-price span{font:600 14px var(--dex-numeric);color:var(--dex-subtle)}
+#result.panel{background:var(--dex-surface);border:0;box-shadow:none;border-radius:0;clip-path:none;padding:clamp(16px,3vw,36px);margin:24px 0 32px}
+#result.panel::before{display:none}#result .cardtitle{font:700 clamp(30px,4vw,54px)/1.05 var(--dex-numeric);letter-spacing:-.025em;margin:12px 0}
+.detail-subtitle{display:block;font:600 clamp(17px,2.3vw,28px)/1.25 var(--dex-numeric);letter-spacing:0;margin-top:5px;color:var(--dex-subtle)}
+#result .price{font:700 clamp(38px,6vw,68px)/1 var(--dex-numeric);color:#f4f4f4;letter-spacing:-.03em}
+#result .price .currency-prefix{font:inherit;font-size:.65em}#result .approx{font:600 clamp(19px,2vw,28px) var(--dex-numeric);color:var(--dex-subtle)}#result .approx .twd-prefix{font:inherit}
+#result[data-rarity="Iconic Secret"] .raritycode{color:#ff465d}#result[data-rarity="Iconic Other"] .raritycode{color:#41d9ca}
+#result .divider{background:var(--dex-rule);border-color:var(--dex-rule)}#result #imagebox{border:0;border-radius:0;background:none}
+.history-graph:not(:empty){background:#131418;padding:12px 10px;box-sizing:border-box;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
+.history-graph svg{max-height:none}.history-stats{background:transparent;gap:0;margin:20px 0 12px}.history-stats>div{background:transparent;border-right:1px solid var(--dex-rule);padding:12px 16px}.history-stats>div:last-child{border-right:0}.history-stats strong{font:700 clamp(20px,2vw,28px) var(--dex-numeric)}
+.history-periods{gap:0;background:#111215;padding:4px}.history-periods button{border:0;background:transparent;color:var(--dex-subtle);font:600 15px var(--dex-numeric)}.history-periods button[aria-pressed=true]{background:#25272c;color:#fcee09}
+.ranking-metrics{display:flex;justify-content:flex-end;gap:28px;margin:20px 0}.ranking-metrics>div{display:grid;gap:3px}.ranking-metrics small{color:var(--dex-subtle);font-size:12px}.ranking-metrics strong{font:700 clamp(25px,3vw,40px)/1 var(--dex-numeric);color:#fcee09}
+#market-ranking .ranking-row{border-bottom-color:var(--dex-rule);padding-block:18px}.ranking-list{border-top-color:var(--dex-rule)}.ranking-position{font:700 32px var(--dex-numeric)}.ranking-price{font:700 25px var(--dex-numeric)}.ranking-price small{font:600 14px var(--dex-numeric)}.ranking-change{font:700 20px var(--dex-numeric)}
+#draw-dialog .pack-stats{border-top:1px solid var(--dex-rule);padding:15px 0;gap:16px}.pack-stats strong{font:700 28px var(--dex-numeric)}
+@media(min-width:1000px){#browse.collection-nav{grid-template-columns:minmax(290px,1fr) minmax(0,1.65fr);column-gap:18px}#browse .collection-nav-top,#browse .browser-toolbar,#browse .collection-footer{grid-column:1/-1}#browse .collection-grid{grid-row:2;grid-column:1}#browse .collection-search{grid-row:2;grid-column:2}#browse .browser-toolbar{grid-row:3}#browse .collection-footer{grid-row:4}#browse .collection-search .search #search.primary{width:116px}}
+@media(max-width:560px){#browser-grid{gap:24px 12px}.browser-card strong{font-size:20px}.browser-card small{flex-wrap:wrap}.browser-subtitle{font-size:14px}.browser-price{gap:4px}.browser-price strong{font-size:23px}.browser-price span{font-size:12px}#browser-total{font-size:14px}#market-ranking .ranking-row{padding-block:12px}.ranking-position{font-size:25px}.ranking-price{font-size:21px}.history-stats>div:nth-child(2){border-right:0}.history-stats>div:nth-child(-n+2){border-bottom:1px solid var(--dex-rule)}}
 </style>
 </head>
 
@@ -2056,7 +2097,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
     </section>
     <main class="wrap">
         <section id="browse" class="collection-nav" aria-label="卡牌系列與版本">
-            <div class="collection-nav-top"><span class="collection-heading">COLLECTION / 卡牌查詢</span></div>
+            <div class="collection-nav-top"><h2 id="browser-title">CARD DATABASE / 卡牌圖鑑</h2><span id="browser-total"></span></div>
             <div class="collection-search">
                 <div class="collection-search-head"><span class="collection-step-label">01 / SEARCH · 搜尋卡片</span></div>
                 <div class="search"><input id="query" autocomplete="off" placeholder="135、157、171"
@@ -2085,7 +2126,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
                     </div>
                 </div>
             </div>
-            <div class="collection-footer"><span class="collection-dot"></span><span id="collection-summary">Welcome to Night City / BETA</span><span class="collection-aside">DATABASE ONLINE</span></div>
+            <div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="low">價格低 → 高</option><option value="code">卡號</option></select></label></div><div class="collection-footer"><span class="collection-dot"></span><span id="collection-summary">Welcome to Night City / BETA</span><span class="collection-aside">DATABASE ONLINE</span></div>
         </section>
         <section class="panel detail" id="result">
             <div class="row space">
@@ -2125,8 +2166,9 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
             <div class="links"><a id="tcg" target="_blank" rel="noopener noreferrer">TCGplayer 查價</a><a id="cataloglink"
                     target="_blank" rel="noopener noreferrer">查看 Beta 卡片圖鑑</a></div>
         </section>
+
+    <section id="card-browser" aria-labelledby="browser-title"><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
         <footer>CyberDEX 是非官方收藏工具。與 Cyberpunk TCG、TCGplayer 無關；卡圖版權歸原權利人所有。價格不能作為保證成交報價。</footer>
-    <section id="card-browser" aria-labelledby="browser-title"><div class="browser-head"><h2 id="browser-title">CARD DATABASE / 卡牌圖鑑</h2><span id="browser-total"></span></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="low">價格低 → 高</option><option value="code">卡號</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
 </main>
     <script>
         'use strict';
@@ -2248,8 +2290,8 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
                 const tile=document.createElement('button');tile.type='button';tile.className='browser-card';tile.dataset.rarity=entry.rarity;
                 const art=document.createElement('span');art.className='browser-art';const record=activeEdition==='retail'?(retailIconicVerified[code]||retailImages[code]):activeSection==='starter'?{url:entry.imageUrl}:cardImages[code];
                 if(record?.url){const img=document.createElement('img');img.src=record.url;img.alt='';img.loading='lazy';img.decoding='async';img.onerror=()=>{if(record.fallbackUrl&&img.src!==record.fallbackUrl){img.src=record.fallbackUrl;return}img.remove();art.textContent='卡圖待補'};art.append(img)}else art.textContent='卡圖待補';
-                const title=document.createElement('strong'),meta=document.createElement('small'),price=document.createElement('span');title.textContent=entry.name;meta.textContent=code+' · '+entry.rarity;price.className='browser-price';price.textContent=Number.isFinite(market[code]?.usd)?fmtUSD(market[code].usd)+' · '+currency(market[code].usd):'尚無報價';
-                tile.append(art,title,meta,price);tile.onclick=()=>{$('query').value=code;show(code,true);if($('result').classList.contains('open'))$('name').focus({preventScroll:true})};grid.append(tile)
+                const title=document.createElement('strong'),meta=document.createElement('small'),price=document.createElement('span');const [primary,...secondary]=entry.name.split(':');title.textContent=primary;const subtitle=document.createElement('span');subtitle.className='browser-subtitle';subtitle.textContent=secondary.join(':').trim()||' ';const codeLabel=document.createElement('span'),rarity=document.createElement('span');codeLabel.textContent=code;rarity.className='browser-rarity';rarity.textContent=entry.rarity;meta.append(codeLabel,rarity);price.className='browser-price';if(Number.isFinite(market[code]?.usd)){const amount=document.createElement('strong'),nt=document.createElement('span');amount.textContent=fmtUSD(market[code].usd);nt.textContent=currency(market[code].usd);price.append(amount,nt)}else price.textContent='尚無報價';
+                tile.append(art,title,subtitle,meta,price);tile.onclick=()=>{$('query').value=code;show(code,true);if($('result').classList.contains('open'))$('name').focus({preventScroll:true})};grid.append(tile)
             }
             $('browser-more').hidden=rows.length<=limit;
         }
@@ -2395,7 +2437,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
             const changedCard = selected !== code || !$('result').classList.contains('open');
             selected = code; $('loadstate').textContent = collectionStatusText();
             $('result').classList.add('open'); $('number').textContent = (activeSection === "starter" ? (entry.setCode + " · ") : "") + code;
-            $('name').textContent = entry.name; $('name').setAttribute('tabindex','-1');
+            const [character,...epithet]=entry.name.split(':');$('name').textContent=character;const sub=document.createElement('span');sub.className='detail-subtitle';sub.textContent=epithet.join(':').trim();if(sub.textContent)$('name').append(sub);$('result').dataset.rarity=entry.rarity;$('name').setAttribute('tabindex','-1');
             $('variant').textContent = activeSection === "starter" ? (activeStarter === "heist" ? "THE HEIST · BETA" : "EMBRACING POWER · BETA") : (entry.set ? "BOX TOPPER" : "Welcome to Night City · " + activeEdition.toUpperCase());
             const rn = $('rarityinfo'); rn.replaceChildren();
             const line = document.createElement('div'); line.className = 'rarityline';
@@ -2503,17 +2545,22 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
             const W=mobile?Math.max(1,Math.floor(root.clientWidth||320)):640,H=230;
             const NS="http://www.w3.org/2000/svg",svg=document.createElementNS(NS,"svg");svg.setAttribute("viewBox",`0 0 ${W} ${H}`);svg.setAttribute("role","img");svg.setAttribute("aria-label","歷史市場參考價格曲線，"+points.length+" 筆資料");
             const lo=Math.min(...points.map(p=>p.usd)),hi=Math.max(...points.map(p=>p.usd)),pad=Math.max((hi-lo)*.16,hi*.03,.01);
-            const min=lo-pad,max=hi+pad,left=55,right=16,top=16,bottom=38;
+            const min=Math.max(0,lo-pad),max=hi+pad,left=55,right=16,top=16,bottom=38;
             const times=points.map(p=>Date.parse(p.date+"T00:00:00Z")),tmin=times[0],tmax=times[times.length-1];
             const x=t=>left+(t-tmin)/Math.max(1,tmax-tmin)*(W-left-right);
             const y=v=>top+(max-v)/(max-min)*(H-top-bottom);
             const el=(name,attrs,text)=>{const n=document.createElementNS(NS,name);for(const [k,v] of Object.entries(attrs||{}))n.setAttribute(k,String(v));if(text!==undefined)n.textContent=text;svg.append(n);return n};
-            for(let i=0;i<4;i++){const v=min+(max-min)*i/3,Y=y(v);el("line",{x1:left,y1:Y,x2:W-right,y2:Y,stroke:"#455255","stroke-width":.7,"stroke-dasharray":"3 5"});el("text",{x:0,y:Y+4,fill:"#aab9bc","font-size":12},v.toFixed(v>=100?0:2))}
+            for(let i=0;i<4;i++){const v=min+(max-min)*i/3,Y=y(v);el("line",{x1:left,y1:Y,x2:W-right,y2:Y,stroke:"#30343a","stroke-width":.85});el("text",{x:0,y:Y+4,fill:"#aab9bc","font-size":12},v.toFixed(v>=100?0:2))}
+            const chartColor=last.usd<first.usd?"#ff465d":last.usd>first.usd?"#41d9ca":"#fcee09";
+            const gradientId='history-fill-'+panel.id;
+            const defs=el("defs"),gradient=document.createElementNS(NS,"linearGradient");gradient.id=gradientId;gradient.setAttribute("x1","0");gradient.setAttribute("x2","0");gradient.setAttribute("y1",String(top));gradient.setAttribute("y2",String(H-bottom));gradient.setAttribute("gradientUnits","userSpaceOnUse");
+            for(const [offset,opacity] of [["0%",".28"],["100%","0"]]){const stop=document.createElementNS(NS,"stop");stop.setAttribute("offset",offset);stop.setAttribute("stop-color",chartColor);stop.setAttribute("stop-opacity",opacity);gradient.append(stop)}defs.append(gradient);
             for(let i=1;i<points.length;i++){
-                const missing=times[i]-times[i-1]>86400000;
-                el("line",{x1:x(times[i-1]),y1:y(points[i-1].usd),x2:x(times[i]),y2:y(points[i].usd),stroke:missing?"#a8a34a":"#fcee09","stroke-width":missing?1.4:2,"stroke-dasharray":missing?"4 5":"none","stroke-linecap":"round"});
+                const missing=times[i]-times[i-1]>86400000,x1=x(times[i-1]),x2=x(times[i]),y1=y(points[i-1].usd),y2=y(points[i].usd);
+                if(!missing)el("path",{d:"M"+x1+","+y1+" L"+x2+","+y2+" L"+x2+","+(H-bottom)+" L"+x1+","+(H-bottom)+" Z",fill:"url(#"+gradientId+")"});
+                el("line",{x1,y1,x2,y2,stroke:chartColor,"stroke-opacity":missing?.5:1,"stroke-width":missing?1.6:2.7,"stroke-dasharray":missing?"4 6":"none","stroke-linecap":"round"});
             }
-            points.forEach((p,i)=>{const dot=el("circle",{cx:x(times[i]),cy:y(p.usd),r:2.8,fill:"#fcee09"});dot.style.setProperty("--point-delay",(0.45+0.45*i/Math.max(1,points.length-1))+"s")});
+            points.forEach((p,i)=>{const dot=el("circle",{cx:x(times[i]),cy:y(p.usd),r:1.8,fill:chartColor});dot.style.setProperty("--point-delay",(0.45+0.45*i/Math.max(1,points.length-1))+"s")});
             for(const p of [first,last]){const T=Date.parse(p.date+"T00:00:00Z");el("text",{x:x(T),y:H-10,fill:"#aab9bc","font-size":12,"text-anchor":p===first?"start":"end"},p.date.slice(5))}
             const guide=el("line",{x1:0,y1:top,x2:0,y2:H-bottom,stroke:"#c5003c","stroke-width":1,"stroke-dasharray":"4 4",visibility:"hidden"});
             const hit=el("rect",{x:left,y:top,width:W-left-right,height:H-top-bottom,fill:"transparent"});
@@ -2576,7 +2623,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
         const menuToggle=document.querySelector('.dex-menu-toggle'),mainNav=$('dex-nav');mainNav.inert=true;function setMenu(open){mainNav.inert=!open;mainNav.classList.toggle('is-open',open);menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'關閉主選單':'開啟主選單')}menuToggle.onclick=()=>setMenu(menuToggle.getAttribute('aria-expanded')!=='true');mainNav.addEventListener('click',e=>{if(e.target.closest('a'))setMenu(false)});document.addEventListener('pointerdown',e=>{if(!menuToggle.contains(e.target)&&!mainNav.contains(e.target))setMenu(false)});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuToggle.getAttribute('aria-expanded')==='true'){setMenu(false);menuToggle.focus()}});matchMedia('(max-width:760px)').addEventListener('change',()=>setMenu(false));
         const ranking=$('market-ranking');if(rankView==='ranking'){ranking.hidden=false;document.title='CyberDEX — 價格排行'}
         function rankChange(code,p){if(rankEdition!=='beta')return null;const end=Date.parse(p.observedDate),target=end-30*86400000;if(!Number.isFinite(end))return null;const history=(historyCards[code]||[]).filter(x=>Number.isFinite(x.usd)&&x.usd>0&&Math.abs(Date.parse(x.date)-target)<=7*86400000).sort((a,b)=>Math.abs(Date.parse(a.date)-target)-Math.abs(Date.parse(b.date)-target));return history.length?(p.usd/history[0].usd-1)*100:null}
-        let rankLimit=20;function renderRanking(append=false){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);const metrics=$('ranking-metrics');metrics.textContent=(retail?'RETAIL':'BETA')+' · 最高市場價 '+(rows.length?fmtUSD(Math.max(...rows.map(x=>x.p.usd))):'—')+' · 可比較30日走勢 '+rows.filter(x=>x.change!==null).length+' 張';if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=sorted.length+' 張有報價卡牌'+(!hasHistory?' · 歷史資料不足，暫不提供30日漲跌幅排序':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list'),more=$('ranking-more'),visible=rankSort==='price'?sorted.slice(0,rankLimit):sorted;more.hidden=rankSort!=='price'||visible.length>=sorted.length;const start=append?list.querySelectorAll('.ranking-row').length:0;if(!append){closeRankHistory();list.replaceChildren()}if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();visible.slice(start).forEach(({code,p,entry,change},index)=>{const i=index+start;const a=document.createElement('button');a.type='button';a.className='ranking-row';a.dataset.rankCode=code;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','rank-history-'+code);const pos=document.createElement('span');pos.className='ranking-position'+(i<3?' top-three':'');pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;img.decoding='async';if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';name.textContent=entry.name;const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';value.textContent=fmtUSD(p.usd);const twd=document.createElement('small');twd.dataset.usd=String(p.usd);twd.textContent=currency(p.usd);value.append(twd);const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=change===null?'—':(change>0?'+':'')+change.toFixed(1)+'%';delta.setAttribute('aria-label','30 日變動 '+delta.textContent);a.append(pos,img,name,delta,value);frag.append(a)});list.append(frag);}
+        let rankLimit=20;function renderRanking(append=false){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);const metrics=$('ranking-metrics');metrics.replaceChildren();for(const [label,value] of [[(retail?'RETAIL':'BETA')+' 最高市場價',rows.length?fmtUSD(Math.max(...rows.map(x=>x.p.usd))):'—'],['可比較 30 日走勢',rows.filter(x=>x.change!==null).length+' 張']]){const cell=document.createElement('div'),cap=document.createElement('small'),val=document.createElement('strong');cap.textContent=label;val.textContent=value;cell.append(cap,val);metrics.append(cell)}if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=sorted.length+' 張有報價卡牌'+(!hasHistory?' · 歷史資料不足，暫不提供30日漲跌幅排序':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list'),more=$('ranking-more'),visible=rankSort==='price'?sorted.slice(0,rankLimit):sorted;more.hidden=rankSort!=='price'||visible.length>=sorted.length;const start=append?list.querySelectorAll('.ranking-row').length:0;if(!append){closeRankHistory();list.replaceChildren()}if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();visible.slice(start).forEach(({code,p,entry,change},index)=>{const i=index+start;const a=document.createElement('button');a.type='button';a.className='ranking-row';a.dataset.rankCode=code;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','rank-history-'+code);const pos=document.createElement('span');pos.className='ranking-position'+(i<3?' top-three':'');pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;img.decoding='async';if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';name.textContent=entry.name;const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';value.textContent=fmtUSD(p.usd);const twd=document.createElement('small');twd.dataset.usd=String(p.usd);twd.textContent=currency(p.usd);value.append(twd);const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=change===null?'—':(change>0?'+':'')+change.toFixed(1)+'%';delta.setAttribute('aria-label','30 日變動 '+delta.textContent);a.append(pos,img,name,delta,value);frag.append(a)});list.append(frag);}
         const rankPanels=new Map();
         // Rebuild only when the chart coordinate system actually changes on resize.
         let historyResizeTimer;
