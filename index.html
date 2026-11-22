@@ -2419,7 +2419,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
                         </select>
                     </div>
                 </div>
-            </div></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"></div><div class="browser-editions" role="group" aria-label="圖鑑版本"><button type="button" data-browser-edition="beta" aria-pressed="true">BETA</button><button type="button" data-browser-edition="retail" aria-pressed="false">RETAIL</button></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="rarity">稀有度高 → 低</option><option value="code">卡號</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
+            </div></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"></div><div class="browser-editions" role="group" aria-label="圖鑑版本"><button type="button" data-browser-edition="beta" aria-pressed="true">BETA</button><button type="button" data-browser-edition="retail" aria-pressed="false">RETAIL</button></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="rarity">稀有度高 → 低</option><option value="code">卡牌編號 小 → 大</option><option value="code-desc">卡牌編號 大 → 小</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
         <footer>CyberDEX 是非官方收藏工具。與 Cyberpunk TCG、TCGplayer 無關；卡圖版權歸原權利人所有。價格不能作為保證成交報價。</footer>
 </main>
     <script>
@@ -2545,7 +2545,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
                 const pa=market[a]?.usd,pb=market[b]?.usd;
                 if(mode==='rarity'){const rank=e=>{const i=order.indexOf(e.rarity);return i<0?order.length:i};const diff=rank(ea)-rank(eb);if(diff)return diff}
                 if(mode==='high'){if(Number.isFinite(pa)!==Number.isFinite(pb))return Number.isFinite(pa)?-1:1;if(Number.isFinite(pa)&&pa!==pb)return pb-pa}
-                return a.localeCompare(b,undefined,{numeric:true});
+                return (mode==='code-desc'?-1:1)*a.localeCompare(b,undefined,{numeric:true});
             });
             $('browser-count').textContent=(filter.size?'已篩選 '+rows.length+' / '+entries.length+' 張卡牌 · '+filter.size+' 種稀有度':rows.length+' 張卡牌')+' · 點擊查看';
             const start=append&&!reset?grid.children.length:0;if(!start)grid.replaceChildren();const limit=Number(root.dataset.limit)||25;
