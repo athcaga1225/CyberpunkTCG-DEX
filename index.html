@@ -1008,8 +1008,9 @@
         .dex-arrow{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;flex:0 0 18px;color:inherit;font-family:system-ui,sans-serif;font-size:18px;font-weight:500;line-height:1;transition:transform .22s ease}
         .hero-slider-controls button[data-hero-prev],.hero-slider-controls button[data-hero-next]{display:inline-flex;align-items:center;justify-content:center;padding:0}
         .hero-slider-controls .dex-arrow{font-size:16px;transition:none}
-        :is(button,a):is(:hover,:focus-visible) .dex-arrow-up{transform:translate(3px,-3px)}
-        :is(button,a):is(:hover,:focus-visible) .dex-arrow-down{transform:translate(3px,3px)}
+        @media(hover:hover) and (pointer:fine){:is(button,a):hover .dex-arrow-up{transform:translate(3px,-3px)}:is(button,a):hover .dex-arrow-down{transform:translate(3px,3px)}}
+        html.keyboard-focus :is(button,a):focus-visible .dex-arrow-up{transform:translate(3px,-3px)}
+        html.keyboard-focus :is(button,a):focus-visible .dex-arrow-down{transform:translate(3px,3px)}
         @media(prefers-reduced-motion:reduce){.dex-arrow{transition:none!important;transform:none!important}}
     
         .hero-art-grid{background-size:165% auto;background-position:left bottom}
@@ -1890,9 +1891,9 @@ body>header .dex-nav a[aria-current=page]::after{content:"";position:absolute;le
 @keyframes rankHistoryExpand{from{max-height:0;opacity:0;padding-block:0;overflow:hidden}to{max-height:var(--rank-open-height);opacity:1;overflow:hidden}}
 @media(hover:hover) and (pointer:fine){
 
-.collection-search .search #search.primary:hover .dex-arrow,#draw-dialog .pack-controls button:not(:disabled):hover .dex-arrow{transform:translate(3px,-3px)}
+@media(hover:hover) and (pointer:fine){.collection-search .search #search.primary:hover .dex-arrow,#draw-dialog .pack-controls button:not(:disabled):hover .dex-arrow{transform:translate(3px,-3px)}}
 
-#draw-dialog .pack-odds button:hover .dex-arrow{transform:translate(3px,-3px)}
+@media(hover:hover) and (pointer:fine){#draw-dialog .pack-odds button:hover .dex-arrow{transform:translate(3px,-3px)}}
 }
 @media(prefers-reduced-motion:reduce){#market-ranking .ranking-expanded-history.ranking-expanding,#market-ranking .ranking-expanded-history.ranking-collapsing{animation:none}#search.primary,#draw-dialog .pack-controls button,#draw-dialog .pack-odds button,#draw-dialog .pack-odds button::after{transition:none;translate:none}}
 
@@ -2309,6 +2310,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
 
 #draw-dialog .slider-description{display:none!important}
 .browser-card[data-rarity="Nova Rare"] .browser-rarity{color:#e8a8e5}
+@media(hover:none),(pointer:coarse){html:not(.keyboard-focus) :is(button,a) .dex-arrow{transform:none!important}html:not(.keyboard-focus) #draw-dialog .pack-controls button:not(:active){scale:1;filter:none}html:not(.keyboard-focus) #draw-dialog .slider-open:hover{background:#fcee09}}
 </style>
 </head>
 
@@ -2417,7 +2419,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
                         </select>
                     </div>
                 </div>
-            </div></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"></div><div class="browser-editions" role="group" aria-label="圖鑑版本"><button type="button" data-browser-edition="beta" aria-pressed="true">BETA</button><button type="button" data-browser-edition="retail" aria-pressed="false">RETAIL</button></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="low">價格低 → 高</option><option value="code">卡號</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
+            </div></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"></div><div class="browser-editions" role="group" aria-label="圖鑑版本"><button type="button" data-browser-edition="beta" aria-pressed="true">BETA</button><button type="button" data-browser-edition="retail" aria-pressed="false">RETAIL</button></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="rarity">稀有度高 → 低</option><option value="code">卡號</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
         <footer>CyberDEX 是非官方收藏工具。與 Cyberpunk TCG、TCGplayer 無關；卡圖版權歸原權利人所有。價格不能作為保證成交報價。</footer>
 </main>
     <script>
@@ -2539,9 +2541,10 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
             const priced=entries.filter(([id])=>Number.isFinite(market[id]?.usd)),total=priced.reduce((a,[id])=>a+market[id].usd,0);
             setUsdText($('browser-total'),priced.length?'已報價 '+priced.length+'/'+entries.length+' 張 · 參考總值 '+fmtUSD(total)+' / '+currency(total):'尚無市場報價');
             const mode=$('browser-sort').value; if(entries.length)dexWrite(stateKey,{rarities:[...filter],sort:mode});
-            const rows=entries.filter(([,e])=>!filter.size||filter.has(e.rarity)).sort(([a],[b])=>{
+            const rows=entries.filter(([,e])=>!filter.size||filter.has(e.rarity)).sort(([a,ea],[b,eb])=>{
                 const pa=market[a]?.usd,pb=market[b]?.usd;
-                if(mode!=='code'){if(Number.isFinite(pa)!==Number.isFinite(pb))return Number.isFinite(pa)?-1:1;if(Number.isFinite(pa)&&pa!==pb)return mode==='high'?pb-pa:pa-pb}
+                if(mode==='rarity'){const rank=e=>{const i=order.indexOf(e.rarity);return i<0?order.length:i};const diff=rank(ea)-rank(eb);if(diff)return diff}
+                if(mode==='high'){if(Number.isFinite(pa)!==Number.isFinite(pb))return Number.isFinite(pa)?-1:1;if(Number.isFinite(pa)&&pa!==pb)return pb-pa}
                 return a.localeCompare(b,undefined,{numeric:true});
             });
             $('browser-count').textContent=(filter.size?'已篩選 '+rows.length+' / '+entries.length+' 張卡牌 · '+filter.size+' 種稀有度':rows.length+' 張卡牌')+' · 點擊查看';
@@ -3123,7 +3126,7 @@ function packFlash(cls){const flash=document.createElement('span');flash.classNa
 function openBooster(progress=0){if(typeof progress!=='number')progress=0;if(wrapper.disabled||!stage.classList.contains('pack-selected'))return;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;testRarity=devMode?testSelect.value:'';try{pack=drawPack()}catch(e){instruction.textContent='卡牌資料尚未完整載入，請稍後再試。';return}wrapper.disabled=true;testSelect.disabled=true;instruction.textContent='';if(!reduced){const r=wrapper.getBoundingClientRect(),bottom=document.body.getBoundingClientRect().bottom,drop=Math.max(0,bottom-(r.top+r.height/2));wrapper.style.setProperty('--v3-drop',drop+'px');wrapper.style.setProperty('--v3-lift',(-drop)+'px');v3Unpeeled.src=art[edition];dialog.classList.add('v3-opening-active');wrapper.classList.add('v3-approach');startFoil(progress);wrapper.classList.add('torn');timer=setTimeout(finishOpening,1680)}else{wrapper.classList.add('torn');timer=setTimeout(finishOpening,0)}}
 wrapper.onclick=openBooster;
 stage.querySelectorAll('[data-pack-edition]').forEach(b=>b.onclick=()=>{if(!wrapper.disabled)selectEdition(b.dataset.packEdition)});if(document.documentElement.classList.contains('pack-view')){document.title='CyberDEX — 開啟卡包';reset();selectEdition(activeEdition)};
-document.getElementById('draw-again').onclick=()=>{const previousTest=testRarity;let next;try{next=drawPack()}catch(e){return}reset();testRarity=previousTest;pack=next;wrapper.disabled=true;testSelect.disabled=true;display()};
+document.getElementById('draw-again').onclick=e=>{if(e.detail!==0)e.currentTarget.blur();const previousTest=testRarity;let next;try{next=drawPack()}catch(e){return}reset();testRarity=previousTest;pack=next;wrapper.disabled=true;testSelect.disabled=true;display()};
 const revealAllButton=document.getElementById('pack-reveal-all');let lastRevealTouch=-Infinity,revealTouch=null;
 function revealAll(){const cards=[...grid.querySelectorAll('.pack-card')];if(cards.length!==12)return;const pending=cards.filter(b=>!b.classList.contains('revealed'));if(!pending.length){reset();backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');window.scrollTo({top:0,behavior:'instant'});return}const finishNow=revealingAll||matchMedia('(prefers-reduced-motion: reduce)').matches;cancelReveal();if(finishNow){pending.forEach(b=>reveal(b));return}revealingAll=true;revealAllButton.textContent='翻開中…';const run=revealRun;reveal(pending[0]);if(run!==revealRun)return;pending.slice(1).forEach((b,i)=>{revealTimers.push(setTimeout(()=>{if(run===revealRun&&b.isConnected)reveal(b)},(i+1)*60))})}
 revealAllButton.addEventListener('touchstart',e=>{const t=e.changedTouches[0];revealTouch={x:t.clientX,y:t.clientY}},{passive:true});
