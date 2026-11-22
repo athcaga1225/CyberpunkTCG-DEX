@@ -2205,6 +2205,7 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
 header .brand{font-family:"Chakra Petch",var(--dex-display);font-size:28px;font-weight:700;letter-spacing:-.025em;line-height:1}
 #browser-detail-dialog #result #usd,#browser-detail-dialog #result #twd{font-variant-numeric:tabular-nums}
 @media(max-width:760px){#browser-detail-dialog #result.card-refresh .cardgrid,#browser-detail-dialog #result.card-refresh .history-panel{animation:none!important}}
+#result .market-amount-stable{display:inline-block;min-width:calc(var(--amount-ch,0)*1ch);font-variant-numeric:tabular-nums;white-space:nowrap}
 </style>
 </head>
 
@@ -2547,12 +2548,17 @@ header .brand{font-family:"Chakra Petch",var(--dex-display);font-size:28px;font-
         }
         $('query').addEventListener('input', () => {clearCardMatches();if($('query').getAttribute('aria-invalid')==='true'){$('loadstate').textContent=collectionStatusText();setSearchError('')}});
         function animateMarketAmount(node,target,previous,format){
-            node.textContent=format(target);
-            node.setAttribute('role','img');node.setAttribute('aria-label',format(target));
-            if(!Number.isFinite(previous)||previous===target||matchMedia('(max-width:760px), (prefers-reduced-motion: reduce)').matches)return;
-            const start=performance.now();
-            function tick(now){if(!node.isConnected)return;const t=Math.min(1,(now-start)/650),ease=1-Math.pow(1-t,3);node.textContent=format(t===1?target:previous+(target-previous)*ease);if(t<1)requestAnimationFrame(tick)}
-            node.textContent=format(previous);requestAnimationFrame(tick);
+            const finalText=format(target), reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const animated=!reduced&&Number.isFinite(previous)&&previous!==target;
+            node.classList.add('market-amount-stable');
+            node.dataset.finalAmount=finalText;node.style.setProperty("--amount-ch",String(Math.max(finalText.length,format(Number.isFinite(previous)?previous:target).length)));
+            node.setAttribute('role','img');node.setAttribute('aria-label',finalText);
+            const value=document.createTextNode(animated?format(previous):finalText);
+            node.replaceChildren(value);
+            if(!animated)return;
+            let start=null,last=value.data;
+            function tick(now){if(!node.isConnected)return;if(start===null)start=now;const t=Math.min(1,(now-start)/650),ease=1-Math.pow(1-t,3);const next=format(t===1?target:previous+(target-previous)*ease);if(next!==last){value.data=next;last=next}if(t<1)requestAnimationFrame(tick)}
+            requestAnimationFrame(tick);
         }
         function show(query, scroll) {
             clearCardMatches();
