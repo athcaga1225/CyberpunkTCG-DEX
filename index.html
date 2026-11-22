@@ -2647,7 +2647,7 @@ html.keyboard-focus body #market-ranking .ranking-row:focus-visible{background:#
             const y=v=>top+(max-v)/(max-min)*(H-top-bottom);
             const el=(name,attrs,text)=>{const n=document.createElementNS(NS,name);for(const [k,v] of Object.entries(attrs||{}))n.setAttribute(k,String(v));if(text!==undefined)n.textContent=text;svg.append(n);return n};
             for(let i=0;i<3;i++){const v=min+(max-min)*i/2,Y=y(v);el("line",{x1:left,y1:Y,x2:W-right,y2:Y,stroke:"#30343a","stroke-width":.85});el("text",{x:0,y:Y+4,fill:"#aab9bc","font-size":12},"$"+v.toFixed(v>=100?0:2))}
-            const chartColor=last.usd<first.usd?"#ff465d":last.usd>first.usd?"#41d9ca":"#fcee09";
+            const chartColor="#fcee09";
             const gradientId='history-fill-'+panel.id;
             const defs=el("defs"),gradient=document.createElementNS(NS,"linearGradient");gradient.id=gradientId;gradient.setAttribute("x1","0");gradient.setAttribute("x2","0");gradient.setAttribute("y1",String(top));gradient.setAttribute("y2",String(H-bottom));gradient.setAttribute("gradientUnits","userSpaceOnUse");
             for(const [offset,opacity] of [["0%",".28"],["100%","0"]]){const stop=document.createElementNS(NS,"stop");stop.setAttribute("offset",offset);stop.setAttribute("stop-color",chartColor);stop.setAttribute("stop-opacity",opacity);gradient.append(stop)}defs.append(gradient);
