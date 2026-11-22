@@ -2249,9 +2249,9 @@ html.keyboard-focus #browser-rarities:focus-within{mask-image:none}
 .browser-editions{display:none}
 @media(max-width:760px){
 .browser-toolbar{align-items:center}
-.browser-editions{display:inline-flex;flex:none;align-items:stretch}
+.browser-editions{display:inline-grid;grid-template-columns:repeat(2,minmax(0,1fr));flex:none;align-items:stretch}
 .browser-editions button{min-height:44px;padding:0 11px;border:1px solid #424b54;background:#0d1419;color:#aab8bf;font:700 12px var(--dex-font);white-space:nowrap;cursor:pointer}
-.browser-editions button+button{margin-left:-1px}
+.browser-editions button+button{margin-left:0}.browser-editions button{box-sizing:border-box;min-width:0;width:100%}
 .browser-editions button[aria-pressed=true]{position:relative;z-index:1;border-color:#fcee09;color:#fcee09}
 .browser-sort{margin-left:auto;white-space:nowrap;gap:6px}
 }
