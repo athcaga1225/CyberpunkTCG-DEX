@@ -2117,6 +2117,9 @@ html.keyboard-focus body #market-ranking .ranking-row:focus-visible{background:#
 #result .market-fx-note{margin-top:10px;padding-top:9px}
 #result .market-fx-note .note{margin:3px 0 0}
 }
+.history-tooltip{width:max-content;max-width:calc(100% - 8px);box-sizing:border-box;white-space:nowrap}
+.history-tooltip strong{white-space:nowrap}
+@media(max-width:360px){.history-tooltip{padding-inline:8px}.history-tooltip strong{font-size:12px}}
 </style>
 </head>
 
@@ -2690,7 +2693,7 @@ html.keyboard-focus body #market-ranking .ranking-row:focus-visible{background:#
                 guide.setAttribute("x1",guideX);guide.setAttribute("x2",guideX);
                 guide.setAttribute("visibility","visible");
                 dateLabel.textContent=p.date.replaceAll("-","/");priceLabel.textContent="$"+p.usd.toFixed(2)+"　NT$"+Math.round(p.usd*rate).toLocaleString("zh-TW");
-                tooltip.hidden=false;
+                tooltip.style.left="0px";tooltip.hidden=false;
                 const tipWidth=tooltip.offsetWidth,graphWidth=root.clientWidth;
                 const marker=svg.createSVGPoint();marker.x=guideX;marker.y=top;
                 const screenX=marker.matrixTransform(matrix).x-root.getBoundingClientRect().left;
