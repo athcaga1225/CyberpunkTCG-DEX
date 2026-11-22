@@ -2818,11 +2818,13 @@ html.keyboard-focus #browser-rarities:focus-within{mask-image:none}
             const reveal=document.createElementNS(NS,'rect');reveal.setAttribute('x',String(left-2));reveal.setAttribute('y','0');reveal.setAttribute('width',String(W-left-right+4));reveal.setAttribute('height',String(H));clip.append(reveal);defs.append(clip);
             const series=el('g',{'clip-path':'url(#'+clipId+')'});
             if(animate&&!matchMedia('(prefers-reduced-motion: reduce)').matches)reveal.setAttribute('class','history-line-reveal');
-            for(let i=1;i<points.length;i++){
-                const missing=times[i]-times[i-1]>86400000,x1=x(times[i-1]),x2=x(times[i]),y1=y(points[i-1].usd),y2=y(points[i].usd);
-                series.append(el("path",{d:"M"+x1+","+y1+" L"+x2+","+y2+" L"+x2+","+(H-bottom)+" L"+x1+","+(H-bottom)+" Z",fill:"url(#"+gradientId+")","fill-opacity":missing?.55:1}));
-                series.append(el("line",{x1,y1,x2,y2,stroke:chartColor,"stroke-opacity":missing?.5:1,"stroke-width":missing?1.15:2,"stroke-dasharray":missing?"1.5 4":"none","stroke-linecap":"round"}));
-            }
+            const coords=points.map((p,i)=>x(times[i])+","+y(p.usd));
+            const linePath="M"+coords.join(" L");
+            series.append(el("path",{d:linePath+" L"+x(tmax)+","+(H-bottom)+" L"+x(tmin)+","+(H-bottom)+" Z",fill:"url(#"+gradientId+")","fill-opacity":.8}));
+            series.append(el("path",{d:linePath,fill:"none",stroke:chartColor,"stroke-opacity":.65,"stroke-width":1.5,"stroke-dasharray":"1.5 3","stroke-linecap":"round","stroke-linejoin":"round"}));
+            let run=[];
+            const drawRun=()=>{if(run.length>1)series.append(el("path",{d:"M"+run.join(" L"),fill:"none",stroke:chartColor,"stroke-width":2,"stroke-linecap":"round","stroke-linejoin":"round"}));run=[]};
+            for(let i=1;i<points.length;i++){if(times[i]-times[i-1]>86400000){drawRun();continue}if(!run.length)run.push(coords[i-1]);run.push(coords[i])}drawRun();
 
             for(const [i,T] of [tmin,(tmin+tmax)/2,tmax].entries()){const date=new Date(T);el("text",{x:x(T),y:H-10,fill:"#979ba4","font-size":12,"text-anchor":i===0?"start":i===2?"end":"middle"},(date.getUTCMonth()+1)+"/"+date.getUTCDate())}
             const guide=el("line",{x1:0,y1:top,x2:0,y2:H-bottom,stroke:"#c5003c","stroke-width":1,"stroke-dasharray":"4 4",visibility:"hidden"});
