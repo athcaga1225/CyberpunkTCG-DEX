@@ -10,6 +10,15 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4">
     <title>CyberDEX — 卡牌價格追蹤</title>
+    <meta name="description" content="查詢 Cyberpunk TCG Beta 與 Retail 卡牌市場參考價、歷史走勢、價格排行與模擬開卡。">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CyberDEX">
+    <meta property="og:title" content="CyberDEX — 卡牌價格追蹤">
+    <meta property="og:description" content="Cyberpunk TCG 卡牌價格、歷史走勢、排行及模擬開卡。">
+    <meta property="og:image" content="https://v2.cyberpunktcg-dex.pages.dev/apple-touch-icon.png?v=4">
+    <meta name="twitter:card" content="summary">
+    <link rel="preconnect" href="https://cdn.shopify.com">
+    <link rel="preconnect" href="https://tcgplayer-cdn.tcgplayer.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800;900&amp;family=Rajdhani:wght@500;600;700&amp;display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2342,7 +2351,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
             <div class="collection-nav-top"><span class="collection-heading">SEARCH / 卡牌查詢</span></div>
             <div class="collection-search">
                 <div class="collection-search-head"><span class="collection-step-label">搜尋卡片</span></div>
-                <div class="search"><input id="query" autocomplete="off" placeholder="135、157、171"
+                <div class="search"><input id="query" autocomplete="off" placeholder="85、B168、Judy"
                         aria-label="輸入卡號或卡名"><button class="primary" id="search">搜尋卡片 <span class="dex-arrow dex-arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M8 6h10v10"/></svg></span></button></div>
                 <div class="row space" style="margin-top:12px;flex-wrap:wrap">
                     <div class="small" id="loadstate" role="status" aria-live="polite">載入資料中…</div>
@@ -2504,7 +2513,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
         function updateSearchInput() {
             const input = $('query');
             const retail = activeEdition === "retail";
-            input.placeholder = retail ? "001、157、Judy" : "157、B157、Judy";
+            input.placeholder = retail ? "85、168、Judy" : "85、B168、Judy";
             input.removeAttribute("inputmode");
             input.setAttribute("aria-label", retail ? "輸入 RETAIL 卡號或卡名" : "輸入 BETA 卡號或卡名");
             document.querySelector('.collection-search-head .collection-step-label').textContent='搜尋卡片';
