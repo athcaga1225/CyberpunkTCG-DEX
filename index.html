@@ -2119,7 +2119,6 @@ html:has(#browser-detail-dialog[open]){overflow:hidden}
                     </div>
                 </div>
             </div>
-            <div class="collection-footer"><span class="collection-dot"></span><span id="collection-summary">Welcome to Night City / BETA</span><span class="collection-aside">DATABASE ONLINE</span></div>
         </section>
         <section class="panel detail" id="result">
             <div class="row space">
@@ -2317,7 +2316,6 @@ html:has(#browser-detail-dialog[open]){overflow:hidden}
             activeSection = section; if (starter) activeStarter = starter;
             $('collection-select').value = section === "main" ? "main" : activeStarter;
             syncSeries();
-            $('collection-summary').textContent = (section === "main" ? "Welcome to Night City" : activeStarter === "heist" ? "THE HEIST" : "EMBRACING POWER") + " / " + activeEdition.toUpperCase();
             for (const [edition, id] of [["beta", "edition-beta"], ["retail", "edition-retail"]]) {
                 const active = activeEdition === edition, btn = $(id);
                 btn.classList.toggle("active", active);
