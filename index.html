@@ -1968,6 +1968,14 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
   #pack-zoom{inset-block-start:0;inset-block-end:clamp(40px,10dvh,88px);margin:auto;max-height:calc(100dvh - clamp(40px,10dvh,88px) - 24px)}
   #pack-zoom img{max-height:min(76dvh,calc(100dvh - clamp(40px,10dvh,88px) - 106px),780px)}
 }
+
+/* Ranking return-to-top control, with safe-area spacing on phones. */
+#ranking-to-top{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:35;display:grid;place-items:center;width:48px;height:48px;padding:0;border:0;background:#fcee09;color:#101010;clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%);cursor:pointer;opacity:0;visibility:hidden;pointer-events:none;translate:0 8px;transition:opacity .2s,translate .2s,visibility 0s linear .2s,filter .15s}
+#ranking-to-top.is-visible{opacity:1;visibility:visible;pointer-events:auto;translate:0 0;transition-delay:0s}
+#ranking-to-top:focus-visible{outline:2px solid #101010;outline-offset:-4px}
+#ranking-to-top:active{filter:brightness(.85)}
+@media(hover:hover) and (pointer:fine){#ranking-to-top:hover{filter:brightness(1.12)}}
+@media(prefers-reduced-motion:reduce){#ranking-to-top{transition:none;translate:none}}
 </style>
 </head>
 
@@ -2002,6 +2010,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
         <h1 id="ranking-title">MARKET RANKING</h1><p class="ranking-subtitle">卡牌價格排行</p><p class="ranking-intro">Welcome to Night City · 依市場參考價格與歷史變動排序。</p>
         <div class="ranking-tools"><div class="ranking-editions" aria-label="版本"><button type="button" data-rank-edition="beta" aria-pressed="true">BETA</button><button type="button" data-rank-edition="retail" aria-pressed="false">RETAIL</button></div><div class="ranking-sorts" aria-label="排序"><button type="button" data-rank-sort="price" aria-pressed="true">市場價格</button><button type="button" data-rank-sort="up" aria-pressed="false">30日漲幅</button><button type="button" data-rank-sort="down" aria-pressed="false">30日跌幅</button></div></div>
         <p id="ranking-status" role="status">載入市場資料中…</p><div id="ranking-list" class="ranking-list"></div><div class="ranking-more-wrap"><button type="button" id="ranking-more" class="primary" aria-controls="ranking-list" hidden>顯示更多 <span aria-hidden="true">↓</span></button></div>
+        <button type="button" id="ranking-to-top" aria-label="回到頂部" title="回到頂部"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
         <p class="ranking-note">市場參考價非保證成交價。30 日變動僅使用已有的歷史觀測資料。</p>
     </section>
     <main class="wrap">
@@ -2760,6 +2769,25 @@ refreshRankingGlow();
    running.set(button,button.animate([{filter:'brightness(1)'},{filter:'brightness(1.45)',offset:.35},{filter:'brightness(1)'}],{duration:220,easing:'ease-out'}));
   });
  });
+})();
+</script>
+<script>
+(()=>{
+ if(!document.documentElement.classList.contains('ranking-view'))return;
+ const button=document.getElementById('ranking-to-top');
+ if(!button)return;
+ let pending=0;
+ function update(){
+  pending=0;
+  const visible=scrollY>Math.max(320,innerHeight*.65);
+  if(!visible&&document.activeElement===button)button.blur();
+  button.classList.toggle('is-visible',visible);
+ }
+ const schedule=()=>{if(!pending)pending=requestAnimationFrame(update)};
+ window.addEventListener('scroll',schedule,{passive:true});
+ window.addEventListener('resize',schedule,{passive:true});
+ button.addEventListener('click',()=>window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'}));
+ update();
 })();
 </script>
 </body>
