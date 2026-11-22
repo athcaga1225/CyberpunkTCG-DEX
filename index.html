@@ -2272,7 +2272,9 @@ html.keyboard-focus #browser-rarities:focus-within{mask-image:none}
 #browser-detail-dialog[open] .detail-scroll-hint.has-more{opacity:1}
 #browser-detail-dialog[open] .detail-scroll-hint.has-more::before{content:"";position:absolute;bottom:100%;left:0;right:0;height:18px;background:linear-gradient(transparent,var(--dex-surface,#181a1f));pointer-events:none}
 }
-@media(prefers-reduced-motion:reduce){.detail-scroll-hint{transition:none!important}}
+.detail-scroll-hint.has-more svg{animation:detail-scroll-nudge 1.6s ease-in-out infinite}
+@keyframes detail-scroll-nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+@media(prefers-reduced-motion:reduce){.detail-scroll-hint{transition:none!important}.detail-scroll-hint.has-more svg{animation:none}}
 </style>
 </head>
 
