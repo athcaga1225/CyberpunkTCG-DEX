@@ -1998,7 +1998,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
 .browser-card[data-rarity="Iconic Secret"] small{color:#ff6474}
 .browser-card[data-rarity="Iconic Legend"] small{color:#fcee09}
 .browser-card[data-rarity="Iconic Other"] small{color:#63d6d0}
-.browser-card:focus-visible{outline:2px solid #fcee09;outline-offset:4px}
+
 @media(hover:hover) and (pointer:fine){.browser-card:hover .browser-art{filter:brightness(1.13)}}
 #browser-more{display:block;margin:24px auto;padding:12px 24px;border:0;color:#101010;background:#fcee09;font-weight:700}
 #browser-more[hidden]{display:none}
@@ -2031,7 +2031,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
 html:has(#browser-detail-dialog[open]){overflow:hidden}
 #browser-detail-dialog .browser-dialog-head{position:sticky;top:0;z-index:5;display:flex;justify-content:flex-end;background:var(--dex-surface,#191a1e);padding:4px 12px}
 #browser-detail-dialog #browser-detail-close{display:grid;place-items:center;width:44px;height:44px;padding:0;margin:0;border:0;box-shadow:none;background:transparent;color:#fcee09;font:normal 34px/1 system-ui;clip-path:none;cursor:pointer}
-#browser-detail-dialog #browser-detail-close:focus-visible{outline:2px solid #fcee09;outline-offset:-3px}
+
 #browser-detail-dialog #result.panel{margin:0;padding-top:0}
 @media(max-width:560px){#browser-detail-dialog{width:calc(100% - 16px);max-height:calc(100dvh - 16px);border-radius:10px}}
 #result.panel::before{display:none}#result .cardtitle{font:700 clamp(30px,4vw,54px)/1.05 var(--dex-numeric);letter-spacing:-.025em;margin:12px 0}
@@ -2052,7 +2052,7 @@ html.pack-view body>header{position:relative;transform:none!important;pointer-ev
 #result #twd > span:not(.twd-prefix){position:static}
 #result #twd .twd-prefix{font-size:.8em}
 #browser-detail-dialog #browser-detail-close:focus,#browser-detail-dialog #browser-detail-close:focus-visible{outline:none!important;box-shadow:none!important}
-#browser-detail-close:focus-visible{color:#fff!important}
+
 #browser-sort{appearance:none;padding-right:34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23c2c4c5' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center}
 .browser-enter{animation:browserEnter .38s ease-out var(--browser-delay,0ms) both}
 @keyframes browserEnter{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
@@ -2072,7 +2072,7 @@ html.pack-view body>header{position:relative;transform:none!important;pointer-ev
 #market-ranking .ranking-sorts button:focus-visible{text-decoration:underline;text-underline-offset:5px}
 #browser-detail-dialog #browser-detail-close,#pack-zoom-close,#pack-odds-modal .pack-odds-head button{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;background:transparent;color:#fcee09!important;outline:none!important;box-shadow:none!important;clip-path:none}
 #browser-detail-dialog #browser-detail-close svg,#pack-zoom-close svg,#pack-odds-modal .pack-odds-head button svg{width:28px;height:28px;stroke-width:2}
-#browser-detail-dialog #browser-detail-close:focus-visible,#pack-zoom-close:focus-visible,#pack-odds-modal .pack-odds-head button:focus-visible{color:#fff!important}
+
 
 /* Focus indicators are reserved for keyboard navigation, not pointer activation. */
 html:not(.keyboard-focus) :is(button,a,input,select,textarea,[tabindex]):focus{outline:none!important;box-shadow:none!important}
@@ -2091,9 +2091,9 @@ html:not(.keyboard-focus) .series-trigger:focus{outline:none!important}
 
 /* Eliminate focus frames on catalog tiles, including focus restoration after dialogs. */
 html body #browser-grid .browser-card:is(:focus,:focus-visible,:active){outline:none!important;box-shadow:none!important;border:0!important}
-html.keyboard-focus body #browser-grid .browser-card:focus-visible .browser-art{filter:brightness(1.18)}
+
 html body #market-ranking .ranking-row:is(:focus,:focus-visible,:active){outline:none!important;box-shadow:none!important}
-html.keyboard-focus body #market-ranking .ranking-row:focus-visible{background:#ffffff0b}
+
 #draw-dialog .pack-odds button:is(:active,:focus,:focus-visible){scale:none!important;transform:none!important;translate:none!important;filter:none!important}
 #result #usd{letter-spacing:.025em}
 #result #usd .currency-prefix{letter-spacing:0}
@@ -2205,6 +2205,20 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
 @media(max-width:760px){#browser-detail-dialog #result.card-refresh .cardgrid,#browser-detail-dialog #result.card-refresh .history-panel{animation:none!important}}
 #result .market-amount-stable{display:inline-block;min-width:calc(var(--amount-ch,0)*1ch);font-variant-numeric:tabular-nums;white-space:nowrap}
 .hero-copy h1,#ranking-title,#draw-dialog .slider-info #picker-name{font-weight:800}
+
+/* V2 interaction and responsive hardening */
+html.keyboard-focus body #browser-grid .browser-card:focus-visible .browser-art{outline:2px solid #a4a8ad;outline-offset:3px;filter:brightness(1.07)}
+html.keyboard-focus body #market-ranking .ranking-row:focus-visible{background:#ffffff0b;box-shadow:inset 3px 0 #a4a8ad!important}
+html.keyboard-focus body :is(#browser-detail-dialog #browser-detail-close,#pack-zoom-close,#pack-odds-modal .pack-odds-head button):focus-visible{color:#fcee09!important;background:#ffffff12}
+@media(hover:hover) and (pointer:fine){html body :is(#browser-detail-dialog #browser-detail-close,#pack-zoom-close,#pack-odds-modal .pack-odds-head button):hover{background:#ffffff0b;color:#fcee09!important}}
+@media(max-width:760px){
+#browser-rarities.can-scroll-right{mask-image:linear-gradient(to right,#000 calc(100% - 24px),transparent)}
+#browser-rarities.can-scroll-left{mask-image:linear-gradient(to right,transparent,#000 18px)}
+#browser-rarities.can-scroll-left.can-scroll-right{mask-image:linear-gradient(to right,transparent,#000 18px,#000 calc(100% - 24px),transparent)}
+html.keyboard-focus #browser-rarities:focus-within{mask-image:none}
+#browser-detail-dialog{max-height:calc(100dvh - 16px)}
+}
+@media(max-width:360px){.history-tooltip{max-width:calc(100% - 4px);padding-inline:7px;font-size:11px}.history-tooltip strong{font-size:11px}}
 </style>
 </head>
 
@@ -2221,7 +2235,7 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
                 <p class="hero-subtitle">卡牌價格追蹤</p>
                 <p class="intro">掌握夜城卡牌市場行情，查詢 Beta 與 Retail 版本的市場參考價及價格走勢。</p>
                 
-                <div class="hero-actions"><a href="#browse" class="hero-action">查詢卡牌價格 <span class="dex-arrow dex-arrow-down" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 18 18M8 18h10V8"/></svg></span></a><a href="?view=pack" class="hero-action" id="open-draw">模擬開啟卡包 <span class="dex-arrow dex-arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M8 6h10v10"/></svg></span></a></div>
+                <div class="hero-actions"><a href="#browse" class="hero-action">查詢卡牌價格 <span class="dex-arrow dex-arrow-down" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 18 18M8 18h10V8"/></svg></span></a><a href="?view=pack" class="hero-action" id="open-draw">模擬開卡 <span class="dex-arrow dex-arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M8 6h10v10"/></svg></span></a></div>
                 <div class="hero-index">Welcome to Night City</div>
             </div>
             <div class="hero-art">
@@ -2426,6 +2440,7 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
                 const b=document.createElement('button');b.type='button';b.dataset.rarity=rarity;b.style.setProperty('--filter-color',rarityColors[rarity]||'#e0e2e5');b.setAttribute('aria-pressed',String(rarity?filter.has(rarity):!filter.size));const label=document.createElement('span'),count=document.createElement('span');label.textContent=rarity||'全部';count.className='filter-count';count.textContent=rarity?counts.get(rarity):entries.length;b.append(label,count);b.onclick=()=>{if(!rarity)filter.clear();else if(filter.has(rarity))filter.delete(rarity);else filter.add(rarity);root.dataset.rarities=JSON.stringify([...filter]);renderBrowser();returnToCatalogControls();[...filters.children].find(el=>el.dataset.rarity===rarity)?.focus({preventScroll:true})};filters.append(b);
             }
             filters.scrollLeft=filterScroll;
+            syncRarityScroll();
             const priced=entries.filter(([id])=>Number.isFinite(market[id]?.usd)),total=priced.reduce((a,[id])=>a+market[id].usd,0);
             setUsdText($('browser-total'),priced.length?'已報價 '+priced.length+'/'+entries.length+' 張 · 參考總值 '+fmtUSD(total)+' / '+currency(total):'尚無市場報價');
             const mode=$('browser-sort').value;
@@ -2434,7 +2449,7 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
                 if(mode!=='code'){if(Number.isFinite(pa)!==Number.isFinite(pb))return Number.isFinite(pa)?-1:1;if(Number.isFinite(pa)&&pa!==pb)return mode==='high'?pb-pa:pa-pb}
                 return a.localeCompare(b,undefined,{numeric:true});
             });
-            $('browser-count').textContent=rows.length+' 張卡牌 · 點擊查看詳細資訊';
+            $('browser-count').textContent=(filter.size?'已篩選 '+rows.length+' / '+entries.length+' 張卡牌 · '+filter.size+' 種稀有度':rows.length+' 張卡牌')+' · 點擊查看詳細資訊';
             const start=append&&!reset?grid.children.length:0;if(!start)grid.replaceChildren();const limit=Number(root.dataset.limit)||25;
             for(const [index,[code,entry]] of rows.slice(start,limit).entries()){
                 const tile=document.createElement('button');tile.type='button';tile.className='browser-card';tile.dataset.rarity=entry.rarity;tile.setAttribute('aria-label',code+' '+entry.name+'，'+entry.rarity+'，查看價格');if(append){tile.classList.add("browser-enter");tile.style.setProperty("--browser-delay",Math.min(index,23)*35+"ms")}
@@ -2445,9 +2460,12 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
             }
             $('browser-more').hidden=rows.length<=limit;
         }
+        function syncRarityScroll(){const el=$('browser-rarities');el.classList.toggle('can-scroll-right',el.scrollWidth-el.clientWidth-el.scrollLeft>4);el.classList.toggle('can-scroll-left',el.scrollLeft>4)}
+        $('browser-rarities').addEventListener('scroll',syncRarityScroll,{passive:true});
+        window.addEventListener('resize',syncRarityScroll,{passive:true});
         function returnToCatalogControls(){const toolbar=document.querySelector('.browser-toolbar'),head=document.querySelector('.browser-head');if(!toolbar||!head)return;const top=parseFloat(getComputedStyle(toolbar).top)||0;if(head.getBoundingClientRect().bottom<top)head.scrollIntoView({block:'start',behavior:'instant'})}
         $('browser-sort').addEventListener('change',()=>{renderBrowser();returnToCatalogControls()});
-        $('browser-more').addEventListener('click',()=>{const root=$('card-browser');root.dataset.limit=String((Number(root.dataset.limit)||25)+25);renderBrowser(false,true)});
+        $('browser-more').addEventListener('click',e=>{const root=$('card-browser'),first=$('browser-grid').children.length;root.dataset.limit=String((Number(root.dataset.limit)||25)+25);renderBrowser(false,true);if(e.detail===0)$('browser-grid').children[first]?.focus()});
         function chooseEdition(edition) {
             clearCardMatches();
             if (activeEdition !== edition) $('query').value = "";
@@ -2556,9 +2574,10 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
             node.replaceChildren(value);
             if(!animated)return;
             let start=null,last=value.data;
-            function tick(now){if(!node.isConnected)return;if(start===null)start=now;const t=Math.min(1,(now-start)/650),ease=1-Math.pow(1-t,3);const next=format(t===1?target:previous+(target-previous)*ease);if(next!==last){value.data=next;last=next}if(t<1)requestAnimationFrame(tick)}
+            function tick(now){if(!node.isConnected||node.firstChild!==value)return;if(start===null)start=now;const t=Math.min(1,(now-start)/650),ease=1-Math.pow(1-t,3);const next=format(t===1?target:previous+(target-previous)*ease);if(next!==last){value.data=next;last=next}if(t<1)requestAnimationFrame(tick)}
             requestAnimationFrame(tick);
         }
+        function normalizeSearchName(value){return String(value).normalize('NFD').replace(/\p{M}/gu,'').toLowerCase().replace(/\s+/g,' ').trim()}
         function show(query, scroll) {
             clearCardMatches();
             setSearchError('');
@@ -2567,7 +2586,7 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
             const code = activeEdition === "retail" ? normalize(query).replace(/^B(?=\d{3}[AB]?$)/, "") : normalize(query), cards = currentCatalog();
             let entry = cards[code];
             if (!entry) {
-                const searchText = String(query).trim().toLowerCase().replace(/\s+/g, " ");
+                const searchText = normalizeSearchName(query);
                 const iconicTypes = { "il": "IL", "io": "IO", "is": "IS",
                     "iconic legend": "IL", "iconic other": "IO", "iconic secret": "IS" };
                 const iconicType = iconicTypes[searchText];
@@ -2576,7 +2595,7 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
                     return searchText === "iconic"
                         ? ["IL", "IO", "IS"].includes(rarity)
                         : iconicType ? rarity === iconicType
-                        : item.name.toLowerCase().includes(String(query).trim().toLowerCase());
+                        : normalizeSearchName(item.name).includes(searchText);
                 });
                 if (matches.length === 1) return show(matches[0][0], scroll);
                 if (matches.length > 1) {
@@ -2588,7 +2607,7 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
                 $('result').classList.remove('open'); selected = null;
                 setSearchError(activeSection === "starter" ? "找不到卡片：" + code + " 不在目前選擇的初始牌組中（B001～B020）。請檢查卡號或切換系列。" : "找不到卡片。請檢查卡號、卡名或切換系列。"); return;
             }
-            if(scroll&&!browserDetailDialog.open)return openBrowserDetail(code,document.activeElement);
+            if(scroll&&!browserDetailDialog.open)return openBrowserDetail(code,document.activeElement?.matches('button,input')?document.activeElement:$('query'));
             $('query').value = '';
             const changedCard = selected !== code || !$('result').classList.contains('open');
             selected = code; $('loadstate').textContent = collectionStatusText();
@@ -2668,11 +2687,10 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
             if (!selected) return;
             const price = activeEdition === "retail" ? retailPrices[selected] : activeSection === "main" ? prices[selected] : starterPrices[activeStarter]?.prices?.[selected];
             if (!price || !Number.isFinite(price.usd)) return;
-            const prefix = document.createElement("span"), amount = document.createElement("span");
-            prefix.className = "twd-prefix";
-            prefix.textContent = "約 NT" + String.fromCharCode(36);
-            amount.textContent = Math.round(price.usd * rate).toLocaleString("zh-TW");
-            $('twd').replaceChildren(prefix, amount);
+            const amount=$('twd').lastElementChild,target=Math.round(price.usd*rate),format=n=>Math.round(n).toLocaleString("zh-TW");
+            if(!amount||amount.dataset.finalAmount===format(target))return;
+            const previous=Number(amount.textContent.replace(/,/g,''));
+            animateMarketAmount(amount,target,previous,format);
         }
         async function loadDailyRate() {
             const info = $('rate-source');
@@ -2781,6 +2799,7 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
                 let nearest=0;
                 for(let i=1;i<points.length;i++)if(Math.abs(x(times[i])-mouseX)<Math.abs(x(times[nearest])-mouseX))nearest=i;
                 const p=points[nearest],cx=x(times[nearest]);
+                if(svg.dataset.selectedDate===p.date&&!tooltip.hidden)return;
                 svg.dataset.selectedDate=p.date;
                 keyboardPoint=nearest;
                 // The guide follows the pointer continuously while the value
@@ -2789,17 +2808,19 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
                 guide.setAttribute("x1",guideX);guide.setAttribute("x2",guideX);
                 guide.setAttribute("visibility","visible");
                 dateLabel.textContent=p.date.replaceAll("-","/");priceLabel.textContent="$"+p.usd.toFixed(2)+"　NT$"+Math.round(p.usd*rate).toLocaleString("zh-TW");
-                tooltip.style.left="0px";tooltip.hidden=false;
+                tooltip.hidden=false;
                 const tipWidth=tooltip.offsetWidth,graphWidth=root.clientWidth;
                 const marker=svg.createSVGPoint();marker.x=guideX;marker.y=top;
                 const screenX=marker.matrixTransform(matrix).x-root.getBoundingClientRect().left;
                 tooltip.style.left=Math.max(0,Math.min(graphWidth-tipWidth,screenX-tipWidth/2))+"px";
             };
             const hide=()=>{guide.setAttribute("visibility","hidden");markerDot.setAttribute("visibility","hidden");tooltip.hidden=true;delete svg.dataset.selectedDate};
-            svg.addEventListener("pointermove",activate);
-            svg.addEventListener("pointerdown",activate);
+            let touchStart=null;
+            svg.addEventListener("pointerdown",event=>{if(event.pointerType==="touch")touchStart={x:event.clientX,y:event.clientY};activate(event)});
+            svg.addEventListener("pointermove",event=>{if(event.pointerType==="touch"){if(!touchStart)return;const dx=Math.abs(event.clientX-touchStart.x),dy=Math.abs(event.clientY-touchStart.y);if(dy>8&&dy>dx){touchStart=null;hide();return}}activate(event)});
+            svg.addEventListener("pointerup",()=>{touchStart=null});
             svg.addEventListener("pointerleave",event=>{if(event.pointerType!=="touch")hide()});
-            svg.addEventListener("pointercancel",hide);
+            svg.addEventListener("pointercancel",()=>{touchStart=null;hide()});
             svg.setAttribute('tabindex','0');
             const showKeyboardPoint=()=>{const matrix=svg.getScreenCTM();if(!matrix)return;const cursor=svg.createSVGPoint();cursor.x=x(times[keyboardPoint]);cursor.y=top;const screen=cursor.matrixTransform(matrix);activate({clientX:screen.x,clientY:screen.y});announcement.textContent=points[keyboardPoint].date+' US$'+points[keyboardPoint].usd.toFixed(2)};
             svg.addEventListener('focus',()=>{if(svg.matches(':focus-visible'))showKeyboardPoint()});
@@ -2820,7 +2841,7 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
         const menuToggle=document.querySelector('.dex-menu-toggle'),mainNav=$('dex-nav');mainNav.inert=true;function setMenu(open){mainNav.inert=!open;mainNav.classList.toggle('is-open',open);menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'關閉主選單':'開啟主選單')}menuToggle.onclick=()=>setMenu(menuToggle.getAttribute('aria-expanded')!=='true');mainNav.addEventListener('click',e=>{if(e.target.closest('a'))setMenu(false)});document.addEventListener('pointerdown',e=>{if(!menuToggle.contains(e.target)&&!mainNav.contains(e.target))setMenu(false)});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuToggle.getAttribute('aria-expanded')==='true'){setMenu(false);menuToggle.focus()}});matchMedia('(max-width:760px)').addEventListener('change',()=>setMenu(false));
         const ranking=$('market-ranking');if(rankView==='ranking'){ranking.hidden=false;document.title='CyberDEX — 價格排行'}
         function rankChange(code,p){if(rankEdition!=='beta')return null;const end=Date.parse(p.observedDate),target=end-30*86400000;if(!Number.isFinite(end))return null;const history=(historyCards[code]||[]).filter(x=>Number.isFinite(x.usd)&&x.usd>0&&Math.abs(Date.parse(x.date)-target)<=7*86400000).sort((a,b)=>Math.abs(Date.parse(a.date)-target)-Math.abs(Date.parse(b.date)-target));return history.length?(p.usd/history[0].usd-1)*100:null}
-        let rankLimit=20;function renderRanking(append=false){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=sorted.length+' 張有報價卡牌'+(!hasHistory?' · 歷史資料不足，暫不提供30日漲跌幅排序':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list'),more=$('ranking-more'),visible=rankSort==='price'?sorted.slice(0,rankLimit):sorted;more.hidden=rankSort!=='price'||visible.length>=sorted.length;const start=append?list.querySelectorAll('.ranking-row').length:0;if(!append){closeRankHistory();list.replaceChildren()}if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();visible.slice(start).forEach(({code,p,entry,change},index)=>{const i=index+start;const a=document.createElement('button');a.type='button';a.className='ranking-row';a.dataset.rankCode=code;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','rank-history-'+code);const pos=document.createElement('span');pos.className='ranking-position'+(i<3?' top-three':'');pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;img.decoding='async';if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';const [mainName,...subName]=entry.name.split(':');name.textContent=mainName;const sub=subName.join(':').trim();if(sub){const subtitle=document.createElement('span');subtitle.className='ranking-subtitle-text';subtitle.textContent=sub;name.append(subtitle)}const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';setUsdText(value,fmtUSD(p.usd));const twd=document.createElement('small');twd.dataset.usd=String(p.usd);twd.textContent=currency(p.usd);value.append(twd);const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=change===null?'—':(change>0?'+':'')+change.toFixed(1)+'%';delta.setAttribute('aria-label','30 日變動 '+delta.textContent);a.append(pos,img,name,delta,value);frag.append(a)});list.append(frag);}
+        let rankLimit=20;function renderRanking(append=false){if(rankView!=='ranking'||!rankLoaded)return;const retail=rankEdition==='retail',data=retail?retailPrices:prices,cards=retail?retailCards:catalog;const rows=Object.entries(data).filter(([code,p])=>cards[code]&&Number.isFinite(p.usd)&&p.usd>=0&&p.observedDate).map(([code,p])=>({code,p,entry:cards[code],change:rankChange(code,p)}));const hasHistory=rows.some(x=>x.change!==null);if(!hasHistory)rankSort='price';ranking.querySelectorAll('[data-rank-edition]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.rankEdition===rankEdition)));ranking.querySelectorAll('[data-rank-sort]').forEach(b=>{b.disabled=b.dataset.rankSort!=='price'&&!hasHistory;b.setAttribute('aria-pressed',String(b.dataset.rankSort===rankSort))});const sorted=rows.filter(x=>rankSort==='price'||(x.change!==null&&(rankSort==='up'?x.change>0:x.change<0))).sort((a,b)=>rankSort==='price'?b.p.usd-a.p.usd:rankSort==='up'?b.change-a.change:a.change-b.change);$('ranking-status').textContent=sorted.length+' 張有報價卡牌'+(!hasHistory?' · 歷史資料不足，暫不提供30日漲跌幅排序':' · 30 日變動採最接近的歷史報價（±7 天）');const list=$('ranking-list'),more=$('ranking-more'),visible=sorted.slice(0,rankLimit);more.hidden=visible.length>=sorted.length;const start=append?list.querySelectorAll('.ranking-row').length:0;if(!append){closeRankHistory();list.replaceChildren()}if(!sorted.length){list.textContent='目前沒有符合條件的市場資料。';return}const frag=document.createDocumentFragment();visible.slice(start).forEach(({code,p,entry,change},index)=>{const i=index+start;const a=document.createElement('button');a.type='button';a.className='ranking-row';a.dataset.rankCode=code;a.setAttribute('aria-expanded','false');a.setAttribute('aria-controls','rank-history-'+code);const pos=document.createElement('span');pos.className='ranking-position'+(i<3?' top-three':'');pos.textContent=String(i+1).padStart(2,'0');const img=document.createElement('img');img.className='ranking-image';img.alt='';img.loading='lazy';const src=(retail?(retailIconicVerified[code]||retailImages[code]):cardImages[code])?.url;img.decoding='async';if(src)img.src=src;const name=document.createElement('span');name.className='ranking-name';const [mainName,...subName]=entry.name.split(':');name.textContent=mainName;const sub=subName.join(':').trim();if(sub){const subtitle=document.createElement('span');subtitle.className='ranking-subtitle-text';subtitle.textContent=sub;name.append(subtitle)}const meta=document.createElement('small');meta.className='ranking-meta';meta.textContent=code+' · '+entry.rarity;name.append(meta);const value=document.createElement('span');value.className='ranking-price';setUsdText(value,fmtUSD(p.usd));const twd=document.createElement('small');twd.dataset.usd=String(p.usd);twd.textContent=currency(p.usd);value.append(twd);const delta=document.createElement('span');delta.className='ranking-change '+(change>0?'up':change<0?'down':'');delta.textContent=change===null?'—':(change>0?'+':'')+change.toFixed(1)+'%';delta.setAttribute('aria-label','30 日變動 '+delta.textContent);a.append(pos,img,name,delta,value);frag.append(a)});list.append(frag);}
         const rankPanels=new Map();
         // Rebuild only when the chart coordinate system actually changes on resize.
         let historyResizeTimer;
