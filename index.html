@@ -2173,6 +2173,34 @@ html:has(body>header.scroll-header-hidden) .browser-toolbar{top:0}
 #browser-rarities button[aria-pressed=true]{border-color:var(--filter-color);color:#f4f4f4;background:color-mix(in srgb,var(--filter-color) 12%,#131518)}
 #browser-rarities button:is(:focus,:focus-visible){outline:none!important;box-shadow:none!important}
 html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:underline;text-underline-offset:4px}
+
+.browser-head{scroll-margin-top:calc(var(--dex-sticky-top,70px) + 12px)}
+#browser-rarities{min-width:0}
+#browser-grid .browser-card>strong,#browser-grid .browser-subtitle{min-width:0;overflow-wrap:anywhere}
+#browser-grid .browser-card>small{min-width:0}
+#browser-grid .browser-price strong{white-space:nowrap;max-width:100%}
+#browser-grid .browser-price>span{white-space:nowrap}
+#browser-rarities button,.browser-sort select{min-height:40px;box-sizing:border-box}
+#browser-more,#ranking-more{min-height:44px}
+#market-ranking .ranking-expanded-history{border-bottom-color:var(--dex-rule)}
+#result .rarityinfo,#result .market-fx-note{border-color:var(--dex-rule)}
+#result .market-fx-note a{color:#b7bbc2;text-underline-offset:2px}
+#result .market-fx-note a:hover{color:#fcee09}
+@media(max-width:760px){
+#browser-grid .browser-price strong{font-size:clamp(17px,5vw,23px)}
+#browser-grid .browser-card>strong{font-size:clamp(16px,4.5vw,20px)}
+#browser-grid .browser-subtitle{font-size:clamp(12px,3.5vw,14px)}
+#browser-grid .browser-card>small{font-size:11px;gap:4px}
+#browser-rarities button,.browser-sort select{min-height:44px}
+#browser-detail-dialog #result .cardgrid>div{min-width:0}
+#browser-detail-dialog #result .cardtitle{overflow-wrap:anywhere}
+#browser-detail-dialog #result #usd{font-size:clamp(34px,11vw,48px);overflow-wrap:anywhere}
+#browser-detail-dialog #result .history-head{flex-wrap:wrap}
+#browser-detail-dialog #result .history-periods{max-width:100%;flex-wrap:nowrap;gap:0}
+#browser-detail-dialog #result .history-periods button{min-width:0;padding-inline:8px}
+#market-ranking .ranking-price{font-size:clamp(16px,4.5vw,21px)}
+#market-ranking .ranking-change{font-size:clamp(12px,3vw,15px)}
+}
 </style>
 </head>
 
@@ -2386,12 +2414,12 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
             const entries=Object.entries(currentCatalog()),market=activeEdition==='retail'?retailPrices:activeSection==='starter'?(starterPrices[activeStarter]?.prices||{}):prices;
             const identity=activeEdition+':'+activeSection+':'+activeStarter;
             if(root.dataset.identity!==identity){root.dataset.identity=identity;root.dataset.rarities='[]';reset=true}
-            if(reset)root.dataset.limit='24';
+            if(reset)root.dataset.limit='25';
             const counts=new Map();entries.forEach(([,v])=>counts.set(v.rarity,(counts.get(v.rarity)||0)+1));
             const filter=new Set(JSON.parse(root.dataset.rarities||'[]')),rarityColors={'Iconic Secret':'#ff465d','Iconic Legend':'#fcee09','Iconic Other':'#41d9ca','Secret':'#ff9c50','Epic':'#b88bfa','Rare':'#60a5fa','Uncommon':'#a9bdcb','Common':'#8c919b','Nova Rare':'#e8a8e5'},order=['Iconic Secret','Iconic Legend','Iconic Other','Secret','Epic','Rare','Uncommon','Common','Nova Rare'];
             const filters=$('browser-rarities'),filterScroll=filters.scrollLeft;filters.replaceChildren();
             for(const rarity of ['',...new Set([...order.filter(x=>counts.has(x)),...counts.keys()])]){
-                const b=document.createElement('button');b.type='button';b.dataset.rarity=rarity;b.style.setProperty('--filter-color',rarityColors[rarity]||'#e0e2e5');b.setAttribute('aria-pressed',String(rarity?filter.has(rarity):!filter.size));const label=document.createElement('span'),count=document.createElement('span');label.textContent=rarity||'全部';count.className='filter-count';count.textContent=rarity?counts.get(rarity):entries.length;b.append(label,count);b.onclick=()=>{if(!rarity)filter.clear();else if(filter.has(rarity))filter.delete(rarity);else filter.add(rarity);root.dataset.rarities=JSON.stringify([...filter]);renderBrowser();[...filters.children].find(el=>el.dataset.rarity===rarity)?.focus({preventScroll:true})};filters.append(b);
+                const b=document.createElement('button');b.type='button';b.dataset.rarity=rarity;b.style.setProperty('--filter-color',rarityColors[rarity]||'#e0e2e5');b.setAttribute('aria-pressed',String(rarity?filter.has(rarity):!filter.size));const label=document.createElement('span'),count=document.createElement('span');label.textContent=rarity||'全部';count.className='filter-count';count.textContent=rarity?counts.get(rarity):entries.length;b.append(label,count);b.onclick=()=>{if(!rarity)filter.clear();else if(filter.has(rarity))filter.delete(rarity);else filter.add(rarity);root.dataset.rarities=JSON.stringify([...filter]);renderBrowser();returnToCatalogControls();[...filters.children].find(el=>el.dataset.rarity===rarity)?.focus({preventScroll:true})};filters.append(b);
             }
             filters.scrollLeft=filterScroll;
             const priced=entries.filter(([id])=>Number.isFinite(market[id]?.usd)),total=priced.reduce((a,[id])=>a+market[id].usd,0);
@@ -2403,18 +2431,19 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
                 return a.localeCompare(b,undefined,{numeric:true});
             });
             $('browser-count').textContent=rows.length+' 張卡牌 · 點擊查看詳細資訊';
-            const start=append&&!reset?grid.children.length:0;if(!start)grid.replaceChildren();const limit=Number(root.dataset.limit)||24;
+            const start=append&&!reset?grid.children.length:0;if(!start)grid.replaceChildren();const limit=Number(root.dataset.limit)||25;
             for(const [index,[code,entry]] of rows.slice(start,limit).entries()){
-                const tile=document.createElement('button');tile.type='button';tile.className='browser-card';tile.dataset.rarity=entry.rarity;if(append){tile.classList.add("browser-enter");tile.style.setProperty("--browser-delay",Math.min(index,23)*35+"ms")}
+                const tile=document.createElement('button');tile.type='button';tile.className='browser-card';tile.dataset.rarity=entry.rarity;tile.setAttribute('aria-label',code+' '+entry.name+'，'+entry.rarity+'，查看價格');if(append){tile.classList.add("browser-enter");tile.style.setProperty("--browser-delay",Math.min(index,23)*35+"ms")}
                 const art=document.createElement('span');art.className='browser-art';const record=activeEdition==='retail'?(retailIconicVerified[code]||retailImages[code]):activeSection==='starter'?{url:entry.imageUrl}:cardImages[code];
                 if(record?.url){const img=document.createElement('img');img.src=record.url;img.alt='';img.loading='lazy';img.decoding='async';img.onerror=()=>{if(record.fallbackUrl&&img.src!==record.fallbackUrl){img.src=record.fallbackUrl;return}img.remove();art.textContent='卡圖待補'};art.append(img)}else art.textContent='卡圖待補';
-                const title=document.createElement('strong'),meta=document.createElement('small'),price=document.createElement('span');const [primary,...secondary]=entry.name.split(':');title.textContent=primary;const subtitle=document.createElement('span');subtitle.className='browser-subtitle';subtitle.textContent=secondary.join(':').trim()||' ';const codeLabel=document.createElement('span'),rarity=document.createElement('span');codeLabel.textContent=code;rarity.className='browser-rarity';rarity.textContent=entry.rarity;meta.append(codeLabel,rarity);price.className='browser-price';if(Number.isFinite(market[code]?.usd)){const amount=document.createElement('strong'),nt=document.createElement('span');const prefix=document.createElement('span');prefix.className='browser-currency-prefix';prefix.textContent='$';amount.append(makeUsLabel(),prefix,document.createTextNode(fmtUSD(market[code].usd).replace(/^US\$|^\$/,'')));nt.textContent=currency(market[code].usd);price.append(amount,nt)}else price.textContent='尚無報價';
+                const title=document.createElement('strong'),meta=document.createElement('small'),price=document.createElement('span');const [primary,...secondary]=entry.name.split(':');title.textContent=primary;const subtitle=document.createElement('span');subtitle.className='browser-subtitle';subtitle.textContent=secondary.join(':').trim()||' ';const codeLabel=document.createElement('span'),rarity=document.createElement('span');codeLabel.textContent=code;rarity.className='browser-rarity';rarity.textContent=entry.rarity;meta.append(codeLabel,rarity);price.className='browser-price';if(Number.isFinite(market[code]?.usd)){const amount=document.createElement('strong'),nt=document.createElement('span');const prefix=document.createElement('span');prefix.className='browser-currency-prefix';prefix.textContent='$';amount.append(makeUsLabel(),prefix,document.createTextNode(fmtUSD(market[code].usd).replace(/^US\$|^\$/,'')));nt.dataset.browserUsd=String(market[code].usd);nt.textContent=currency(market[code].usd);price.append(amount,nt)}else price.textContent='尚無報價';
                 tile.append(art,title,subtitle,meta,price);tile.onclick=()=>openBrowserDetail(code,tile);grid.append(tile)
             }
             $('browser-more').hidden=rows.length<=limit;
         }
-        $('browser-sort').addEventListener('change',()=>renderBrowser());
-        $('browser-more').addEventListener('click',()=>{const root=$('card-browser');root.dataset.limit=String((Number(root.dataset.limit)||24)+24);renderBrowser(false,true)});
+        function returnToCatalogControls(){const toolbar=document.querySelector('.browser-toolbar'),head=document.querySelector('.browser-head');if(!toolbar||!head)return;const top=parseFloat(getComputedStyle(toolbar).top)||0;if(head.getBoundingClientRect().bottom<top)head.scrollIntoView({block:'start',behavior:'instant'})}
+        $('browser-sort').addEventListener('change',()=>{renderBrowser();returnToCatalogControls()});
+        $('browser-more').addEventListener('click',()=>{const root=$('card-browser');root.dataset.limit=String((Number(root.dataset.limit)||25)+25);renderBrowser(false,true)});
         function chooseEdition(edition) {
             clearCardMatches();
             if (activeEdition !== edition) $('query').value = "";
@@ -2823,7 +2852,7 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
         }
         ranking.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='ranking-more'){const firstNew=ranking.querySelectorAll('.ranking-row').length;rankLimit+=20;renderRanking(true);if(e.detail===0)ranking.querySelectorAll('.ranking-row')[firstNew]?.focus();return}if(b.dataset.rankCode){if(b.getAttribute('aria-expanded')==='true')closeRankHistory(b,true);else openRankHistory(b,true);return}if(b.dataset.rankEdition){closeRankHistory();rankLimit=20;rankEdition=b.dataset.rankEdition;rankSort='price'}else if(b.dataset.rankSort){closeRankHistory();rankLimit=20;rankSort=b.dataset.rankSort}else return;renderRanking();const list=$('ranking-list');list.classList.remove('ranking-enter');void list.offsetWidth;list.classList.add('ranking-enter')});
         init().then(()=>{rankLoaded=true;if(rankView==='ranking')renderRanking();else if(routeParams.get('card')&&['beta','retail'].includes(routeParams.get('edition'))){$('query').value='';chooseEdition(routeParams.get('edition'));chooseSection('main');$('query').value=routeParams.get('card');show(routeParams.get('card'),true)}});
-        loadDailyRate().then(()=>{if(rankView==='home')renderBrowser(false);for(const el of ranking.querySelectorAll('.ranking-price small[data-usd]'))el.textContent=currency(Number(el.dataset.usd))});
+        loadDailyRate().then(()=>{if(rankView==='home'){for(const el of document.querySelectorAll('[data-browser-usd]'))el.textContent=currency(Number(el.dataset.browserUsd));const market=activeEdition==='retail'?retailPrices:activeSection==='starter'?(starterPrices[activeStarter]?.prices||{}):prices,entries=Object.entries(currentCatalog()),priced=entries.filter(([id])=>Number.isFinite(market[id]?.usd)),total=priced.reduce((a,[id])=>a+market[id].usd,0);setUsdText($('browser-total'),priced.length?'已報價 '+priced.length+'/'+entries.length+' 張 · 參考總值 '+fmtUSD(total)+' / '+currency(total):'尚無市場報價')}for(const el of ranking.querySelectorAll('.ranking-price small[data-usd]'))el.textContent=currency(Number(el.dataset.usd))});
     </script>
 <script>
 (()=>{const root=document.querySelector('.hero-art');if(!root)return;const slides=[...root.querySelectorAll('[data-hero-slide]')],dots=[...root.querySelectorAll('[data-hero-dot]')],labels=["BETA COLLECTION","BETA ICONIC SECRET","BETA NIGHT CITY LEGENDS","RETAIL COLLECTION","RETAIL ICONIC SECRET"];let active=0;function show(i){active=(i+slides.length)%slides.length;slides.forEach((s,j)=>s.hidden=j!==active);dots.forEach((d,j)=>d.setAttribute('aria-current',String(j===active)));root.querySelector('.hero-art-label span').textContent=' / '+labels[active];root.querySelector('[data-hero-count]').textContent=String(active+1).padStart(2,'0')+' / '+String(slides.length).padStart(2,'0');}root.querySelector('[data-hero-prev]').addEventListener('click',()=>show(active-1));root.querySelector('[data-hero-next]').addEventListener('click',()=>show(active+1));dots.forEach((d,i)=>d.addEventListener('click',()=>show(i)));let gesture=null;root.addEventListener('touchstart',e=>{if(e.touches.length!==1){gesture=null;return}const t=e.touches[0];gesture={id:t.identifier,x:t.clientX,y:t.clientY,axis:null}},{passive:true});root.addEventListener('touchmove',e=>{if(!gesture||e.touches.length!==1){gesture=null;return}const t=e.touches[0];if(t.identifier!==gesture.id){gesture=null;return}const dx=Math.abs(t.clientX-gesture.x),dy=Math.abs(t.clientY-gesture.y);if(!gesture.axis&&Math.max(dx,dy)>=6){gesture.axis=dx>dy?'x':'y'}if(gesture.axis==='x'&&e.cancelable)e.preventDefault()},{passive:false});root.addEventListener('touchend',e=>{if(!gesture)return;const t=Array.from(e.changedTouches).find(t=>t.identifier===gesture.id);if(t&&gesture.axis==='x'){const dx=t.clientX-gesture.x;if(Math.abs(dx)>50)show(active+(dx<0?1:-1))}gesture=null},{passive:true});root.addEventListener('touchcancel',()=>{gesture=null},{passive:true});})();
