@@ -2073,6 +2073,14 @@ html.pack-view body>header{position:relative;transform:none!important;pointer-ev
 #browser-detail-dialog #browser-detail-close,#pack-zoom-close,#pack-odds-modal .pack-odds-head button{display:grid;place-items:center;width:44px;height:44px;padding:0;border:0;background:transparent;color:#fcee09!important;outline:none!important;box-shadow:none!important;clip-path:none}
 #browser-detail-dialog #browser-detail-close svg,#pack-zoom-close svg,#pack-odds-modal .pack-odds-head button svg{width:28px;height:28px;stroke-width:2}
 #browser-detail-dialog #browser-detail-close:focus-visible,#pack-zoom-close:focus-visible,#pack-odds-modal .pack-odds-head button:focus-visible{color:#fff!important}
+
+/* Focus indicators are reserved for keyboard navigation, not pointer activation. */
+html:not(.keyboard-focus) :is(button,a,input,select,textarea,[tabindex]):focus{outline:none!important;box-shadow:none!important}
+html.keyboard-focus :is(button,a,input,select,textarea,[tabindex]):focus-visible{outline:2px solid #a4a8ad!important;outline-offset:3px}
+html.keyboard-focus :is(header .brand,header .dex-menu-toggle,.hero-slider-controls button,#draw-dialog .slider-nav button):focus-visible{outline-color:#181a1f!important}
+html:not(.keyboard-focus) #query:focus{border-color:#424b54!important}
+html:not(.keyboard-focus) .series-trigger:focus{outline:none!important}
+#market-ranking .ranking-expanded-history{background:var(--dex-surface,#181a1f);border-bottom-color:var(--dex-rule,#303238)}
 </style>
 </head>
 
@@ -2968,6 +2976,9 @@ refreshRankingGlow();
  button.addEventListener('click',()=>window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'}));
  update();
 })();
+</script>
+<script>
+(()=>{const root=document.documentElement;document.addEventListener('pointerdown',()=>root.classList.remove('keyboard-focus'),true);document.addEventListener('keydown',e=>{if(e.key==='Tab'||e.key.startsWith('Arrow'))root.classList.add('keyboard-focus')},true)})();
 </script>
 </body>
 
