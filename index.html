@@ -2681,7 +2681,7 @@ html body #browser-detail-dialog #browser-detail-close,html body #pack-zoom-clos
             for(let i=1;i<points.length;i++){
                 const missing=times[i]-times[i-1]>86400000,x1=x(times[i-1]),x2=x(times[i]),y1=y(points[i-1].usd),y2=y(points[i].usd);
                 series.append(el("path",{d:"M"+x1+","+y1+" L"+x2+","+y2+" L"+x2+","+(H-bottom)+" L"+x1+","+(H-bottom)+" Z",fill:"url(#"+gradientId+")","fill-opacity":missing?.55:1}));
-                series.append(el("line",{x1,y1,x2,y2,stroke:chartColor,"stroke-opacity":missing?.5:1,"stroke-width":missing?1.3:2,"stroke-dasharray":missing?"4 6":"none","stroke-linecap":"round"}));
+                series.append(el("line",{x1,y1,x2,y2,stroke:chartColor,"stroke-opacity":missing?.5:1,"stroke-width":missing?1.15:2,"stroke-dasharray":missing?"1.5 4":"none","stroke-linecap":"round"}));
             }
 
             for(const [i,T] of [tmin,(tmin+tmax)/2,tmax].entries()){const date=new Date(T);el("text",{x:x(T),y:H-10,fill:"#979ba4","font-size":12,"text-anchor":i===0?"start":i===2?"end":"middle"},(date.getUTCMonth()+1)+"/"+date.getUTCDate())}
