@@ -2400,12 +2400,12 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
 /* Keep the sticky catalog controls from flashing above the modal close header on mobile Safari. */
 @media(max-width:760px){
  .browser-toolbar{
-  transition:top .2s ease,opacity .24s ease,transform .24s ease;
+  transition:top .2s ease,opacity .46s ease,transform .46s cubic-bezier(.22,1,.36,1);
  }
  html:has(#browser-detail-dialog[open]) .browser-toolbar,
  html.dex-detail-restoring .browser-toolbar{
   opacity:0!important;
-  transform:translateY(-10px);
+  transform:translateY(-16px);
   pointer-events:none!important;
  }
  @media(prefers-reduced-motion:reduce){
@@ -2708,7 +2708,7 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
             setSearchError('');
             $('loadstate').textContent = collectionStatusText();
             renderBrowser();
-            $('query').value=dexRead('cyberdex-query:'+dexIdentity(),'');
+            $('query').value='';
         }
         $('collection-select').onchange = e => e.target.value === "main" ? chooseSection("main") : chooseSection("starter", e.target.value);
         $('edition-beta').onclick = () => chooseEdition("beta");
@@ -2769,7 +2769,20 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
             status.classList.toggle('search-error',invalid);
             if(invalid) status.textContent=message+' 可嘗試其他卡號或英文名稱。';
         }
-        $('query').addEventListener('input', () => {dexWrite('cyberdex-query:'+dexIdentity(),$('query').value);clearCardMatches();if($('query').getAttribute('aria-invalid')==='true'){$('loadstate').textContent=collectionStatusText();setSearchError('')}});
+        // Search terms are intentionally ephemeral; do not restore across reloads.
+        try {
+            for(let i=localStorage.length-1;i>=0;i--){
+                const key=localStorage.key(i);
+                if(key?.startsWith('cyberdex-query:'))localStorage.removeItem(key);
+            }
+        }catch{}
+        window.addEventListener('pageshow',event=>{
+            if(!event.persisted)return;
+            $('query').value='';
+            clearCardMatches();
+            setSearchError('');
+        });
+        $('query').addEventListener('input', () => {clearCardMatches();if($('query').getAttribute('aria-invalid')==='true'){$('loadstate').textContent=collectionStatusText();setSearchError('')}});
         function animateMarketAmount(node,target,previous,format){
             const finalText=format(target), reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
             const animated=!reduced&&Number.isFinite(previous)&&previous!==target;
