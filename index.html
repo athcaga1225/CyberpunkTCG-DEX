@@ -2449,6 +2449,15 @@ html.dex-detail-restoring .browser-toolbar{
   background:linear-gradient(transparent,var(--dex-surface,#181a1f));pointer-events:none;
  }
 }
+
+/* Desktop card details: keep price history below the initial fold.
+   The existing internal scroll reveals the chart without exposing a partial graph. */
+@media(min-width:761px){
+ #browser-detail-dialog[open]{
+  height:min(720px,calc(100dvh - 48px));
+  max-height:calc(100dvh - 48px);
+ }
+}
 </style>
 </head>
 
