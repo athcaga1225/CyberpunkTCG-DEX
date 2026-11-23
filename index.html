@@ -2250,9 +2250,6 @@ html.keyboard-focus #browser-rarity-scroll:focus-within{mask-image:none}
 #browse .browser-collection{background:transparent;border:0;border-radius:0;box-shadow:none;clip-path:none;padding:0;margin:18px 0 0;animation:none;visibility:visible}
 #browse .browser-collection::before{display:none}
 #browse .browser-collection .collection-grid{margin:0;grid-template-columns:1fr;gap:14px}
-#browse .collection-step-label::before{content:"01 / SEARCH · "}
-#browse .collection-field-label::before{content:"02 / "}
-#browse .collection-field>label::before{content:"03 / "}
 }
 
 #browser-detail-dialog #result #usd,#browser-detail-dialog #result #usd>span{color:#fcee09!important}
@@ -2345,6 +2342,13 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
 #draw-dialog .slider-open{font-family:var(--dex-font);font-size:var(--dex-size-body);font-weight:700}
 .ranking-image,#draw-dialog .pack-card .hero-face,#draw-dialog .pack-card.revealed::after{border-radius:var(--dex-card-radius)}
 
+/* Unified COLLECTION layout — search, edition and series share one section at every breakpoint. */
+#browse.collection-nav{border-bottom:1px solid var(--dex-rule);padding-bottom:18px;margin-bottom:24px}
+#browse .browser-collection{background:transparent;border:0;border-radius:0;box-shadow:none;clip-path:none;padding:0;margin:18px 0 0;animation:none;visibility:visible}
+#browse .browser-collection::before{display:none}
+#browse .browser-collection .collection-grid{margin:0;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:15px}
+#card-browser{margin-top:24px;padding-top:0;border-top:0}
+@media(max-width:760px){#browse .browser-collection .collection-grid{grid-template-columns:1fr;gap:14px}}
 </style>
 </head>
 
@@ -2383,10 +2387,10 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
         <p class="ranking-note">市場參考價非保證成交價。</p>
     </section>
     <main class="wrap">
-        <section id="browse" class="collection-nav" aria-label="搜尋卡牌">
-            <div class="collection-nav-top"><span class="collection-heading">SEARCH / 卡牌查詢</span></div>
+        <section id="browse" class="collection-nav" aria-label="卡牌查詢與系列選擇">
+            <div class="collection-nav-top"><span class="collection-heading">COLLECTION / 卡牌查詢</span></div>
             <div class="collection-search">
-                <div class="collection-search-head"><span class="collection-step-label">搜尋卡片</span></div>
+                <div class="collection-search-head"><span class="collection-step-label">01 / SEARCH · 搜尋卡片 · BETA</span></div>
                 <div class="search"><input id="query" autocomplete="off" placeholder="85、B168、Judy"
                         aria-label="輸入卡號或卡名"><button class="primary" id="search">搜尋卡片 <span class="dex-arrow dex-arrow-up" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M8 6h10v10"/></svg></span></button></div>
                 <div class="row space" style="margin-top:12px;flex-wrap:wrap">
@@ -2394,6 +2398,25 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
                 </div>
                 <div id="card-match-list" class="card-match-list" hidden role="group" aria-label="符合的卡片"></div>
             </div>
+            <div class="collection-nav browser-collection" aria-label="圖鑑版本與系列"><div class="collection-grid">
+                <div class="collection-field">
+                    <span class="collection-field-label">02 / EDITION · 切換版本</span>
+                    <div class="edition-options" role="group" aria-label="卡牌版本">
+                        <button type="button" id="edition-beta" class="edition-btn active" aria-pressed="true">BETA <span>●</span></button>
+                        <button type="button" id="edition-retail" class="edition-btn upcoming" aria-pressed="false">RETAIL <span>●</span></button>
+                    </div>
+                </div>
+                <div class="collection-field">
+                    <label for="collection-select">03 / SERIES · 選擇系列</label>
+                    <div class="collection-select-wrap">
+                        <select id="collection-select" aria-label="選擇卡牌系列">
+                            <option value="main">Welcome to Night City</option>
+                            <option value="heist">The Heist · Starter Deck</option>
+                            <option value="power">Embracing Power · Starter Deck</option>
+                        </select>
+                    </div>
+                </div>
+            </div></div>
         </section>
         <section class="panel detail" id="result">
             <div class="row space">
@@ -2435,32 +2458,12 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
         </section>
 
     <dialog id="browser-detail-dialog" aria-labelledby="name"><div class="browser-dialog-head"><button type="button" id="browser-detail-close" aria-label="關閉卡牌價格"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div><div id="browser-detail-scroll"></div><div class="detail-scroll-hint" aria-hidden="true"><span>向下滑動查看更多</span><svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m4 6 4 4 4-4"/></svg></div></dialog>
-    <section id="card-browser" aria-labelledby="browser-title"><div class="browser-head"><h2 id="browser-title">CARD DATABASE / 卡牌圖鑑</h2><span id="browser-total" hidden></span></div><div class="collection-nav browser-collection" aria-label="圖鑑版本與系列"><div class="collection-grid">
-                <div class="collection-field">
-                    <span class="collection-field-label">EDITION · 切換版本</span>
-                    <div class="edition-options" role="group" aria-label="卡牌版本">
-                        <button type="button" id="edition-beta" class="edition-btn active" aria-pressed="true">BETA <span>●</span></button>
-                        <button type="button" id="edition-retail" class="edition-btn upcoming" aria-pressed="false">RETAIL <span>●</span></button>
-                    </div>
-                </div>
-                <div class="collection-field">
-                    <label for="collection-select">SERIES · 選擇系列</label>
-                    <div class="collection-select-wrap">
-                        <select id="collection-select" aria-label="選擇卡牌系列">
-                            <option value="main">Welcome to Night City</option>
-                            <option value="heist">The Heist · Starter Deck</option>
-                            <option value="power">Embracing Power · Starter Deck</option>
-                        </select>
-                    </div>
-                </div>
-            </div></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"><div id="browser-rarity-scroll"></div></div><div class="browser-editions" role="group" aria-label="圖鑑版本"><button type="button" data-browser-edition="beta" aria-pressed="true">BETA</button><button type="button" data-browser-edition="retail" aria-pressed="false">RETAIL</button></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="rarity">稀有度高 → 低</option><option value="code">卡牌編號 小 → 大</option><option value="code-desc">卡牌編號 大 → 小</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary dex-load-more" aria-controls="browser-grid" hidden>顯示更多 <span aria-hidden="true">↓</span></button></section>
+    <section id="card-browser" aria-labelledby="browser-title"><div class="browser-head"><h2 id="browser-title">CARD DATABASE / 卡牌圖鑑</h2><span id="browser-total" hidden></span></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"><div id="browser-rarity-scroll"></div></div><div class="browser-editions" role="group" aria-label="圖鑑版本"><button type="button" data-browser-edition="beta" aria-pressed="true">BETA</button><button type="button" data-browser-edition="retail" aria-pressed="false">RETAIL</button></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="rarity">稀有度高 → 低</option><option value="code">卡牌編號 小 → 大</option><option value="code-desc">卡牌編號 大 → 小</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary dex-load-more" aria-controls="browser-grid" hidden>顯示更多 <span aria-hidden="true">↓</span></button></section>
         <footer>CyberDEX 是非官方收藏工具。與 Cyberpunk TCG、TCGplayer 無關；卡圖版權歸原權利人所有。價格不能作為保證成交報價。</footer>
 </main>
     <script>
         'use strict';
         const $ = id => document.getElementById(id);
-        {const media=matchMedia('(max-width:760px)'),controls=document.querySelector('.browser-collection'),browse=$('browse'),toolbar=document.querySelector('.browser-toolbar'),heading=browse.querySelector('.collection-heading');
-        function layoutSearch(){if(media.matches){browse.append(controls);heading.textContent='COLLECTION / 卡牌查詢'}else{toolbar.before(controls);heading.textContent='SEARCH / 卡牌查詢'}}layoutSearch();media.addEventListener('change',layoutSearch);}
 
         // Match the search button to the actual responsive hero CTA dimensions.
         {const hero=document.querySelector('.hero-actions .hero-action[href="#browse"]'),search=$('search');if(hero&&search){const syncSearchSize=()=>{const r=hero.getBoundingClientRect();if(r.width>0&&r.height>0){search.style.setProperty('--hero-search-width',r.width+'px');search.style.setProperty('--hero-search-height',r.height+'px')}};syncSearchSize();if(typeof ResizeObserver==='function'){const observer=new ResizeObserver(syncSearchSize);observer.observe(hero)}else window.addEventListener('resize',syncSearchSize);document.fonts?.ready.then(syncSearchSize);}}
@@ -2552,7 +2555,7 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
             input.placeholder = retail ? "85、168、Judy" : "85、B168、Judy";
             input.removeAttribute("inputmode");
             input.setAttribute("aria-label", retail ? "輸入 RETAIL 卡號或卡名" : "輸入 BETA 卡號或卡名");
-            document.querySelector('.collection-search-head .collection-step-label').textContent='搜尋卡片';
+            document.querySelector('.collection-search-head .collection-step-label').textContent='01 / SEARCH · 搜尋卡片 · '+activeEdition.toUpperCase();
         }
 
         function dexRead(key,fallback){try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}}
@@ -2607,8 +2610,8 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
         }
         function collectionStatusText() {
             const qty = Object.keys(currentCatalog()).length;
-            return activeEdition === "retail" ? qty + " 張卡（001～171（含 005A、005B）、T001～T006）" : activeSection === "main"
-                ? qty + " 張卡（B001～B171（含 B005A、B005B）、T001～T006）"
+            return activeEdition === "retail" ? "Welcome to Night City Retail · " + qty + " 張卡（001～171（含 005A、005B）、T001～T006）" : activeSection === "main"
+                ? "Welcome to Night City Beta · " + qty + " 張卡（B001～B171（含 B005A、B005B）、T001～T006）"
                 : (activeStarter === "heist" ? "The Heist" : "Embracing Power") + " Beta · " + qty + " 張卡（B001～B020）";
         }
         function chooseSection(section, starter) {
