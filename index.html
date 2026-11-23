@@ -2794,7 +2794,21 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
             const twd = $('twd'); twd.replaceChildren(); if (p && Number.isFinite(p.usd)) { const prefix = document.createElement('span'); prefix.className = 'twd-prefix'; prefix.textContent = '約 NT$'; const amount = document.createElement('span'); twd.append(prefix, amount); animateMarketAmount(amount,Math.round(p.usd*rate),Number.isFinite(oldTWD)?oldTWD:0,n=>Math.round(n).toLocaleString('zh-TW')); }
             $('pricenote').textContent = p ? '報價日期：' + (p.observedDate || (activeEdition === 'retail' ? retailPriceDate : priceDate)) + '。' + (activeSection === "starter" ? '初始牌組獨立報價（' + p.printing + '），不沿用主系列同號價格；尚無價格走勢。' : activeEdition === "retail" ? '來源：' + (p.sourceName || "未註明") + '。' : '不同來源日期可能不同。') : '尚未建立這張卡的價格紀錄。';
             $('tcg').href = 'https://www.tcgplayer.com/search/all/product?q=' + encodeURIComponent("Cyberpunk TCG " + (activeSection === "starter" ? (activeStarter === "heist" ? "The Heist Beta starter " : "Embracing Power Beta starter ") : "Welcome to Night City " + (activeEdition === "retail" ? "Retail " : "Beta ")) + code + " " + entry.name);
-            $('cataloglink').href = officialCatalogUrl;
+            // Use only individually verified official printing URLs. Unverified entries
+            // fall back to the official database instead of constructing guessed slugs.
+            const verifiedBetaPrintings = {
+                B108: "https://cyberpunktcg.com/cards/judy-a-lvarez-braindance-maestro?printing=d74468ab-6024-4ae6-b69a-ac41f6e9cfce",
+                B157: "https://cyberpunktcg.com/cards/judy-a-lvarez-braindance-maestro?printing=0324e335-2f17-496c-9789-59f93ed6d31e"
+            };
+            const verifiedRetailPrintings = {
+                "005A": "https://cyberpunktcg.com/cards/v-streetkid?printing=3fc63c58-5954-4744-a5af-047bfc5cb159"
+            };
+            const officialCardUrl = activeSection === "main"
+                ? (activeEdition === "beta"
+                    ? verifiedBetaPrintings[code]
+                    : (verifiedRetailPrintings[code] || (entry.sourceUrl?.startsWith("https://cyberpunktcg.com/cards/") ? entry.sourceUrl : null)))
+                : null;
+            $('cataloglink').href = officialCardUrl || officialCatalogUrl;
             displayArt(code, entry);
             $('history-periods').closest('.history-head')?.removeAttribute("hidden"); renderHistory(); if(activeEdition==="retail"&&(!p||!Number.isFinite(p.usd))) $('pricenote').textContent='RETAIL 尚無已核實市場參考價。';
             if (changedCard && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
