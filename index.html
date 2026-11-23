@@ -1953,7 +1953,8 @@ body>header .dex-menu-toggle[aria-expanded=true]:focus-visible{color:#414000}
 @media(prefers-reduced-motion:reduce){#market-ranking .ranking-row::after{transition:none}}
 
 /* Shared sticky navigation; keep its layout space and protect non-scrolling pack stages. */
-html body>header{position:sticky;top:0;z-index:40;transform:translateY(0);transition:transform .2s ease}
+html body>header{position:relative;top:0;z-index:40;transform:translateY(0);transition:transform .2s ease}
+html.ranking-view body>header{position:sticky}
 html:not(.pack-opening) body>header.scroll-header-hidden:not(:has(:focus-visible,.dex-menu-toggle[aria-expanded=true])){transform:translateY(-101%);pointer-events:none}
 html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,html.pack-opening body>header{position:relative;transform:none!important;pointer-events:auto!important}
 @media(prefers-reduced-motion:reduce){html body>header{transition:none}}
@@ -2165,7 +2166,7 @@ html body #browser-detail-dialog #browser-detail-close,html body #pack-zoom-clos
 }
 
 /* Catalog controls remain reachable while browsing. */
-.browser-toolbar{position:sticky;top:var(--dex-sticky-top,70px);z-index:28;background:#0e0e0e;padding:12px 0;border-bottom:1px solid var(--dex-rule);transition:top .2s ease}
+.browser-toolbar{position:sticky;top:0;z-index:28;background:#0e0e0e;padding:12px 0;border-bottom:1px solid var(--dex-rule);transition:top .2s ease}
 html:has(body>header.scroll-header-hidden) .browser-toolbar{top:0}
 #browser-rarities button{min-height:36px}
 .ranking-subtitle-text{display:block;color:var(--dex-subtle);font-size:.87em;font-weight:500;margin-top:2px}
@@ -2186,7 +2187,7 @@ html:has(body>header.scroll-header-hidden) .browser-toolbar{top:0}
 #browser-rarities button:is(:focus,:focus-visible){outline:none!important;box-shadow:none!important}
 html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:underline;text-underline-offset:4px}
 
-.browser-head{scroll-margin-top:calc(var(--dex-sticky-top,70px) + 12px)}
+.browser-head{scroll-margin-top:12px}
 #browser-rarities{min-width:0}
 #browser-grid .browser-card>strong,#browser-grid .browser-subtitle{min-width:0;overflow-wrap:anywhere}
 #browser-grid .browser-card>small{min-width:0}
@@ -3214,7 +3215,7 @@ refreshRankingGlow();
   frame=0;
   const y=Math.max(0,Math.min(scrollY,Math.max(0,root.scrollHeight-innerHeight))),delta=y-last;
   last=y;
-  if(locked()||y<=header.offsetHeight||menu?.getAttribute('aria-expanded')==='true'||header.querySelector(':focus-visible')){show();direction=0;distance=0;return}
+  if(!root.classList.contains('ranking-view')||locked()||y<=header.offsetHeight||menu?.getAttribute('aria-expanded')==='true'||header.querySelector(':focus-visible')){show();direction=0;distance=0;return}
   if(!delta)return;
   const sign=Math.sign(delta);
   if(sign!==direction){direction=sign;distance=0}
