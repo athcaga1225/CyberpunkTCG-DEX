@@ -2371,9 +2371,10 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
  #draw-dialog #pack-stage.pack-selected .pack-gesture-hint{font-size:19px;padding-bottom:18px}
 }
 
-/* Mobile series text and detail scroll-edge fades. */
+/* Shared edition and series control typography. */
+.collection-nav .series-trigger,.series-menu button{font:700 var(--dex-control-font) var(--dex-font)}
+/* Mobile detail scroll-edge fade. */
 @media(max-width:760px){
-  .collection-nav .series-trigger,.series-menu button{font-size:14px;font-weight:500}
   #browser-detail-dialog[open].has-scrolled #browser-detail-scroll{
     -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 18px);
     mask-image:linear-gradient(to bottom,transparent 0,#000 18px);
