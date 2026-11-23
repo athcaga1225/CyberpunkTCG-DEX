@@ -2368,6 +2368,24 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
  html.pack-view.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper{width:min(clamp(220px,27vw,310px),max(90px,calc((100dvh - 230px)/1.53)))}
  #draw-dialog #pack-stage.pack-selected .pack-gesture-hint{font-size:19px;padding-bottom:18px}
 }
+
+/* Mobile Safari: smooth slider edges, balanced series text and scroll-edge fades. */
+@media(max-width:760px){
+  .hero-deck .hero-card .hero-face{
+    border-radius:var(--dex-card-radius);
+    -webkit-mask-image:-webkit-radial-gradient(white,black);
+    mask-image:linear-gradient(#fff,#fff);
+    -webkit-backface-visibility:hidden;
+    backface-visibility:hidden;
+  }
+  .hero-deck .hero-card .hero-front{border:0}
+  .collection-nav .series-trigger,.series-menu button{font-size:14px;font-weight:500}
+  #browser-detail-dialog[open].has-scrolled .browser-dialog-head::after{
+    content:"";position:absolute;top:100%;left:0;right:0;height:18px;
+    background:linear-gradient(var(--dex-surface,#181a1f),transparent);
+    pointer-events:none;
+  }
+}
 </style>
 </head>
 
@@ -2799,7 +2817,7 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
         if(document.documentElement.classList.contains('pack-view'))document.body.append(browserDetailDialog);
         $('result').before(browserDetailAnchor);
         let browserDetailPrevious=null;
-        {const scroll=$('browser-detail-scroll'),hint=browserDetailDialog.querySelector('.detail-scroll-hint');function syncHint(){hint.classList.toggle('has-more',browserDetailDialog.open&&scroll.scrollHeight-scroll.clientHeight-scroll.scrollTop>6)}scroll.addEventListener('scroll',syncHint,{passive:true});if('ResizeObserver' in window){const observer=new ResizeObserver(syncHint);observer.observe(scroll);observer.observe($('result'))}window.addEventListener('resize',syncHint,{passive:true});browserDetailDialog.addEventListener('close',syncHint);new MutationObserver(()=>requestAnimationFrame(syncHint)).observe(browserDetailDialog,{attributes:true,attributeFilter:['open']});}
+        {const scroll=$('browser-detail-scroll'),hint=browserDetailDialog.querySelector('.detail-scroll-hint');function syncHint(){const open=browserDetailDialog.open;hint.classList.toggle('has-more',open&&scroll.scrollHeight-scroll.clientHeight-scroll.scrollTop>6);browserDetailDialog.classList.toggle('has-scrolled',open&&scroll.scrollTop>2)}scroll.addEventListener('scroll',syncHint,{passive:true});if('ResizeObserver' in window){const observer=new ResizeObserver(syncHint);observer.observe(scroll);observer.observe($('result'))}window.addEventListener('resize',syncHint,{passive:true});browserDetailDialog.addEventListener('close',syncHint);new MutationObserver(()=>requestAnimationFrame(syncHint)).observe(browserDetailDialog,{attributes:true,attributeFilter:['open']});}
 
         function openBrowserDetail(code,tile,editionOverride=null){
             if(browserDetailDialog.open)return;
