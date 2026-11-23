@@ -3411,8 +3411,9 @@ refreshRankingGlow();
   const sign=Math.sign(delta);
   if(sign!==direction){direction=sign;distance=0}
   distance+=Math.abs(delta);
+  // Ranking page: once hidden on downward scroll, keep the header hidden
+  // while scrolling back up. Reveal it only at the top (handled above).
   if(direction>0&&distance>=18)header.classList.add('scroll-header-hidden');
-  if(direction<0&&distance>=10)show();
  }
  const schedule=()=>{if(!frame)frame=requestAnimationFrame(check)};
  window.addEventListener('scroll',schedule,{passive:true});
