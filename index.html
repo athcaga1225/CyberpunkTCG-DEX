@@ -1594,8 +1594,8 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 @media(max-width:760px){#draw-dialog .slider-art{padding-top:24px;min-height:calc(clamp(220px,65vw,285px)*1.53 + 60px)}#draw-dialog .slider-art-index{display:block;top:3px;left:0;right:auto;color:#131313;font:700 9px ui-monospace,monospace;letter-spacing:.12em;z-index:4;pointer-events:none}}
 @media(max-width:680px){.hero-card{width:clamp(88px,28vw,160px)}}
 @media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
-  .hero-deck .hero-card .hero-flip{translate:0 0;transition:translate .28s cubic-bezier(.2,.72,.25,1);pointer-events:none}
-  .hero-deck .hero-card:hover .hero-flip{translate:0 -14px}
+  .hero-deck .hero-card .hero-flip{translate:0 0;transition:translate var(--dex-card-hover-duration) ease,filter var(--dex-card-hover-duration) ease;pointer-events:none}
+  .hero-deck .hero-card:hover .hero-flip{translate:0 var(--dex-card-hover-offset);filter:brightness(var(--dex-card-hover-brightness))}
 }
 /* Fade the existing picker before changing layout; never recreate its yellow background. */
 html.pack-view #draw-dialog.picker-leaving .pack-picker{pointer-events:none;animation:packBackgroundOut .3s ease-out both}
@@ -2008,7 +2008,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
 .browser-card[data-rarity="Iconic Legend"] small{color:#fcee09}
 .browser-card[data-rarity="Iconic Other"] small{color:#63d6d0}
 
-@media(hover:hover) and (pointer:fine){.browser-card:hover .browser-art{filter:brightness(1.13)}}
+@media(hover:hover) and (pointer:fine){.browser-card:hover .browser-art{filter:brightness(var(--dex-card-hover-brightness))}}
 
 #result{scroll-margin-top:90px}
 .history-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#34383d;margin:12px 0}
@@ -2073,8 +2073,8 @@ html.pack-view body>header{position:relative;transform:none!important;pointer-ev
 .history-graph svg line[stroke="#c5003c"]{stroke:#777}
 
 #browser-grid{gap:30px 20px}
-#browser-grid .browser-art{margin-bottom:6px;transition:transform .22s ease,filter .22s ease}
-@media(hover:hover) and (pointer:fine){#browser-grid .browser-card:hover .browser-art{transform:translateY(-5px)}}
+#browser-grid .browser-art{margin-bottom:6px;transition:transform var(--dex-card-hover-duration) ease,filter var(--dex-card-hover-duration) ease}
+@media(hover:hover) and (pointer:fine){#browser-grid .browser-card:hover .browser-art{transform:translateY(var(--dex-card-hover-offset))}}
 @media(max-width:560px){#browser-grid{gap:26px 14px}}
 @media(prefers-reduced-motion:reduce){#browser-grid .browser-art{transition:none}#browser-grid .browser-card:hover .browser-art{transform:none}}
 #market-ranking .ranking-sorts button:focus,#market-ranking .ranking-sorts button:focus-visible{outline:none!important;box-shadow:none!important}
@@ -2317,6 +2317,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
  --dex-control-height:50px;--dex-control-font:14px;--dex-action-cut:10px;
  --dex-action-shape:polygon(0 0,calc(100% - var(--dex-action-cut)) 0,100% var(--dex-action-cut),100% 100%,0 100%);
  --dex-card-radius:4% / 2.75%;--dex-card-crop:1.035;
+ --dex-card-hover-offset:-5px;--dex-card-hover-brightness:1.13;--dex-card-hover-duration:.22s;
  --dex-heading-size:clamp(42px,5.3vw,76px);
 }
 @media(max-width:760px){:root{--dex-control-height:44px;--dex-control-font:12px;--dex-card-radius:5% / 3.6%;--dex-heading-size:clamp(40px,10vw,64px)}}
@@ -2349,6 +2350,7 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
 #browse .browser-collection .collection-grid{margin:0;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:15px}
 #card-browser{margin-top:24px;padding-top:0;border-top:0}
 @media(max-width:760px){#browse .browser-collection .collection-grid{grid-template-columns:1fr;gap:14px}}
+@media(prefers-reduced-motion:reduce){.hero-deck .hero-card .hero-flip{transition:none}.hero-deck .hero-card:hover .hero-flip{translate:0 0}}
 </style>
 </head>
 
