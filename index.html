@@ -2037,7 +2037,7 @@ html.pack-view:has(#pack-stage:not([hidden]):not(.pack-selected)) body>header,ht
 .browser-card small{display:flex;align-items:center;justify-content:space-between;gap:4px;color:var(--dex-subtle);font-size:11px}
 .browser-rarity{display:inline-flex;align-items:center;gap:5px;text-align:right}.browser-rarity::before{content:"";width:7px;height:7px;background:currentColor;flex:none;transform:translateY(1px)}
 .browser-card[data-rarity="Iconic Secret"] .browser-rarity{color:#ff465d}.browser-card[data-rarity="Iconic Legend"] .browser-rarity{color:#fcee09}.browser-card[data-rarity="Iconic Other"] .browser-rarity{color:#41d9ca}
-.browser-price{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;color:#f4f4f4}.browser-price strong{font-size:clamp(20px,2vw,27px);font-variant-numeric:tabular-nums}.browser-price span{font:600 14px var(--dex-numeric);color:var(--dex-subtle)}.browser-price strong .browser-currency-prefix{font:inherit;font-size:.65em;color:inherit;margin-right:2px}
+.browser-price{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;color:#f4f4f4}.browser-price strong{font-size:clamp(20px,2vw,27px);font-variant-numeric:tabular-nums}.browser-price span{font:600 16px var(--dex-numeric);color:var(--dex-subtle)}.browser-price strong .browser-currency-prefix{font:inherit;font-size:.65em;color:inherit;margin-right:2px}
 #result.panel{background:var(--dex-surface);border:0;box-shadow:none;border-radius:0;clip-path:none;padding:clamp(16px,3vw,36px);margin:24px 0 32px}
 #browser-detail-dialog{width:min(980px,calc(100% - 32px));max-height:calc(100dvh - 32px);box-sizing:border-box;margin:auto;padding:0;border:0;border-radius:12px;background:var(--dex-surface,#191a1e);color:inherit;overflow:auto;overscroll-behavior:contain}
 #browser-detail-dialog::backdrop{background:rgba(0,0,0,.8)}
@@ -2058,7 +2058,7 @@ html:has(#browser-detail-dialog[open]){overflow:hidden}
 .history-periods{gap:0;background:#111215;padding:4px}.history-periods button{border:0;background:transparent;color:var(--dex-subtle);font:600 15px var(--dex-numeric)}.history-periods button[aria-pressed=true]{background:#25272c;color:#fcee09}
 .ranking-metrics{display:flex;justify-content:flex-end;gap:28px;margin:20px 0}.ranking-metrics>div{display:grid;gap:3px}.ranking-metrics small{color:var(--dex-subtle);font-size:12px}.ranking-metrics strong{font:700 clamp(25px,3vw,40px)/1 var(--dex-numeric);color:#fcee09}
 #market-ranking .ranking-row{border-bottom-color:var(--dex-rule);padding-block:18px}.ranking-list{border-top-color:var(--dex-rule)}.ranking-position{font:700 32px var(--dex-numeric)}.ranking-price{font:700 25px var(--dex-numeric)}.ranking-price small{font:600 14px var(--dex-numeric)}.ranking-change{font:700 20px var(--dex-numeric)}
-@media(max-width:560px){#browser-grid{gap:24px 12px}.browser-card strong{font-size:20px}.browser-card small{flex-wrap:wrap}.browser-subtitle{font-size:14px}.browser-price{gap:4px}.browser-price strong{font-size:23px}.browser-price span{font-size:12px}#browser-total{font-size:14px}#market-ranking .ranking-row{padding-block:12px}.ranking-position{font-size:25px}.ranking-price{font-size:21px}.history-stats>div:nth-child(2){border-right:0}.history-stats>div:nth-child(-n+2){border-bottom:1px solid var(--dex-rule)}}
+@media(max-width:560px){#browser-grid{gap:24px 12px}.browser-card strong{font-size:20px}.browser-card small{flex-wrap:wrap}.browser-subtitle{font-size:14px}.browser-price{gap:4px}.browser-price strong{font-size:23px}.browser-price span{font-size:16px}#browser-total{font-size:14px}#market-ranking .ranking-row{padding-block:12px}.ranking-position{font-size:25px}.ranking-price{font-size:21px}.history-stats>div:nth-child(2){border-right:0}.history-stats>div:nth-child(-n+2){border-bottom:1px solid var(--dex-rule)}}
 
 html.pack-view body>header{position:relative;transform:none!important;pointer-events:auto!important}
 #result #twd{display:flex;align-items:baseline;gap:.16em}
@@ -2178,7 +2178,7 @@ html:has(body>header.scroll-header-hidden) .browser-toolbar{top:0}
 @keyframes detailEnter{from{opacity:0;translate:0 10px}to{opacity:1;translate:0 0}}
 @keyframes detailExit{from{opacity:1;translate:0 0}to{opacity:0;translate:0 8px}}
 @keyframes detailBackdrop{from{opacity:0}to{opacity:1}}
-@media(max-width:760px){.browser-toolbar{gap:8px;padding:8px 0}.browser-toolbar #browser-rarities{flex:1 1 100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:2px 0}.browser-toolbar #browser-rarities::-webkit-scrollbar{display:none}.browser-toolbar #browser-rarities button{white-space:nowrap;flex:none;min-height:36px}.browser-sort{margin-left:auto}#browser-detail-dialog{max-height:calc(100dvh - 16px)}#browser-grid .browser-price{min-width:0}#browser-grid .browser-price strong{white-space:nowrap}}
+@media(max-width:760px){.browser-toolbar{gap:8px;padding:8px 0}.browser-toolbar #browser-rarities{flex:1 1 100%;flex-wrap:nowrap;align-items:center;padding:2px 0}.browser-toolbar #browser-rarity-scroll{display:flex;gap:6px;flex:1 1 0;min-width:0;overflow-x:auto;scrollbar-width:none}.browser-toolbar #browser-rarity-scroll::-webkit-scrollbar{display:none}.browser-toolbar #browser-rarities button{white-space:nowrap;flex:none;min-height:36px}.browser-sort{margin-left:auto}#browser-detail-dialog{max-height:calc(100dvh - 16px)}#browser-grid .browser-price{min-width:0}#browser-grid .browser-price strong{white-space:nowrap}}
 @media(prefers-reduced-motion:reduce){.browser-toolbar{transition:none}#browser-detail-dialog[open],#browser-detail-dialog[open]::backdrop{animation:none}}
 #browser-rarities button{display:inline-flex;align-items:center;gap:6px;color:#aeb4bc;border-color:#34383e;background:transparent;white-space:nowrap}
 #browser-rarities button[data-rarity]:not([data-rarity=""])::before{content:"";width:8px;height:8px;background:var(--filter-color);flex:none;transform:translateY(1px)}
@@ -2189,6 +2189,7 @@ html.keyboard-focus #browser-rarities button:focus-visible{text-decoration:under
 
 .browser-head{scroll-margin-top:12px}
 #browser-rarities{min-width:0}
+#browser-rarity-scroll{display:contents}
 #browser-grid .browser-card>strong,#browser-grid .browser-subtitle{min-width:0;overflow-wrap:anywhere}
 #browser-grid .browser-card>small{min-width:0}
 #browser-grid .browser-price strong{white-space:nowrap;max-width:100%}
@@ -2225,10 +2226,10 @@ html.keyboard-focus body #market-ranking .ranking-row:focus-visible{background:#
 html.keyboard-focus body :is(#browser-detail-dialog #browser-detail-close,#pack-zoom-close,#pack-odds-modal .pack-odds-head button):focus-visible{color:#fcee09!important;background:#ffffff12}
 @media(hover:hover) and (pointer:fine){html body :is(#browser-detail-dialog #browser-detail-close,#pack-zoom-close,#pack-odds-modal .pack-odds-head button):hover{background:#ffffff0b;color:#fcee09!important}}
 @media(max-width:760px){
-#browser-rarities.can-scroll-right{mask-image:linear-gradient(to right,#000 calc(100% - 24px),transparent)}
-#browser-rarities.can-scroll-left{mask-image:linear-gradient(to right,transparent,#000 18px)}
-#browser-rarities.can-scroll-left.can-scroll-right{mask-image:linear-gradient(to right,transparent,#000 18px,#000 calc(100% - 24px),transparent)}
-html.keyboard-focus #browser-rarities:focus-within{mask-image:none}
+#browser-rarity-scroll.can-scroll-right{mask-image:linear-gradient(to right,#000 calc(100% - 24px),transparent)}
+#browser-rarity-scroll.can-scroll-left{mask-image:linear-gradient(to right,transparent,#000 18px)}
+#browser-rarity-scroll.can-scroll-left.can-scroll-right{mask-image:linear-gradient(to right,transparent,#000 18px,#000 calc(100% - 24px),transparent)}
+html.keyboard-focus #browser-rarity-scroll:focus-within{mask-image:none}
 #browser-detail-dialog{max-height:calc(100dvh - 16px)}
 }
 @media(max-width:360px){.history-tooltip{max-width:calc(100% - 4px);padding-inline:7px;font-size:11px}.history-tooltip strong{font-size:11px}}
@@ -2422,7 +2423,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
                         </select>
                     </div>
                 </div>
-            </div></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"></div><div class="browser-editions" role="group" aria-label="圖鑑版本"><button type="button" data-browser-edition="beta" aria-pressed="true">BETA</button><button type="button" data-browser-edition="retail" aria-pressed="false">RETAIL</button></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="rarity">稀有度高 → 低</option><option value="code">卡牌編號 小 → 大</option><option value="code-desc">卡牌編號 大 → 小</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
+            </div></div><div class="browser-toolbar"><div id="browser-rarities" role="group" aria-label="稀有度篩選"><div id="browser-rarity-scroll"></div></div><div class="browser-editions" role="group" aria-label="圖鑑版本"><button type="button" data-browser-edition="beta" aria-pressed="true">BETA</button><button type="button" data-browser-edition="retail" aria-pressed="false">RETAIL</button></div><label class="browser-sort">排序 <select id="browser-sort"><option value="high">價格高 → 低</option><option value="rarity">稀有度高 → 低</option><option value="code">卡牌編號 小 → 大</option><option value="code-desc">卡牌編號 大 → 小</option></select></label></div><p id="browser-count" role="status"></p><div id="browser-grid"></div><button type="button" id="browser-more" class="primary" hidden>顯示更多 ↓</button></section>
         <footer>CyberDEX 是非官方收藏工具。與 Cyberpunk TCG、TCGplayer 無關；卡圖版權歸原權利人所有。價格不能作為保證成交報價。</footer>
 </main>
     <script>
@@ -2535,11 +2536,11 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
             if(reset)root.dataset.limit='25';
             const counts=new Map();entries.forEach(([,v])=>counts.set(v.rarity,(counts.get(v.rarity)||0)+1));
             const filter=new Set(JSON.parse(root.dataset.rarities||'[]')),rarityColors={'Iconic Secret':'#ff465d','Iconic Legend':'#fcee09','Iconic Other':'#41d9ca','Secret':'#ff9c50','Epic':'#b88bfa','Rare':'#60a5fa','Uncommon':'#a9bdcb','Common':'#8c919b','Nova Rare':'#e8a8e5'},order=['Iconic Secret','Iconic Legend','Iconic Other','Secret','Epic','Rare','Uncommon','Common','Nova Rare'];
-            const filters=$('browser-rarities'),filterScroll=filters.scrollLeft;filters.replaceChildren();
+            const filters=$('browser-rarities'),scroller=$('browser-rarity-scroll'),filterScroll=scroller.scrollLeft;scroller.replaceChildren();filters.replaceChildren(scroller);
             for(const rarity of ['',...new Set([...order.filter(x=>counts.has(x)),...counts.keys()])]){
-                const b=document.createElement('button');b.type='button';b.dataset.rarity=rarity;b.style.setProperty('--filter-color',rarityColors[rarity]||'#e0e2e5');b.setAttribute('aria-pressed',String(rarity?filter.has(rarity):!filter.size));const label=document.createElement('span'),count=document.createElement('span');label.textContent=rarity||'全部';count.className='filter-count';count.textContent=rarity?counts.get(rarity):entries.length;b.append(label,count);b.onclick=()=>{if(!rarity)filter.clear();else if(filter.has(rarity))filter.delete(rarity);else filter.add(rarity);root.dataset.rarities=JSON.stringify([...filter]);renderBrowser();returnToCatalogControls();[...filters.children].find(el=>el.dataset.rarity===rarity)?.focus({preventScroll:true})};filters.append(b);
+                const b=document.createElement('button');b.type='button';b.dataset.rarity=rarity;b.style.setProperty('--filter-color',rarityColors[rarity]||'#e0e2e5');b.setAttribute('aria-pressed',String(rarity?filter.has(rarity):!filter.size));const label=document.createElement('span'),count=document.createElement('span');label.textContent=rarity||'全部';count.className='filter-count';count.textContent=rarity?counts.get(rarity):entries.length;b.append(label,count);b.onclick=()=>{if(!rarity)filter.clear();else if(filter.has(rarity))filter.delete(rarity);else filter.add(rarity);root.dataset.rarities=JSON.stringify([...filter]);renderBrowser();returnToCatalogControls();[...filters.querySelectorAll('button[data-rarity]')].find(el=>el.dataset.rarity===rarity)?.focus({preventScroll:true})};if(rarity)scroller.append(b);else filters.prepend(b);
             }
-            filters.scrollLeft=filterScroll;
+            scroller.scrollLeft=filterScroll;
             syncRarityScroll();
             const priced=entries.filter(([id])=>Number.isFinite(market[id]?.usd)),total=priced.reduce((a,[id])=>a+market[id].usd,0);
             setUsdText($('browser-total'),priced.length?'已報價 '+priced.length+'/'+entries.length+' 張 · 參考總值 '+fmtUSD(total)+' / '+currency(total):'尚無市場報價');
@@ -2561,8 +2562,8 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
             }
             $('browser-more').hidden=rows.length<=limit;
         }
-        function syncRarityScroll(){const el=$('browser-rarities');el.classList.toggle('can-scroll-right',el.scrollWidth-el.clientWidth-el.scrollLeft>4);el.classList.toggle('can-scroll-left',el.scrollLeft>4)}
-        $('browser-rarities').addEventListener('scroll',syncRarityScroll,{passive:true});
+        function syncRarityScroll(){const el=$('browser-rarity-scroll');el.classList.toggle('can-scroll-right',el.scrollWidth-el.clientWidth-el.scrollLeft>4);el.classList.toggle('can-scroll-left',el.scrollLeft>4)}
+        $('browser-rarity-scroll').addEventListener('scroll',syncRarityScroll,{passive:true});
         window.addEventListener('resize',syncRarityScroll,{passive:true});
         function returnToCatalogControls(){const toolbar=document.querySelector('.browser-toolbar'),head=document.querySelector('.browser-head');if(!toolbar||!head)return;const top=parseFloat(getComputedStyle(toolbar).top)||0;if(head.getBoundingClientRect().bottom<top)head.scrollIntoView({block:'start',behavior:'instant'})}
         $('browser-sort').addEventListener('change',()=>{renderBrowser();returnToCatalogControls()});
