@@ -1563,8 +1563,8 @@ header .brand{font-family:'Barlow Condensed',var(--dex-display);font-stretch:nor
 .hero-actions .hero-action{box-sizing:border-box;min-width:0;white-space:nowrap;height:50px;min-height:50px}
 .hero-actions #open-draw{position:relative;background:transparent;color:var(--dex-text);padding:12px 18px;gap:18px}
 .hero-actions #open-draw::before{content:"";position:absolute;inset:0;pointer-events:none;background:var(--dex-muted);clip-path:polygon(evenodd,0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%,0 0,1px 1px,1px calc(100% - 1px),calc(100% - 1px) calc(100% - 1px),calc(100% - 1px) 10.4px,calc(100% - 10.4px) 1px,1px 1px)}
-.hero-actions #open-draw:hover,.hero-actions #open-draw:focus-visible{background:transparent;color:var(--dex-text)}
-.hero-actions #open-draw:hover::before,.hero-actions #open-draw:focus-visible::before{background:var(--dex-text)}
+@media(hover:hover) and (pointer:fine){.hero-actions #open-draw:hover{background:#ffffff0d;color:var(--dex-text)}}
+.hero-actions #open-draw:focus-visible{background:#ffffff0d;color:var(--dex-text)}
 @media(max-width:680px){.hero-actions{margin-top:17px;gap:8px 12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.hero-actions .hero-action,.hero-actions #open-draw{padding:10px 12px;gap:8px}}
 .hero-kicker,#draw-dialog .slider-eyebrow{font-family:var(--dex-font);font-size:var(--dex-size-caption);font-weight:700;line-height:1.6;letter-spacing:.22em;color:var(--dex-yellow);gap:12px}
 .hero-mark{width:24px;height:2px;flex:none;background:var(--dex-yellow);clip-path:none}
