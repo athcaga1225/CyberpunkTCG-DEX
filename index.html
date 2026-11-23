@@ -2380,6 +2380,22 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
     mask-image:linear-gradient(to bottom,transparent 0,#000 18px);
   }
 }
+
+/* Mobile navigation: actual two-line-to-X morph; avoid sticky touch hover motion. */
+@media(max-width:760px){
+ body>header .dex-menu-toggle{position:relative;transform:none!important;translate:none!important;scale:1!important;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+ body>header .dex-menu-toggle svg,body>header .dex-menu-toggle[aria-expanded=true] svg{display:none!important}
+ body>header .dex-menu-toggle::before,body>header .dex-menu-toggle::after{display:block!important;content:"";position:absolute;left:9px;right:9px;height:2px;background:currentColor;transform-origin:center;opacity:1;transition:top .25s ease,transform .25s ease}
+ body>header .dex-menu-toggle::before{top:16px;transform:rotate(0)}
+ body>header .dex-menu-toggle::after{top:24px;transform:rotate(0)}
+ body>header .dex-menu-toggle[aria-expanded=true]::before{top:20px;transform:rotate(45deg)}
+ body>header .dex-menu-toggle[aria-expanded=true]::after{top:20px;transform:rotate(-45deg)}
+ body>header .dex-menu-toggle:hover,body>header .dex-menu-toggle:active,
+ body>header .dex-nav a:hover,body>header .dex-nav a:active{transform:none!important;translate:none!important;scale:1!important}
+}
+@media(prefers-reduced-motion:reduce){body>header .dex-menu-toggle::before,body>header .dex-menu-toggle::after{transition:none!important}}
+/* Cyberpunk TCG cyan accent for the return-to-top control. */
+#ranking-to-top{background:#00f0ff;color:#101010}
 </style>
 </head>
 
