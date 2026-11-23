@@ -2135,7 +2135,7 @@ html body #market-ranking .ranking-row:is(:focus,:focus-visible,:active){outline
 #result #usd{display:block}
 #result #usd .currency-prefix,#browser-grid .browser-currency-prefix,.usd-prefix{font-size:var(--dex-dollar-size,.65em)!important;margin-right:var(--dex-dollar-gap,.08em);vertical-align:baseline}
 #pack-summary{--dex-dollar-size:1em;--dex-dollar-gap:0}
-.us-label{font-size:.85em!important;line-height:1;letter-spacing:0;vertical-align:baseline;color:inherit}
+.us-label{font-size:1em!important;line-height:1;letter-spacing:0;vertical-align:baseline;color:inherit;text-transform:uppercase;font-variant-caps:normal}
 #browser-grid .browser-price strong .us-label,#browser-grid .browser-price strong .browser-currency-prefix{color:inherit!important;font-family:inherit;font-weight:inherit}
 #result #usd .us-label,.ranking-price .us-label,.history-stats .us-label{color:inherit!important}
 html body #browser-detail-dialog #browser-detail-close,html body #pack-zoom-close,html body #pack-odds-modal .pack-odds-head button{color:#fcee09!important;outline:none!important;box-shadow:none!important}
@@ -2369,17 +2369,8 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
  #draw-dialog #pack-stage.pack-selected .pack-gesture-hint{font-size:19px;padding-bottom:18px}
 }
 
-/* Mobile Safari: smooth slider edges, balanced series text and scroll-edge fades. */
+/* Mobile series text and detail scroll-edge fades. */
 @media(max-width:760px){
-  .hero-deck .hero-card .hero-face{
-    border:0;
-    border-radius:var(--dex-card-radius);
-    overflow:hidden;
-    -webkit-backface-visibility:hidden;
-    backface-visibility:hidden;
-    -webkit-clip-path:inset(0 round 5% / 3.6%);
-    clip-path:inset(0 round 5% / 3.6%);
-  }
   .collection-nav .series-trigger,.series-menu button{font-size:14px;font-weight:500}
   #browser-detail-dialog[open].has-scrolled #browser-detail-scroll{
     -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 18px);
