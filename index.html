@@ -2884,6 +2884,7 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
             browserDetailPrevious={code:result.classList.contains('open')?selected:null,query:$('query').value,tile,days:historyDays,edition:activeEdition,section:activeSection,starter:activeStarter};
             if(editionOverride){activeEdition=editionOverride;activeSection='main'}
             $('browser-detail-scroll').append(result);
+            cancelPendingFilterReveal();
             document.documentElement.classList.remove('dex-detail-restoring');
             window.dexModalScrollY=window.scrollY; browserDetailDialog.showModal();
             show(code,false);
@@ -2891,12 +2892,32 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
             $('browser-detail-scroll').scrollTop=0;
             $('browser-detail-close').focus({preventScroll:true});
         }
+        // After closing the detail dialog, leave the sticky filters hidden
+        // until the next actual page scroll. Ignore scroll-position restoration.
+        let revealFiltersOnScroll=null;
+        function cancelPendingFilterReveal(){
+            if(revealFiltersOnScroll){
+                window.removeEventListener('scroll',revealFiltersOnScroll);
+                revealFiltersOnScroll=null;
+            }
+        }
         browserDetailDialog.addEventListener('close',()=>{
-            // Keep the sticky toolbar offscreen until the scroll-lock layout is restored,
-            // then transition it in instead of popping into view above the modal.
-            const root=document.documentElement;
-            if(matchMedia('(prefers-reduced-motion: reduce)').matches){root.classList.remove('dex-detail-restoring');return}
-            setTimeout(()=>requestAnimationFrame(()=>requestAnimationFrame(()=>root.classList.remove('dex-detail-restoring'))),40);
+            cancelPendingFilterReveal();
+            if(!matchMedia('(max-width:760px)').matches){
+                document.documentElement.classList.remove('dex-detail-restoring');
+                return;
+            }
+            // Allow the modal's fixed-body scroll restoration to settle first.
+            setTimeout(()=>{
+                if(browserDetailDialog.open)return;
+                const originalY=window.scrollY;
+                revealFiltersOnScroll=()=>{
+                    if(Math.abs(window.scrollY-originalY)<6)return;
+                    cancelPendingFilterReveal();
+                    document.documentElement.classList.remove('dex-detail-restoring');
+                };
+                window.addEventListener('scroll',revealFiltersOnScroll,{passive:true});
+            },180);
         });
         let detailClosing=false;function closeBrowserDetail(){if(detailClosing||!browserDetailDialog.open)return;document.documentElement.classList.add('dex-detail-restoring');if(matchMedia('(prefers-reduced-motion: reduce)').matches){browserDetailDialog.close();return}detailClosing=true;browserDetailDialog.classList.add('detail-closing');setTimeout(()=>{browserDetailDialog.close();browserDetailDialog.classList.remove('detail-closing');detailClosing=false},160)}
         $('browser-detail-close').onclick=closeBrowserDetail;
