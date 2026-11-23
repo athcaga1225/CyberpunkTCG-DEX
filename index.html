@@ -2380,10 +2380,9 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
   }
   .hero-deck .hero-card .hero-front{border:0}
   .collection-nav .series-trigger,.series-menu button{font-size:14px;font-weight:500}
-  #browser-detail-dialog[open].has-scrolled .browser-dialog-head::after{
-    content:"";position:absolute;top:100%;left:0;right:0;height:18px;
-    background:linear-gradient(var(--dex-surface,#181a1f),transparent);
-    pointer-events:none;
+  #browser-detail-dialog[open].has-scrolled #browser-detail-scroll{
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 18px);
+    mask-image:linear-gradient(to bottom,transparent 0,#000 18px);
   }
 }
 </style>
