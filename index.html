@@ -3309,7 +3309,7 @@ refreshRankingGlow();
   const start=Math.max(0,window.scrollY);
   window.scrollTo({top:start,behavior:'instant'});
   if(matchMedia('(prefers-reduced-motion: reduce)').matches||start<=1){window.scrollTo({top:0,behavior:'instant'});return}
-  const duration=Math.min(1500,Math.max(1000,950+start*.12)),begin=performance.now();
+  const duration=Math.min(1200,Math.max(800,750+start*.096)),begin=performance.now();
   function tick(now){const t=Math.min(1,(now-begin)/duration),ease=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
    window.scrollTo({top:Math.round(start*(1-ease)),behavior:'instant'});
    if(t<1)settle=requestAnimationFrame(tick);else{window.scrollTo({top:0,behavior:'instant'});settle=0}
