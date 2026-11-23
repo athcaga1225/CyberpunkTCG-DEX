@@ -2434,6 +2434,21 @@ html.dex-detail-restoring .browser-toolbar{
   isolation:isolate;
  }
 }
+
+/* Desktop dialog: show the same scroll affordance used on mobile,
+   only while there is content below the visible detail viewport. */
+@media(min-width:761px){
+ #browser-detail-dialog[open] .detail-scroll-hint{
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  flex:none;height:32px;color:#aab4bd;font:500 12px var(--dex-font);
+  opacity:0;transition:opacity .18s ease;position:relative;pointer-events:none;
+ }
+ #browser-detail-dialog[open] .detail-scroll-hint.has-more{opacity:1}
+ #browser-detail-dialog[open] .detail-scroll-hint.has-more::before{
+  content:"";position:absolute;bottom:100%;left:0;right:0;height:18px;
+  background:linear-gradient(transparent,var(--dex-surface,#181a1f));pointer-events:none;
+ }
+}
 </style>
 </head>
 
