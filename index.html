@@ -2399,9 +2399,17 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
 
 /* Keep the sticky catalog controls from flashing above the modal close header on mobile Safari. */
 @media(max-width:760px){
- html:has(#browser-detail-dialog[open]) .browser-toolbar{
-  visibility:hidden!important;
-  transition:none!important;
+ .browser-toolbar{
+  transition:top .2s ease,opacity .24s ease,transform .24s ease;
+ }
+ html:has(#browser-detail-dialog[open]) .browser-toolbar,
+ html.dex-detail-restoring .browser-toolbar{
+  opacity:0!important;
+  transform:translateY(-10px);
+  pointer-events:none!important;
+ }
+ @media(prefers-reduced-motion:reduce){
+  .browser-toolbar{transition:none!important}
  }
  html:has(#browser-detail-dialog[open]) body>header{
   visibility:hidden!important;
@@ -2863,13 +2871,21 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
             browserDetailPrevious={code:result.classList.contains('open')?selected:null,query:$('query').value,tile,days:historyDays,edition:activeEdition,section:activeSection,starter:activeStarter};
             if(editionOverride){activeEdition=editionOverride;activeSection='main'}
             $('browser-detail-scroll').append(result);
+            document.documentElement.classList.remove('dex-detail-restoring');
             window.dexModalScrollY=window.scrollY; browserDetailDialog.showModal();
             show(code,false);
             $('query').value=browserDetailPrevious.query;
             $('browser-detail-scroll').scrollTop=0;
             $('browser-detail-close').focus({preventScroll:true});
         }
-        let detailClosing=false;function closeBrowserDetail(){if(detailClosing||!browserDetailDialog.open)return;if(matchMedia('(prefers-reduced-motion: reduce)').matches){browserDetailDialog.close();return}detailClosing=true;browserDetailDialog.classList.add('detail-closing');setTimeout(()=>{browserDetailDialog.close();browserDetailDialog.classList.remove('detail-closing');detailClosing=false},160)}
+        browserDetailDialog.addEventListener('close',()=>{
+            // Keep the sticky toolbar offscreen until the scroll-lock layout is restored,
+            // then transition it in instead of popping into view above the modal.
+            const root=document.documentElement;
+            if(matchMedia('(prefers-reduced-motion: reduce)').matches){root.classList.remove('dex-detail-restoring');return}
+            setTimeout(()=>requestAnimationFrame(()=>requestAnimationFrame(()=>root.classList.remove('dex-detail-restoring'))),40);
+        });
+        let detailClosing=false;function closeBrowserDetail(){if(detailClosing||!browserDetailDialog.open)return;document.documentElement.classList.add('dex-detail-restoring');if(matchMedia('(prefers-reduced-motion: reduce)').matches){browserDetailDialog.close();return}detailClosing=true;browserDetailDialog.classList.add('detail-closing');setTimeout(()=>{browserDetailDialog.close();browserDetailDialog.classList.remove('detail-closing');detailClosing=false},160)}
         $('browser-detail-close').onclick=closeBrowserDetail;
         browserDetailDialog.addEventListener('cancel',e=>{e.preventDefault();closeBrowserDetail()});
         browserDetailDialog.addEventListener('click',e=>{
