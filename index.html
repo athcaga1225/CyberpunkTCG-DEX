@@ -2359,16 +2359,15 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
 #pack-odds-modal .pack-odds-head button{position:absolute;top:var(--dex-popup-close-inset);right:var(--dex-popup-close-inset)}
 #browser-detail-dialog #browser-detail-close,#pack-odds-modal .pack-odds-head button{width:var(--dex-popup-close-size);height:var(--dex-popup-close-size)}
 @media(min-width:761px){.hero-copy .intro{max-width:none;white-space:nowrap}}
-/* Fixed-angle product hover for the booster picker, independent of revealed-card tilt. */
-#draw-dialog .slider-pack-hit .slider-tilt{transform:rotateZ(-5deg);transition:transform .25s ease-out}
-#draw-dialog .slider-pack-hit .slider-tilt::before{transition:box-shadow .25s ease-out}
-@media(hover:hover) and (pointer:fine){
- #draw-dialog .slider-art>.slider-pack-hint{display:none}
- #draw-dialog .slider-pack-hit:hover .slider-tilt{transform:translateY(-6px) rotateZ(-5deg) scale(1.02)}
- #draw-dialog .slider-pack-hit:hover .slider-tilt::before{box-shadow:10px 24px 30px #0008}
- #draw-dialog .slider-pack-hit .slider-tilt:active{transform:rotateZ(-5deg) scale(.99)}
+/* Revealed cards use the same interaction as the catalog; picker tilt stays independent. */
+#draw-dialog .pack-card.revealed{transform:none;translate:0 0;transition:translate var(--dex-card-hover-duration) ease,filter var(--dex-card-hover-duration) ease}
+@media(hover:hover) and (pointer:fine){#draw-dialog .pack-card.revealed:hover{translate:0 var(--dex-card-hover-offset);filter:brightness(var(--dex-card-hover-brightness))}}
+@media(prefers-reduced-motion:reduce){#draw-dialog .pack-card.revealed{transition:none}#draw-dialog .pack-card.revealed:hover{translate:0 0}}
+/* Desktop opening stage: smaller booster and more prominent gesture hint. */
+@media(min-width:761px){
+ html.pack-view.pack-opening #draw-dialog #pack-stage.pack-selected #pack-wrapper{width:min(clamp(220px,27vw,310px),max(90px,calc((100dvh - 230px)/1.53)))}
+ #draw-dialog #pack-stage.pack-selected .pack-gesture-hint{font-size:19px;padding-bottom:18px}
 }
-@media(prefers-reduced-motion:reduce){#draw-dialog .slider-pack-hit .slider-tilt,#draw-dialog .slider-pack-hit:hover .slider-tilt,#draw-dialog .slider-pack-hit .slider-tilt:active{transform:rotateZ(-5deg);transition:none}#draw-dialog .slider-pack-hit .slider-tilt::before{transition:none}}
 </style>
 </head>
 
@@ -3120,13 +3119,10 @@ picker.querySelector('.slider-tilt').onclick=()=>{if(pickerSwitching)return;if(p
 picker.querySelector('.slider-art').addEventListener('pointerdown',e=>{if(e.pointerType==='touch'){pickerSwiped=false;pickerTouch={x:e.clientX,y:e.clientY}}});
 picker.querySelector('.slider-art').addEventListener('pointerup',e=>{if(pickerTouch){const dx=e.clientX-pickerTouch.x,dy=e.clientY-pickerTouch.y;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.3){pickerSwiped=true;renderPicker(pickerIndex+(dx<0?1:-1));setTimeout(()=>pickerSwiped=false,350)}pickerTouch=null}});
 picker.querySelector('.slider-art').addEventListener('pointercancel',()=>pickerTouch=null);const backPicker=stage.querySelector('.picker-back');dialog.querySelector('.draw-head').prepend(backPicker);backPicker.hidden=true;backPicker.onclick=()=>{if(!wrapper.disabled){backPicker.hidden=true;document.documentElement.classList.remove('pack-opening');reset()}};renderPicker(Math.max(0,editions.indexOf(activeEdition)),false);
-const tilt=picker.querySelector('.slider-tilt');
+const tiltSurface=picker.querySelector('.slider-pack-hit'),tilt=picker.querySelector('.slider-tilt');
 function applyHoverTilt(e,target,rect,range=10){if(e.pointerType!=='mouse'||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const clamp=v=>Math.max(-.5,Math.min(.5,v));const x=clamp((e.clientX-rect.left)/rect.width-.5),y=clamp((e.clientY-rect.top)/rect.height-.5);target.style.setProperty('--rx',(-y*range)+'deg');target.style.setProperty('--ry',(x*range)+'deg');target.classList.add('is-tilting')}
 function resetHoverTilt(target){target.style.setProperty('--rx','0deg');target.style.setProperty('--ry','0deg');target.classList.remove('is-tilting')}
-// Booster picker uses a fixed-angle hover; revealed cards retain pointer tilt.
-let hoveredCard=null;
-grid.addEventListener('pointermove',e=>{const tile=e.target.closest('.pack-tile'),card=tile?.querySelector('.pack-card.revealed');const r=tile?.getBoundingClientRect(),h=card?.offsetHeight;const next=card&&e.clientY<=r.top+h?card:null;if(hoveredCard&&hoveredCard!==next)resetHoverTilt(hoveredCard);hoveredCard=next;if(next)applyHoverTilt(e,next,{left:r.left,top:r.top,width:r.width,height:h})});
-grid.addEventListener('pointerleave',()=>{if(hoveredCard)resetHoverTilt(hoveredCard);hoveredCard=null});
+tiltSurface.addEventListener('pointermove',e=>applyHoverTilt(e,tilt,tiltSurface.getBoundingClientRect(),12));tiltSurface.addEventListener('pointerleave',()=>resetHoverTilt(tilt));
 let tearStart=null,suppressClick=false;
 stage.querySelector('.pack-art').addEventListener('pointerdown',e=>{if(!stage.classList.contains('pack-selected')||wrapper.disabled||e.isPrimary===false||(e.pointerType==='mouse'&&e.button!==0))return;tearStart={id:e.pointerId,x:e.clientX,y:e.clientY};suppressClick=false;if(wrapper.contains(e.target)){try{wrapper.setPointerCapture(e.pointerId)}catch{}}});
 function tearThreshold(){const desired=wrapper.clientWidth*.85;return Math.max(35,Math.min(desired,tearStart?innerWidth-tearStart.x-8:desired))}
