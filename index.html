@@ -2372,16 +2372,14 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
 /* Mobile Safari: smooth slider edges, balanced series text and scroll-edge fades. */
 @media(max-width:760px){
   .hero-deck .hero-card .hero-face{
-    /* Feather only the card silhouette, not the artwork. Avoid hard overflow clipping on rotated layers. */
-    border-radius:0;
-    overflow:visible;
-    -webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20140%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cfilter%20id%3D%22soft%22%20x%3D%22-10%25%22%20y%3D%22-10%25%22%20width%3D%22120%25%22%20height%3D%22120%25%22%20color-interpolation-filters%3D%22sRGB%22%3E%3CfeGaussianBlur%20stdDeviation%3D%22.38%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Crect%20x%3D%22.65%22%20y%3D%22.65%22%20width%3D%2298.7%22%20height%3D%22138.7%22%20rx%3D%224.5%22%20ry%3D%224.5%22%20fill%3D%22white%22%20filter%3D%22url(%23soft)%22%2F%3E%3C%2Fsvg%3E") center / 100% 100% no-repeat;
-    mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20140%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cfilter%20id%3D%22soft%22%20x%3D%22-10%25%22%20y%3D%22-10%25%22%20width%3D%22120%25%22%20height%3D%22120%25%22%20color-interpolation-filters%3D%22sRGB%22%3E%3CfeGaussianBlur%20stdDeviation%3D%22.38%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Crect%20x%3D%22.65%22%20y%3D%22.65%22%20width%3D%2298.7%22%20height%3D%22138.7%22%20rx%3D%224.5%22%20ry%3D%224.5%22%20fill%3D%22white%22%20filter%3D%22url(%23soft)%22%2F%3E%3C%2Fsvg%3E") center / 100% 100% no-repeat;
+    border:0;
+    border-radius:var(--dex-card-radius);
+    overflow:hidden;
     -webkit-backface-visibility:hidden;
     backface-visibility:hidden;
+    -webkit-clip-path:inset(0 round 5% / 3.6%);
+    clip-path:inset(0 round 5% / 3.6%);
   }
-  .hero-deck .hero-card[data-legend="true"] .hero-back{overflow:visible}
-  .hero-deck .hero-card .hero-front{border:0}
   .collection-nav .series-trigger,.series-menu button{font-size:14px;font-weight:500}
   #browser-detail-dialog[open].has-scrolled #browser-detail-scroll{
     -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 18px);
