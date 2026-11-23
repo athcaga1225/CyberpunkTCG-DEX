@@ -2534,7 +2534,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
             const grid=$('browser-grid'),root=$('card-browser');if(!grid||!root||document.documentElement.matches('.ranking-view,.pack-view'))return;
             const entries=Object.entries(currentCatalog()),market=activeEdition==='retail'?retailPrices:activeSection==='starter'?(starterPrices[activeStarter]?.prices||{}):prices;
             const identity=dexIdentity(),stateKey='cyberdex-catalog-ui-v1:'+identity;
-            if(root.dataset.identity!==identity){root.dataset.identity=identity;const saved=dexRead(stateKey,{});root.dataset.rarities=JSON.stringify(Array.isArray(saved.rarities)?saved.rarities:[]);$('browser-sort').value=[...$('browser-sort').options].some(o=>o.value===saved.sort)?saved.sort:'high';reset=true}
+            if(root.dataset.identity!==identity){root.dataset.identity=identity;const saved=dexRead(stateKey,{});root.dataset.rarities=JSON.stringify(Array.isArray(saved.rarities)?saved.rarities:[]);$('browser-sort').value='high';reset=true}
             if(reset)root.dataset.limit='25';
             const counts=new Map();entries.forEach(([,v])=>counts.set(v.rarity,(counts.get(v.rarity)||0)+1));
             const filter=new Set(JSON.parse(root.dataset.rarities||'[]')),rarityColors={'Iconic Secret':'#ff465d','Iconic Legend':'#fcee09','Iconic Other':'#41d9ca','Secret':'#ff9c50','Epic':'#b88bfa','Rare':'#60a5fa','Uncommon':'#a9bdcb','Common':'#8c919b','Nova Rare':'#e8a8e5'},order=['Iconic Secret','Iconic Legend','Iconic Other','Secret','Epic','Rare','Uncommon','Common','Nova Rare'];
@@ -2546,7 +2546,7 @@ html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-t
             syncRarityScroll();
             const priced=entries.filter(([id])=>Number.isFinite(market[id]?.usd)),total=priced.reduce((a,[id])=>a+market[id].usd,0);
             setUsdText($('browser-total'),priced.length?'已報價 '+priced.length+'/'+entries.length+' 張 · 參考總值 '+fmtUSD(total)+' / '+currency(total):'尚無市場報價');
-            const mode=$('browser-sort').value; if(entries.length)dexWrite(stateKey,{rarities:[...filter],sort:mode});
+            const mode=$('browser-sort').value; if(entries.length)dexWrite(stateKey,{rarities:[...filter]});
             const rows=entries.filter(([,e])=>!filter.size||filter.has(e.rarity)).sort(([a,ea],[b,eb])=>{
                 const pa=market[a]?.usd,pb=market[b]?.usd;
                 if(mode==='rarity'){const rank=e=>{const i=order.indexOf(e.rarity);return i<0?order.length:i};const diff=rank(ea)-rank(eb);if(diff)return diff}
