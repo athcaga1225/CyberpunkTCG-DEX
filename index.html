@@ -2396,6 +2396,22 @@ html.keyboard-focus .dex-load-more:focus-visible span{transform:translateY(3px)}
 @media(prefers-reduced-motion:reduce){body>header .dex-menu-toggle::before,body>header .dex-menu-toggle::after{transition:none!important}}
 /* Cyberpunk TCG cyan accent for the return-to-top control. */
 #ranking-to-top{background:#00f0ff;color:#101010}
+
+/* Keep the sticky catalog controls from flashing above the modal close header on mobile Safari. */
+@media(max-width:760px){
+ html:has(#browser-detail-dialog[open]) .browser-toolbar{
+  visibility:hidden!important;
+  transition:none!important;
+ }
+ html:has(#browser-detail-dialog[open]) body>header{
+  visibility:hidden!important;
+  transition:none!important;
+ }
+ #browser-detail-dialog[open] .browser-dialog-head{
+  background:var(--dex-surface,#191a1e);
+  isolation:isolate;
+ }
+}
 </style>
 </head>
 
