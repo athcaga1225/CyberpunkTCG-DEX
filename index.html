@@ -2296,6 +2296,21 @@ body>header .dex-menu-toggle .menu-close,body>header .dex-menu-toggle[aria-expan
 
 html.dex-modal-locked{overflow:hidden!important;overscroll-behavior:none;scroll-behavior:auto!important}
 html.dex-modal-locked body{position:fixed!important;top:var(--dex-modal-scroll-top,0px)!important;left:0;right:0;width:100%;overflow:hidden!important;overscroll-behavior:none}
+/* Desktop: keep the document at its real scroll position while a dialog is open.
+   Fixed-body locking moves the page to a negative top offset and repaints the
+   atmospheric radial gradients as the modal closes. Only mobile needs that lock. */
+@media(min-width:761px){
+ html.dex-modal-locked{overflow:hidden!important;scrollbar-gutter:stable}
+ html.dex-modal-locked body{
+  position:static!important;
+  top:auto!important;
+  left:auto!important;
+  right:auto!important;
+  width:auto!important;
+  overflow:visible!important;
+ }
+}
+
 #browser-detail-scroll,#pack-zoom,#pack-odds-modal{overscroll-behavior:contain}
 
 #result .detail-title-en{white-space:nowrap}
